@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_control_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite">
+
+    <RelativeLayout
+        android:id="@+id/rl_control_top"
+        android:layout_width="match_parent"
+        android:layout_height="320dp"
+        android:clickable="false"
+        android:background="@mipmap/normal_bg">
+
+        <TextView
+            android:id="@+id/tv_device_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/device_state_color"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="22dp"
+            android:textSize="15sp"/>
+
+        <FrameLayout
+            android:id="@+id/rl_remote_video_view_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="22dp"
+            android:background="@mipmap/background_calling"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_device_action"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="30dp"
+            android:layout_marginLeft="30dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:gravity="center"
+            android:textColor="@color/colorWhite"
+            android:textSize="15sp"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/rl_control_top"
+        android:clickable="false"
+        android:layout_marginBottom="48dp">
+
+        <ImageView
+            android:id="@+id/im_close_monitor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:src="@mipmap/close_monitor"
+            android:layout_margin="10dp"
+            android:padding="5dp"
+            android:visibility="gone"/>
+
+        <RelativeLayout
+            android:layout_width="224dp"
+            android:layout_height="188dp"
+            android:layout_centerInParent="true">
+
+            <ImageView
+                android:id="@+id/im_turn_up"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/btn_up" />
+
+            <ImageView
+                android:id="@+id/im_turn_left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:background="@drawable/btn_left" />
+
+            <ImageView
+                android:id="@+id/im_turn_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/btn_right" />
+
+            <ImageView
+                android:id="@+id/im_turn_down"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/btn_down" />
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/rl_bottom_view"
+        android:layout_width="match_parent"
+        android:layout_height="182dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <RelativeLayout
+            android:id="@+id/rl_bottom_control"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@color/colorWhite">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/action_expressions"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:scaleType="center"
+                    android:src="@drawable/expression_bg" />
+
+                <ImageView
+                    android:id="@+id/action_dances"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:scaleType="center"
+                    android:src="@drawable/dance_bg" />
+
+                <ImageView
+                    android:id="@+id/action_videos"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:scaleType="center"
+                    android:src="@drawable/video_bg" />
+
+                <ImageView
+                    android:id="@+id/action_messages"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:scaleType="center"
+                    android:src="@mipmap/message" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_send_tts_msg"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorWhite"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/im_send_msg"
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:scaleType="center"
+                    android:src="@drawable/send_message_bg" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@id/im_send_msg"
+                    android:layout_marginLeft="18dp"
+                    android:background="@mipmap/ed_msg_bg" />
+
+                <EditText
+                    android:id="@+id/et_input_msg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="18dp"
+                    android:layout_toLeftOf="@id/im_send_msg"
+                    android:background="@null"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/colorBlack"
+                    android:padding="12dp"
+                    android:textSize="14sp"
+                    android:maxLines="1"
+                    android:textColorHint="@color/colorHintGray"
+                    android:hint="@string/input_msg_hint" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.3dp"
+                android:background="@color/colorGray" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_more_info"
+            android:layout_width="match_parent"
+            android:layout_height="134dp"
+            android:background="@color/colorGray">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_expressions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:overScrollMode="never"
+                android:visibility="gone" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_dances"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:overScrollMode="never"
+                android:visibility="gone" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_videos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:overScrollMode="never"
+                android:visibility="gone" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+</RelativeLayout>

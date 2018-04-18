@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_machine_item"
+    android:layout_width="240dp"
+    android:layout_height="240dp"
+    android:background="@drawable/machine_item_bg">
+
+    <TextView
+        android:id="@+id/tv_machine_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:textColor="@color/colorWhite"
+        android:layout_margin="10dp"
+        android:textSize="28sp"
+        android:ellipsize="end"
+        android:maxLines="1"/>
+
+    <TextView
+        android:id="@+id/tv_machine_state"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/tv_machine_name"
+        android:text="@string/machine_state_outline"
+        android:layout_marginTop="20dp"
+        android:textSize="16sp"/>
+
+    <ImageView
+        android:id="@+id/im_add_icon"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:src="@mipmap/add_icon"/>
+
+</RelativeLayout>

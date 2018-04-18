@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorTransparent">#00000000</color>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimaryDarkTrans">#CCf57257</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="colorBg">#26c7d2</color>
+    <color name="colorBlack">#ff000000</color>
+    <color name="colorWhite">#ffffff</color>
+    <color name="navigationBarColor">#f46444</color>
+    <color name="gray">#666666</color>
+    <color name="colorTransparentGray">#88888888</color>
+    <color name="colorHintGray">#ffa5a5a5</color>
+    <color name="colorGray">#ffe5e5e5</color>
+    <color name="colorGreen">#ff99cc33</color>
+    <color name="colorViewBg">#ffeeeeee</color>
+    <color name="colorBlue">#ff3dc4e2</color>
+    <color name="colorItemBlue">#ff00b6ce</color>
+    <color name="colorItBlue">#ff00c6ce</color>
+    <color name="colorLightBlue">#00caf2</color>
+    <color name="colorItemGreen">#ffb0d02d</color>
+    <color name="colorOrange">#ffec6941</color>
+</resources>

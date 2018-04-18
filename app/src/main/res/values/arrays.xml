@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="expression_names">
+        <item>大笑</item>
+        <item>喜欢</item>
+        <item>唱歌</item>
+        <item>晚安</item>
+        <item>痛哭</item>
+        <item>说话</item>
+        <item>卖萌</item>
+        <item>生气</item>
+        <item>撇嘴</item>
+        <item>鬼脸</item>
+        <item>震惊</item>
+        <item>得意</item>
+        <item>害羞</item>
+        <item>龇牙</item>
+        <item>皱眉</item>
+        <item>喝水</item>
+        <item>晕</item>
+        <item>常态</item>
+        <item>生闷气</item>
+        <item>悲伤</item>
+    </string-array>
+
+    <string-array name="expression_values" translatable="false">
+        <item>1001</item>
+        <item>1006</item>
+        <item>1007</item>
+        <item>1008</item>
+        <item>1009</item>
+        <item>1011</item>
+        <item>1012</item>
+        <item>1017</item>
+        <item>1020</item>
+        <item>1022</item>
+        <item>1025</item>
+        <item>1029</item>
+        <item>1033</item>
+        <item>1037</item>
+        <item>1038</item>
+        <item>1039</item>
+        <item>1013</item>
+        <item>1014</item>
+        <item>1027</item>
+        <item>1043</item>
+    </string-array>
+
+    <string-array name="dance_names">
+        <item>洗澡歌</item>
+        <item>两只老虎</item>
+        <item>拔呀拔萝卜</item>
+        <item>机械舞</item>
+        <item>天鹅湖</item>
+        <item>青春修炼手册</item>
+        <item>恰恰</item>
+        <item>扬基曲</item>
+        <item>可爱颂</item>
+        <item>健康歌</item>
+        <item>小毛驴</item>
+    </string-array>
+
+    <string-array name="dance_values" translatable="false">
+        <item>lovingbath</item>
+        <item>tiger</item>
+        <item>pullradish</item>
+        <item>machine</item>
+        <item>ballet</item>
+        <item>youthpractice</item>
+        <item>Angelina</item>
+        <item>Yankee Doodle</item>
+        <item>CuteSong</item>
+        <item>heathysong</item>
+        <item>The little donkey</item>
+    </string-array>
+
+    <string-array name="action_names">
+        <item>向前走</item>
+        <item>向后走</item>
+        <item>向右走</item>
+        <item>向左走</item>
+    </string-array>
+</resources>

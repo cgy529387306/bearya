@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_video_chat_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:id="@+id/remote_video_view_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@mipmap/background_calling" />
+
+    <RelativeLayout
+        android:id="@+id/callin__center_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center">
+
+        <LinearLayout
+            android:id="@+id/callin_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/image_audio" />
+
+            <TextView
+                android:id="@+id/callin_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="电话呼入"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <com.skyfishjy.library.RippleBackground
+            android:id="@+id/ripple_background"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:rb_color="#0099CC"
+            app:rb_duration="3000"
+            app:rb_radius="32dp"
+            app:rb_rippleAmount="4"
+            app:rb_scale="6" />
+
+        <RelativeLayout
+            android:id="@+id/audio_header_relative"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="30dp">
+
+            <com.victor.loading.rotate.RotateLoading
+                android:id="@+id/audio_header_progress"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                app:loading_color="#66cfe6"
+                app:loading_speed="9"
+                app:loading_width="4dp" />
+
+            <ImageView
+                android:id="@+id/audio_header_imageview"
+                android:layout_width="125dp"
+                android:layout_height="125dp"
+                android:layout_centerInParent="true"
+                android:adjustViewBounds="true"
+                android:src="@drawable/corner_drawable" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/audio_chat_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/audio_header_relative"
+            android:layout_centerHorizontal="true"
+            android:text="妈妈" />
+
+        <Chronometer
+            android:id="@+id/audio_time_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/audio_chat_textview"
+            android:layout_centerHorizontal="true"></Chronometer>
+
+    </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/local_video_view_container"
+        android:layout_width="200dp"
+        android:layout_height="112dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/activity_vertical_video_margin"
+        android:background="@drawable/shadow"
+        android:padding="5dp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:layout_toLeftOf="@+id/local_video_view_container">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/video_controll_switch_camera_iv"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:onClick="onSwitchCameraClicked"
+                android:scaleType="centerInside"
+                android:src="@drawable/selector_btn_switch"
+                android:visibility="gone"/>
+
+            <ImageView
+                android:id="@+id/video_controll_switch_mic_iv"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:onClick="onLocalMicMuteClicked"
+                android:scaleType="centerInside"
+                android:src="@drawable/selector_btn_mic" />
+
+            <ImageView
+                android:id="@+id/video_controll_hangup_iv"
+                android:layout_width="120dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:onClick="onHangupVideoClicked"
+                android:scaleType="centerInside"
+                android:src="@drawable/selector_btn_hangup" />
+
+            <ImageView
+                android:id="@+id/video_controll_answer_iv"
+                android:layout_width="120dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:onClick="onAnswerVideoClicked"
+                android:scaleType="centerInside"
+                android:src="@drawable/selector_btn_answer" />
+
+            <ImageView
+                android:id="@+id/video_controll_mute_iv"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:onClick="onLocalAudioMuteClicked"
+                android:scaleType="centerInside"
+                android:src="@drawable/selector_btn_volume_mute" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/av_title_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="12.5dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@mipmap/image_video" />
+
+        <TextView
+            android:id="@+id/av_title_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:textColor="@color/colorWhite"
+            android:textSize="16sp" />
+
+        <Chronometer
+            android:id="@+id/av_time_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:textColor="@color/colorWhite"
+            android:textSize="12sp"></Chronometer>
+
+    </LinearLayout>
+
+</RelativeLayout>

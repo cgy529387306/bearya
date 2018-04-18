@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/soft_update_check_layout"
+    style="@style/common_setting_item"
+    android:gravity="center"
+    android:layout_width="250dp"
+    android:layout_height="40dp">
+
+    <ProgressBar
+        style="@style/settings_progress_circle"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_margin="6dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:text="@string/upgrade_loading"
+        android:textColor="#68dfe5"
+        android:textSize="13sp" />
+
+</LinearLayout>
