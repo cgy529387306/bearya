@@ -7,7 +7,7 @@
     android:orientation="vertical">
 
     <com.bearya.robot.household.views.ClearableEditText
-        android:id="@+id/et_login_phone"
+        android:id="@+id/et_tel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="120dp"
@@ -30,7 +30,7 @@
         android:background="@color/colorGray"  />
 
     <com.bearya.robot.household.views.ClearableEditText
-        android:id="@+id/et_login_pwd"
+        android:id="@+id/et_pwd"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"

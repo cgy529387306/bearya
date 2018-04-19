@@ -10,13 +10,16 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.EditText;
 
-import com.bearya.robot.household.*;
+import com.bearya.robot.household.R;
 import com.bearya.robot.household.api.FamilyApiWrapper;
+import com.bearya.robot.household.entity.LoginData;
 import com.bearya.robot.household.entity.LoginInfo;
-import com.bearya.robot.household.utils.CommonUtils;
+import com.bearya.robot.household.http.retrofit.HttpRetrofitClient;
 import com.bearya.robot.household.utils.LogUtils;
 import com.bearya.robot.household.utils.NavigationHelper;
+import com.bearya.robot.household.utils.ProjectHelper;
 import com.bearya.robot.household.utils.SharedPrefUtil;
 import com.bearya.robot.household.videoCall.RxConstants;
 import com.bearya.robot.household.views.BaseActivity;
@@ -35,19 +38,20 @@ import rx.subscriptions.CompositeSubscription;
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
     private IWXAPI iwxapi;
-    private CompositeSubscription sc;
+    private CompositeSubscription subscription;
     private static final int PERMISSION_PHONE = 10;
     private static final int PERMISSION_CAMERA = PERMISSION_PHONE + 1;
     private static final int PERMISSION_MICROPHONE = PERMISSION_PHONE + 2;
     private static final int PERMISSION_STORAGE = PERMISSION_PHONE + 3;
-
+    private EditText etTel;
+    private EditText etPwd;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);//设置全屏
         setContentView(R.layout.activity_login);
-        sc = new CompositeSubscription();
+        subscription = new CompositeSubscription();
         RxBus.get().register(this);
         setSupportExit(true);
         initView();
@@ -55,9 +59,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
 
     public void initView() {
+        etTel = (EditText) findViewById(R.id.et_tel);
+        etPwd = (EditText) findViewById(R.id.et_pwd);
         findViewById(R.id.im_wx_login).setOnClickListener(this);
         findViewById(R.id.tv_register).setOnClickListener(this);
         findViewById(R.id.tv_forget_pwd).setOnClickListener(this);
+        findViewById(R.id.tv_login).setOnClickListener(this);
     }
 
     public void initPermission() {
@@ -68,7 +75,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         iwxapi = WXAPIFactory.createWXAPI(this, getString(R.string.wx_app_id), true);
         iwxapi.registerApp(getString(R.string.wx_app_id));
         if (!iwxapi.isWXAppInstalled()) {
-            CommonUtils.showToast(this, "没有安装微信,请先安装微信!");
+            showToast(getString(R.string.not_install_wx));
             return;
         }
         LogUtils.d(BaseActivity.Tag, "getUserInfo registerToWX");
@@ -90,6 +97,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 break;
             case R.id.tv_forget_pwd:
                 NavigationHelper.startActivity(LoginActivity.this,ForgetPwdActivity.class,null,false);
+                break;
+            case R.id.tv_login:
+                doMobileLogin();
                 break;
             default:
                 break;
@@ -153,7 +163,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         }
                     }
                 });
-        sc.add(subscribe);
+        subscription.add(subscribe);
     }
 
     public boolean checkSelfPermission(String permission, int requestCode) {
@@ -181,7 +191,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     checkSelfPermission(Manifest.permission.CAMERA, PERMISSION_CAMERA);
                 } else {
-                    CommonUtils.showToast(this, "您需要授权此权限!");
+                    showToast(getString(R.string.permission_need));
                     exitApp();
                 }
                 break;
@@ -191,7 +201,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     checkSelfPermission(Manifest.permission.RECORD_AUDIO, PERMISSION_MICROPHONE);
                 } else {
-                    CommonUtils.showToast(this, "您需要授权摄像头权限才可以视频通话!");
+                    showToast(getString(R.string.camera_permission));
                     exitApp();
                 }
                 break;
@@ -201,7 +211,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE, PERMISSION_STORAGE);
                 } else {
-                    CommonUtils.showToast(this, "您需要授权麦克权限才可以通话!");
+                    showToast(getString(R.string.call_permission));
                     exitApp();
                 }
                 break;
@@ -209,9 +219,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             case PERMISSION_STORAGE: {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    LogUtils.d(Tag,"已经获取所有权限，可以使用！");
                 } else {
-                    CommonUtils.showToast(this, "您需要授权读写权限才可以保存用户信息!");
+                    showToast(getString(R.string.storage_permission));
                     exitApp();
                 }
                 break;
@@ -219,41 +228,52 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         }
     }
 
-    /**
-     * 一次申请多个权限
-     */
-    /*public static void requestMultiPermissions(final Activity activity, PermissionGrant grant) {
-
-        final List<String> permissionsList = getNoGrantedPermission(activity, false);
-        final List<String> shouldRationalePermissionsList = getNoGrantedPermission(activity, true);
-
-        //TODO checkSelfPermission
-        if (permissionsList == null || shouldRationalePermissionsList == null) {
+    public void doMobileLogin() {
+        String mobile = etTel.getText().toString().trim();
+        String password = etPwd.getText().toString().trim();
+        if (TextUtils.isEmpty(mobile)) {
+            showToast(getString(R.string.input_correct_tel));
+            return;
+        }else if (TextUtils.isEmpty(password)){
+            showToast(getString(R.string.input_password));
+            return;
+        }else if (!ProjectHelper.isMobiPhoneNum(mobile)) {
+            showToast(getString(R.string.tel_error));
+            return;
+        }else if (!ProjectHelper.isPwdValid(password)) {
+            showToast(getString(R.string.password_error));
             return;
         }
-        Log.d(TAG, "requestMultiPermissions permissionsList:" + permissionsList.size() + ",shouldRationalePermissionsList:" + shouldRationalePermissionsList.size());
+        showLoadingView();
+        Subscription subscribe = FamilyApiWrapper.getInstance().mobileLogin(mobile,password)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<LoginData>() {
 
-        if (permissionsList.size() > 0) {
-            ActivityCompat.requestPermissions(activity, permissionsList.toArray(new String[permissionsList.size()]),
-                    CODE_MULTI_PERMISSION);
-            Log.d(TAG, "showMessageOKCancel requestPermissions");
+                    @Override
+                    public void onCompleted() {
+                        closeLoadingView();
+                    }
 
-        } else if (shouldRationalePermissionsList.size() > 0) {
-            showMessageOKCancel(activity, "should open those permission",
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            ActivityCompat.requestPermissions(activity, shouldRationalePermissionsList.toArray(new String[shouldRationalePermissionsList.size()]),
-                                    CODE_MULTI_PERMISSION);
-                            Log.d(TAG, "showMessageOKCancel requestPermissions");
+                    @Override
+                    public void onError(Throwable e) {
+                        closeLoadingView();
+                        if (e instanceof HttpRetrofitClient.APIException){
+                            String message = ((HttpRetrofitClient.APIException)e).getMessage();
+                            if (!TextUtils.isEmpty(message)){
+                                showToast(message);
+                            }
                         }
-                    });
-        } else {
-            grant.onPermissionGranted(CODE_MULTI_PERMISSION);
-        }
+                    }
 
-    }*/
-
+                    @Override
+                    public void onNext(LoginData result) {
+                        closeLoadingView();
+                        showToast(getString(R.string.register_login));
+                        NavigationHelper.startActivity(LoginActivity.this, MainActivity.class,null,true);
+                    }
+                });
+        subscription.add(subscribe);
+    }
 
     @Override
     protected void onResume() {
@@ -269,8 +289,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     protected void onDestroy() {
         super.onDestroy();
         RxBus.get().unregister(this);
-        if (sc != null) {
-            sc.unsubscribe();
+        if (subscription != null) {
+            subscription.unsubscribe();
         }
     }
 }

@@ -369,6 +369,10 @@ public abstract class BaseActivity extends AppCompatActivity implements CommonDi
         startActivity(intent);
     }
 
+    public void showToast(String text){
+        CommonUtils.showToast(this,text);
+    }
+
     @Override
     public void onCancel() {
 
