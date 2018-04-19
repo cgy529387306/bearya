@@ -62,4 +62,6 @@
     <string name="versionCode">版本号</string>
     <string name="contactUs">联系我们</string>
     <string name="loginOut">退出登录</string>
+    <string name="title_register">注册</string>
+    <string name="title_forget_pwd">忘记密码</string>
 </resources>

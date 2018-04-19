@@ -34,6 +34,7 @@ import com.bearya.robot.household.entity.UserInfo;
 import com.bearya.robot.household.services.UpdateAppService;
 import com.bearya.robot.household.utils.CommonUtils;
 import com.bearya.robot.household.utils.LogUtils;
+import com.bearya.robot.household.utils.NavigationHelper;
 import com.bearya.robot.household.utils.SharedPrefUtil;
 import com.bearya.robot.household.videoCall.AgoraService;
 import com.bearya.robot.household.views.BYCheckDialog;
@@ -135,7 +136,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                             SharedPrefUtil.getInstance(MainActivity.this).put(SharedPrefUtil.KEY_USER_INFO, "");
                             SharedPrefUtil.getInstance(MainActivity.this).put(SharedPrefUtil.KEY_TOKEN, "");
                             SharedPrefUtil.getInstance(MainActivity.this).put(SharedPrefUtil.KEY_LOGIN_STATE, false);
-                            finish();
+                            NavigationHelper.startActivity(MainActivity.this,LoginActivity.class,null,true);
                         }
                     }).setDismisCallback(new DialogCallback() {
                         @Override

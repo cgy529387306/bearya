@@ -6,9 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-//import android.support.v4.app.FragmentActivity;
-import android.os.Handler;
-import android.os.Message;
 import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -17,23 +14,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
-//import android.view.WindowManager;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bearya.robot.household.MainActivity;
 import com.bearya.robot.household.MyApplication;
 import com.bearya.robot.household.R;
 import com.bearya.robot.household.activity.RootActivity;
 import com.bearya.robot.household.entity.VersionInfo;
 import com.bearya.robot.household.update.CommonDialog;
-import com.bearya.robot.household.update.IUpdateChecker;
-import com.bearya.robot.household.update.RobotUpdater;
 import com.bearya.robot.household.update.SoftUpgradeActivity;
 import com.bearya.robot.household.utils.CommonUtils;
 import com.bearya.robot.household.utils.LogUtils;
+import com.bearya.robot.household.utils.NavigationHelper;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -47,6 +43,9 @@ import java.util.Calendar;
 import java.util.List;
 
 import okhttp3.Call;
+
+//import android.support.v4.app.FragmentActivity;
+//import android.view.WindowManager;
 
 public abstract class BaseActivity extends AppCompatActivity implements CommonDialog.DialogUpdateListener {
     public static final String Tag = BaseActivity.class.getSimpleName();
@@ -354,12 +353,13 @@ public abstract class BaseActivity extends AppCompatActivity implements CommonDi
     }
 
     public void launcherMain() {
-        Intent intent = new Intent(this, RootActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
-                | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra(EXTRA_FLAG, false);
-        startActivity(intent);
-        finish();
+        NavigationHelper.startActivity(this, MainActivity.class,null,true);
+//        Intent intent = new Intent(this, RootActivity.class);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+//                | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+//        intent.putExtra(EXTRA_FLAG, false);
+//        startActivity(intent);
+//        finish();
     }
 
     @Override

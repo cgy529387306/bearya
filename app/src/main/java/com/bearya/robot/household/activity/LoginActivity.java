@@ -11,11 +11,12 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 
-import com.bearya.robot.household.R;
+import com.bearya.robot.household.*;
 import com.bearya.robot.household.api.FamilyApiWrapper;
 import com.bearya.robot.household.entity.LoginInfo;
 import com.bearya.robot.household.utils.CommonUtils;
 import com.bearya.robot.household.utils.LogUtils;
+import com.bearya.robot.household.utils.NavigationHelper;
 import com.bearya.robot.household.utils.SharedPrefUtil;
 import com.bearya.robot.household.videoCall.RxConstants;
 import com.bearya.robot.household.views.BaseActivity;
@@ -43,10 +44,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);//设置全屏
-        setContentView(R.layout.activity_guide_view);
+        setContentView(R.layout.activity_login);
         sc = new CompositeSubscription();
         RxBus.get().register(this);
         setSupportExit(true);
@@ -55,7 +55,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
 
     public void initView() {
-        findViewById(R.id.tv_wx_login).setOnClickListener(this);
+        findViewById(R.id.im_wx_login).setOnClickListener(this);
+        findViewById(R.id.tv_register).setOnClickListener(this);
+        findViewById(R.id.tv_forget_pwd).setOnClickListener(this);
     }
 
     public void initPermission() {
@@ -79,9 +81,15 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.tv_wx_login:
+            case R.id.im_wx_login:
                 LogUtils.d(BaseActivity.Tag, "getUserInfo onClick");
                 registerToWX();
+                break;
+            case R.id.tv_register:
+                NavigationHelper.startActivity(LoginActivity.this,RegisterActivity.class,null,false);
+                break;
+            case R.id.tv_forget_pwd:
+                NavigationHelper.startActivity(LoginActivity.this,ForgetPwdActivity.class,null,false);
                 break;
             default:
                 break;
@@ -141,7 +149,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                             SharedPrefUtil.getInstance(LoginActivity.this).put(SharedPrefUtil.KEY_USER_INFO, gson.toJson(loginInfo.user));
                             SharedPrefUtil.getInstance(LoginActivity.this).put(SharedPrefUtil.KEY_TOKEN, loginInfo.token);
                             SharedPrefUtil.getInstance(LoginActivity.this).put(SharedPrefUtil.KEY_LOGIN_STATE, true);
-                            launcherMain();
+                            NavigationHelper.startActivity(LoginActivity.this, MainActivity.class,null,true);
                         }
                     }
                 });
