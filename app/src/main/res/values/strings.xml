@@ -65,5 +65,13 @@
     <string name="loginOut">退出登录</string>
     <string name="title_register">注册</string>
     <string name="title_forget_pwd">忘记密码</string>
+    <string name="dad">爸爸</string>
+    <string name="mom">妈妈</string>
+    <string name="other">其他</string>
+    <string name="babyNickName">宝宝昵称</string>
+    <string name="birthday">出生日期</string>
+    <string name="boy">男</string>
+    <string name="girl">女</string>
+    <string name="babyInfo">宝宝资料</string>
     <string name="title_setting">设置</string>
 </resources>

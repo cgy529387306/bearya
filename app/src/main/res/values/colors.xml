@@ -24,5 +24,6 @@
     <color name="colorViewGray">#ffdcdcdc</color>
     <color name="colorHint">#ffaeaeae</color>
     <color name="colorTextGray">#ff999999</color>
-    <color name="colorBackground">#f7f7f8</color>
+    <color name="colorBackground">#fff7f7f8</color>
+    <color name="colorSex">#ffec6941</color>
 </resources>
