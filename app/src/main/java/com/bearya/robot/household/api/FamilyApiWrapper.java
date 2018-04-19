@@ -6,10 +6,8 @@ import com.bearya.robot.household.entity.LoginInfo;
 import com.bearya.robot.household.entity.ProductInfo;
 import com.bearya.robot.household.http.retrofit.HttpRetrofitClient;
 
-import retrofit2.http.Query;
 import rx.Observable;
-import rx.subscriptions.CompositeSubscription;
-
+@SuppressWarnings("unchecked")
 public class FamilyApiWrapper extends HttpRetrofitClient {
     private static FamilyApiWrapper trailApiWrapper;
 

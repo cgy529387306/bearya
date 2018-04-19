@@ -23,7 +23,7 @@
             android:text="@string/versionCode"/>
 
         <TextView
-            android:id="@+id/tv_forget_pwd"
+            android:id="@+id/tv_version"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="end|center"
@@ -55,10 +55,12 @@
             android:text="@string/contactUs"/>
 
         <TextView
+            android:id="@+id/tv_tel"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="end|center"
-            android:textColor="@color/colorTextGray"
+            android:text="@string/app_tel"
+            android:textColor="@color/colorLightBlue"
             android:textSize="@dimen/activity_text_size" />
 
     </LinearLayout>
@@ -69,7 +71,7 @@
         android:layout_weight="1"/>
 
     <TextView
-        android:id="@+id/tv_login"
+        android:id="@+id/tv_logout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="40dp"

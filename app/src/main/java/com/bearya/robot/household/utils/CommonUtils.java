@@ -106,6 +106,7 @@ public class CommonUtils {
 
             return versionName;
         } catch (Exception e) {
+            e.printStackTrace();
         }
         return "1.0.0";
     }
@@ -117,6 +118,7 @@ public class CommonUtils {
                     pkName, 0).versionCode;
             return versionCode;
         } catch (Exception e) {
+            e.printStackTrace();
         }
         return 1;
     }

@@ -37,9 +37,7 @@ import com.bearya.robot.household.utils.LogUtils;
 import com.bearya.robot.household.utils.NavigationHelper;
 import com.bearya.robot.household.utils.SharedPrefUtil;
 import com.bearya.robot.household.videoCall.AgoraService;
-import com.bearya.robot.household.views.BYCheckDialog;
 import com.bearya.robot.household.views.BaseActivity;
-import com.bearya.robot.household.views.DialogCallback;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -69,7 +67,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private ImageView userIcon;
     private TextView userName;
     private TextView bindHit;
-    private BYCheckDialog checkDialog;
     private MenuAdapter menuAdapter;
     private MachineAdapter machineAdapter;
     private List<MenuInfo> menuInfoList = new ArrayList<>();
@@ -103,10 +100,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         mDate = (TextView) findViewById(R.id.tv_add_machine_date);
         version = (TextView) findViewById(R.id.tv_app_version);
         setting.setOnClickListener(this);
+        findViewById(R.id.im_control).setOnClickListener(this);
     }
 
     private void initData() {
-        version.setText("V"+CommonUtils.getVersionName(MyApplication.getContext()));
+        version.setText(String.format("V%s", CommonUtils.getVersionName(MyApplication.getContext())));
         sc = new CompositeSubscription();
         machineInfoList.devices = new ArrayList<>();
         menuInfoList.add(new MenuInfo(R.mipmap.menu_manage, R.string.menu_manage, true,  new ItemCallback() {
@@ -127,26 +125,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             @Override
             public void itemClick() {
                 drawerLayout.closeDrawer(leftMenu);
-                if (checkDialog == null) {
-                    checkDialog = new BYCheckDialog();
-                    checkDialog.createDialog(MainActivity.this).setConfirmCallback(new DialogCallback() {
-                        @Override
-                        public void callback() {
-                            stopService(new Intent(MainActivity.this, AgoraService.class));//停止通话服务
-                            SharedPrefUtil.getInstance(MainActivity.this).put(SharedPrefUtil.KEY_USER_INFO, "");
-                            SharedPrefUtil.getInstance(MainActivity.this).put(SharedPrefUtil.KEY_TOKEN, "");
-                            SharedPrefUtil.getInstance(MainActivity.this).put(SharedPrefUtil.KEY_LOGIN_STATE, false);
-                            NavigationHelper.startActivity(MainActivity.this,LoginActivity.class,null,true);
-                        }
-                    }).setDismisCallback(new DialogCallback() {
-                        @Override
-                        public void callback() {
-                            checkDialog = null;
-                        }
-                    });
-                }
-                checkDialog.setMessage(getString(R.string.device_exit));
-                checkDialog.showDialog();
+                NavigationHelper.startActivity(MainActivity.this,SettingActivity.class,null,false);
             }
         }));
         menuAdapter = new MenuAdapter(R.layout.menu_item_view, menuInfoList);
@@ -252,6 +231,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 } else {
                     drawerLayout.openDrawer(leftMenu);
                 }
+                break;
+            case R.id.im_control:
+                NavigationHelper.startActivity(MainActivity.this,ControlActivity.class,null,false);
                 break;
             default:
                 break;

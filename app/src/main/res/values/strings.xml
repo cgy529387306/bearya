@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">贝芽机器人</string>
     <string name="app_evn">dev</string>
+    <string name="app_tel">400&#8211;876&#8211;9931</string>
     <string name="wx_app_id">wx19275a2c915b1992</string>
     <string name="app_wifi_disconnect">无网络</string>
     <string name="login_guide">父母永远是孩子最好的陪伴</string>
@@ -21,8 +22,8 @@
     <string name="machine_state_inline">在线</string>
     <string name="machine_state_outline">离线</string>
     <string name="menu_manage">设备管理</string>
-    <string name="menu_setting">退出帐号</string>
-    <string name="upgrade_loading">检测新版本中...</string>
+    <string name="menu_setting">系统设置</string>
+    <string name="upgrade_loading">检测新版本中&#8230;</string>
     <string name="wifi_disconnect">当前无网络！</string>
     <string name="device_unbind_hint">确定要解除与\"%s\"的绑定？</string>
     <string name="device_exit">确定要退出帐号？</string>
@@ -51,7 +52,7 @@
     <string name="register">注册</string>
     <string name="forget_pwd">忘记密码</string>
     <string name="next">下一步</string>
-    <string name="input_pwd">输入6-20位密码</string>
+    <string name="input_pwd">输入6&#8211;20位密码</string>
     <string name="input_phone">输入手机号</string>
     <string name="input_code">输入验证码</string>
     <string name="send_code">发送验证码</string>
@@ -64,4 +65,5 @@
     <string name="loginOut">退出登录</string>
     <string name="title_register">注册</string>
     <string name="title_forget_pwd">忘记密码</string>
+    <string name="title_setting">设置</string>
 </resources>
