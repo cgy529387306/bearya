@@ -21,4 +21,8 @@
     <color name="colorLightBlue">#00caf2</color>
     <color name="colorItemGreen">#ffb0d02d</color>
     <color name="colorOrange">#ffec6941</color>
+    <color name="colorViewGray">#ffdcdcdc</color>
+    <color name="colorHint">#ffaeaeae</color>
+    <color name="colorTextGray">#ff999999</color>
+    <color name="colorBackground">#f7f7f8</color>
 </resources>
