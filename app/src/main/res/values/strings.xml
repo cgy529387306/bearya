@@ -74,4 +74,12 @@
     <string name="girl">女</string>
     <string name="babyInfo">宝宝资料</string>
     <string name="title_setting">设置</string>
+    <string name="no_setting">未设置</string>
+    <string name="rabitName">机器人名字</string>
+    <string name="birth">生日</string>
+    <string name="whose_dad">他爸爸是谁</string>
+    <string name="whose_mom">他妈妈是谁</string>
+    <string name="device_setting">设备设置</string>
+    <string name="edit">编辑</string>
+    <string name="input">请输入...</string>
 </resources>

@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:layout_marginTop="50dp"
+        android:background="@color/colorWhite">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:gravity="start|center"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/activity_text_size"
+            android:text="@string/rabitName"/>
+
+        <TextView
+            android:id="@+id/tv_rabitName"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="end|center"
+            android:textColor="@color/colorTextGray"
+            android:text="小贝你好"
+            android:textSize="@dimen/activity_text_size"
+            android:drawableRight="@mipmap/icon_list_arrow"
+            android:drawablePadding="5dp"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginLeft="20dp"
+        android:background="@color/colorGray"  />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:background="@color/colorWhite">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:gravity="start|center"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/activity_text_size"
+            android:text="@string/birth"/>
+
+        <TextView
+            android:id="@+id/tv_birth"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="end|center"
+            android:textColor="@color/colorTextGray"
+            android:text="@string/no_setting"
+            android:textSize="@dimen/activity_text_size"
+            android:drawableRight="@mipmap/icon_list_arrow"
+            android:drawablePadding="5dp"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginLeft="20dp"
+        android:background="@color/colorGray"  />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:background="@color/colorWhite">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:gravity="start|center"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/activity_text_size"
+            android:text="@string/whose_dad"/>
+
+        <TextView
+            android:id="@+id/tv_whoseDad"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="end|center"
+            android:textColor="@color/colorTextGray"
+            android:text="@string/no_setting"
+            android:textSize="@dimen/activity_text_size"
+            android:drawableRight="@mipmap/icon_list_arrow"
+            android:drawablePadding="5dp"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginLeft="20dp"
+        android:background="@color/colorGray"  />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:background="@color/colorWhite">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:gravity="start|center"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/activity_text_size"
+            android:text="@string/whose_mom"/>
+
+        <TextView
+            android:id="@+id/tv_whoseMom"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="end|center"
+            android:textColor="@color/colorTextGray"
+            android:text="@string/no_setting"
+            android:textSize="@dimen/activity_text_size"
+            android:drawableRight="@mipmap/icon_list_arrow"
+            android:drawablePadding="5dp"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_logout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="60dp"
+        android:background="@mipmap/bind_parent"
+        android:textSize="@dimen/activity_text_size"
+        android:text="@string/confirm"
+        android:textColor="@color/colorWhite"
+        android:gravity="center"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+</LinearLayout>
