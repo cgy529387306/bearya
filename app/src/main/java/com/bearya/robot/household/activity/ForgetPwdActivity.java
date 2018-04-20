@@ -86,7 +86,7 @@ public class ForgetPwdActivity extends BaseActivity implements View.OnClickListe
             return;
         }
         showLoadingView();
-        Subscription subscribe = FamilyApiWrapper.getInstance().getpw(mobile,password,code)
+        Subscription subscribe = FamilyApiWrapper.getInstance().setPwd(mobile,password,code)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<Object>() {
 
