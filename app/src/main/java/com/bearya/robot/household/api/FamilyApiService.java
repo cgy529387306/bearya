@@ -1,5 +1,6 @@
 package com.bearya.robot.household.api;
 
+import com.bearya.robot.household.entity.BabyInfo;
 import com.bearya.robot.household.entity.BindDeviceList;
 import com.bearya.robot.household.entity.KeyInfo;
 import com.bearya.robot.household.entity.LoginData;
@@ -20,6 +21,9 @@ public interface FamilyApiService {
     Observable<HttpResult<LoginData>> mobileLogin(@Query("mobile") String mobile, @Query("password") String password);
     @POST("v1/user/auth/getpw")
     Observable<HttpResult<Object>> getpw(@Query("mobile") String mobile, @Query("password") String password,@Query("code") String code);
+    @POST("v1/user/baby/create")
+    Observable<HttpResult<BabyInfo>> create(@Query("name") String name, @Query("relationship") String relationship, @Query("birthday") int birthday,
+                                            @Query("gender") int gender, @Query("avatar") String avatar, @Query("tags") String tags, @Query("is_default") int is_default);
 
     @POST("v1/client/wxlogin")
     Observable<HttpResult<LoginInfo>> getUserInfo(@Query("code") String code, @Query("app") String app);

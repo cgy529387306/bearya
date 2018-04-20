@@ -14,8 +14,8 @@ import com.bearya.robot.household.views.ClearableEditText;
 
 public class EditActivity extends BaseActivity implements View.OnClickListener{
 
-    private ClearableEditText edt_content; //编辑框
-    private TextView tv_confirm; // 确定
+    private ClearableEditText edtContent; //编辑框
+    private TextView tvConfirm; // 确定
     private String content = "";
 
     @Override
@@ -28,8 +28,8 @@ public class EditActivity extends BaseActivity implements View.OnClickListener{
     }
 
     private void initView() {
-        edt_content = (ClearableEditText) findViewById(R.id.edt_content);
-        tv_confirm = (TextView) findViewById(R.id.tv_confirm);
+        edtContent = (ClearableEditText) findViewById(R.id.edt_content);
+        tvConfirm = (TextView) findViewById(R.id.tv_confirm);
     }
 
     private void initData() {
@@ -37,14 +37,14 @@ public class EditActivity extends BaseActivity implements View.OnClickListener{
     }
 
     private void initListener() {
-        tv_confirm.setOnClickListener(this);
+        tvConfirm.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         int id = v.getId();
         if (id == R.id.tv_confirm){
-            String content = edt_content.getText().toString();
+            String content = edtContent.getText().toString();
             if (TextUtils.isEmpty(content)){
                 Toast.makeText(EditActivity.this,"内容不能为空",Toast.LENGTH_SHORT).show();
                 return;

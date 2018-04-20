@@ -233,7 +233,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 }
                 break;
             case R.id.im_control:
-                NavigationHelper.startActivity(MainActivity.this,ControlActivity.class,null,false);
+                NavigationHelper.startActivity(MainActivity.this,UserInfoActivity.class,null,false);
                 break;
             default:
                 break;

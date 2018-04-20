@@ -107,6 +107,7 @@
     </LinearLayout>
 
     <com.bearya.robot.household.views.ClearableEditText
+        android:id="@+id/edt_name"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginLeft="20dp"
@@ -174,7 +175,7 @@
         android:layout_weight="1"/>
 
     <TextView
-        android:id="@+id/tv_login"
+        android:id="@+id/tv_next"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"

@@ -99,4 +99,6 @@
     <string name="call_permission">您需要授权麦克权限才可以通话!</string>
     <string name="storage_permission">您需要授权读写权限才可以保存用户信息!</string>
     <string name="update_success">修改成功</string>
+    <string name="input_baby_name">请输入宝宝昵称</string>
+    <string name="create_success">创建成功</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.bearya.robot.household.api;
 
+import com.bearya.robot.household.entity.BabyInfo;
 import com.bearya.robot.household.entity.BindDeviceList;
 import com.bearya.robot.household.entity.KeyInfo;
 import com.bearya.robot.household.entity.LoginData;
@@ -40,7 +41,11 @@ public class FamilyApiWrapper extends HttpRetrofitClient {
     }
 
     public Observable<Object> setPwd(String mobile, String password, String code) {
-        return getService(FamilyApiService.class).setPwd(mobile, password,code).compose(this.applySchedulers());
+        return getService(FamilyApiService.class).getpw(mobile, password,code).compose(this.applySchedulers());
+    }
+
+    public Observable<BabyInfo> create(String name, String relationship, int birthday, int gender, String avatar, String tags, int is_default) {
+        return getService(FamilyApiService.class).create(name, relationship,birthday,gender,avatar,tags,is_default).compose(this.applySchedulers());
     }
 
     public Observable<LoginInfo> getUserInfo(String code, String app) {

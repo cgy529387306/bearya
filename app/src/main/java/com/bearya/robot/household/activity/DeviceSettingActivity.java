@@ -19,10 +19,10 @@ import java.util.Calendar;
 
 public class DeviceSettingActivity extends BaseActivity implements View.OnClickListener{
 
-    private TextView tv_rabitName; //机器人名字
-    private TextView tv_birth; //生日
-    private TextView tv_whoseDad;// 他爸爸是谁
-    private TextView tv_whoseMom;// 他妈妈是谁
+    private TextView tvRabitName; //机器人名字
+    private TextView tvBirth; //生日
+    private TextView tvWhoseDad;// 他爸爸是谁
+    private TextView tvWhoseMom;// 他妈妈是谁
     private final int EDIT_RABITNAME = 1;
     private final int EDIT_BIRTH = 2;
     private final int EDIT_WHOSEDAD = 3;
@@ -37,16 +37,16 @@ public class DeviceSettingActivity extends BaseActivity implements View.OnClickL
     }
 
     private void initView() {
-        tv_rabitName = (TextView) findViewById(R.id.tv_rabitName);
-        tv_birth = (TextView) findViewById(R.id.tv_birth);
-        tv_whoseDad = (TextView) findViewById(R.id.tv_whoseDad);
-        tv_whoseMom = (TextView) findViewById(R.id.tv_whoseMom);
+        tvRabitName = (TextView) findViewById(R.id.tv_rabitName);
+        tvBirth = (TextView) findViewById(R.id.tv_birth);
+        tvWhoseDad = (TextView) findViewById(R.id.tv_whoseDad);
+        tvWhoseMom = (TextView) findViewById(R.id.tv_whoseMom);
     }
     private void initListener(){
-        tv_rabitName.setOnClickListener(this);
-        tv_birth.setOnClickListener(this);
-        tv_whoseDad.setOnClickListener(this);
-        tv_whoseMom.setOnClickListener(this);
+        tvRabitName.setOnClickListener(this);
+        tvBirth.setOnClickListener(this);
+        tvWhoseDad.setOnClickListener(this);
+        tvWhoseMom.setOnClickListener(this);
     }
 
     @Override
@@ -73,13 +73,13 @@ public class DeviceSettingActivity extends BaseActivity implements View.OnClickL
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == 0){
             if (requestCode == EDIT_RABITNAME){
-                tv_rabitName.setText(data.getStringExtra("content"));
+                tvRabitName.setText(data.getStringExtra("content"));
             }else if (requestCode == EDIT_BIRTH){
-                tv_birth.setText(data.getStringExtra("content"));
+                tvBirth.setText(data.getStringExtra("content"));
             }else if (requestCode == EDIT_WHOSEDAD){
-                tv_whoseDad.setText(data.getStringExtra("content"));
+                tvWhoseDad.setText(data.getStringExtra("content"));
             }else if (requestCode == EDIT_WHOSEMOM){
-                tv_whoseMom.setText(data.getStringExtra("content"));
+                tvWhoseMom.setText(data.getStringExtra("content"));
             }
 
         }
