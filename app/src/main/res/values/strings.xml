@@ -98,4 +98,5 @@
     <string name="camera_permission">您需要授权摄像头权限才可以视频通话!</string>
     <string name="call_permission">您需要授权麦克权限才可以通话!</string>
     <string name="storage_permission">您需要授权读写权限才可以保存用户信息!</string>
+    <string name="update_success">修改成功</string>
 </resources>
