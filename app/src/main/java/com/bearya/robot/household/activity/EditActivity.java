@@ -1,7 +1,5 @@
 package com.bearya.robot.household.activity;
 
-import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -12,8 +10,6 @@ import android.widget.Toast;
 import com.bearya.robot.household.R;
 import com.bearya.robot.household.views.BaseActivity;
 import com.bearya.robot.household.views.ClearableEditText;
-
-import java.util.Calendar;
 
 
 public class EditActivity extends BaseActivity implements View.OnClickListener{

@@ -103,7 +103,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                     public void onError(Throwable e) {
                         closeLoadingView();
                         if (e instanceof HttpRetrofitClient.APIException){
-                            String message = ((HttpRetrofitClient.APIException)e).getMessage();
+                            String message = ((HttpRetrofitClient.APIException)e).message;
                             if (!TextUtils.isEmpty(message)){
                                 showToast(message);
                             }
@@ -153,7 +153,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                     public void onError(Throwable e) {
                         closeLoadingView();
                         if (e instanceof HttpRetrofitClient.APIException){
-                            String message = ((HttpRetrofitClient.APIException)e).getMessage();
+                            String message = ((HttpRetrofitClient.APIException)e).message;
                             if (!TextUtils.isEmpty(message)){
                                 showToast(message);
                             }

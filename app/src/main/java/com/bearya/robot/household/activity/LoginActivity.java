@@ -258,7 +258,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     public void onError(Throwable e) {
                         closeLoadingView();
                         if (e instanceof HttpRetrofitClient.APIException){
-                            String message = ((HttpRetrofitClient.APIException)e).getMessage();
+                            String message = ((HttpRetrofitClient.APIException)e).message;
                             if (!TextUtils.isEmpty(message)){
                                 showToast(message);
                             }
@@ -269,7 +269,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     public void onNext(LoginData result) {
                         closeLoadingView();
                         showToast(getString(R.string.register_login));
-                        NavigationHelper.startActivity(LoginActivity.this, MainActivity.class,null,true);
+                        if (result.getUser() != null && !TextUtils.isEmpty(result.getToken())) {
+                            Gson gson = new Gson();
+                            SharedPrefUtil.getInstance(LoginActivity.this).put(SharedPrefUtil.KEY_USER_INFO, gson.toJson(result.getUser()));
+                            SharedPrefUtil.getInstance(LoginActivity.this).put(SharedPrefUtil.KEY_TOKEN, result.getToken());
+                            SharedPrefUtil.getInstance(LoginActivity.this).put(SharedPrefUtil.KEY_LOGIN_STATE, true);
+                            NavigationHelper.startActivity(LoginActivity.this, MainActivity.class,null,true);
+                        }
                     }
                 });
         subscription.add(subscribe);
