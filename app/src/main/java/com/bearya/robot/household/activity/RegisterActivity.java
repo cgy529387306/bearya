@@ -92,7 +92,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         showLoadingView();
         Subscription subscribe = FamilyApiWrapper.getInstance().sendSms(etTel.getText().toString().trim(),"register")
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<String>() {
+                .subscribe(new Subscriber<Object>() {
 
                     @Override
                     public void onCompleted() {
@@ -111,7 +111,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                     }
 
                     @Override
-                    public void onNext(String result) {
+                    public void onNext(Object result) {
                         closeLoadingView();
                         showToast(getString(R.string.send_success));
                     }

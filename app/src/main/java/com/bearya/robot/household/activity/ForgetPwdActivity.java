@@ -9,9 +9,7 @@ import android.widget.TextView;
 
 import com.bearya.robot.household.R;
 import com.bearya.robot.household.api.FamilyApiWrapper;
-import com.bearya.robot.household.entity.LoginInfo;
 import com.bearya.robot.household.http.retrofit.HttpRetrofitClient;
-import com.bearya.robot.household.utils.NavigationHelper;
 import com.bearya.robot.household.utils.ProjectHelper;
 import com.bearya.robot.household.views.BaseActivity;
 
@@ -30,7 +28,6 @@ public class ForgetPwdActivity extends BaseActivity implements View.OnClickListe
     private EditText etCode;
     private EditText etPwd;
     private TextView tvSend;
-    private TextView tvConfirm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +88,7 @@ public class ForgetPwdActivity extends BaseActivity implements View.OnClickListe
         showLoadingView();
         Subscription subscribe = FamilyApiWrapper.getInstance().getpw(mobile,password,code)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<String>() {
+                .subscribe(new Subscriber<Object>() {
 
                     @Override
                     public void onCompleted() {
@@ -110,7 +107,7 @@ public class ForgetPwdActivity extends BaseActivity implements View.OnClickListe
                     }
 
                     @Override
-                    public void onNext(String result) {
+                    public void onNext(Object result) {
                         closeLoadingView();
                         showToast(getString(R.string.update_success));
                         finish();
@@ -141,7 +138,7 @@ public class ForgetPwdActivity extends BaseActivity implements View.OnClickListe
         showLoadingView();
         Subscription subscribe = FamilyApiWrapper.getInstance().sendSms(etTel.getText().toString().trim(),"getpw")
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<String>() {
+                .subscribe(new Subscriber<Object>() {
 
                     @Override
                     public void onCompleted() {
@@ -160,7 +157,7 @@ public class ForgetPwdActivity extends BaseActivity implements View.OnClickListe
                     }
 
                     @Override
-                    public void onNext(String result) {
+                    public void onNext(Object result) {
                         closeLoadingView();
                         showToast(getString(R.string.send_success));
                     }

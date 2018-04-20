@@ -5,7 +5,6 @@ import com.bearya.robot.household.entity.KeyInfo;
 import com.bearya.robot.household.entity.LoginData;
 import com.bearya.robot.household.entity.LoginInfo;
 import com.bearya.robot.household.entity.ProductInfo;
-import com.bearya.robot.household.entity.UserInfo;
 import com.bearya.robot.household.http.retrofit.HttpResult;
 
 import retrofit2.http.POST;
@@ -16,11 +15,11 @@ public interface FamilyApiService {
     @POST("v1/user/auth/register")
     Observable<HttpResult<LoginInfo>> register(@Query("mobile") String mobile, @Query("password") String password,@Query("code") String code);
     @POST("v1/user/sms/send")
-    Observable<HttpResult<String>> sendSms(@Query("mobile") String mobile, @Query("action") String action);
+    Observable<HttpResult<Object>> sendSms(@Query("mobile") String mobile, @Query("action") String action);
     @POST("v1/user/login/mobile")
     Observable<HttpResult<LoginData>> mobileLogin(@Query("mobile") String mobile, @Query("password") String password);
-    @POST("v1/user/getpw")
-    Observable<HttpResult<String>> getpw(@Query("mobile") String mobile, @Query("password") String password,@Query("code") String code);
+    @POST("v1/user/auth/getpw")
+    Observable<HttpResult<Object>> getpw(@Query("mobile") String mobile, @Query("password") String password,@Query("code") String code);
 
     @POST("v1/client/wxlogin")
     Observable<HttpResult<LoginInfo>> getUserInfo(@Query("code") String code, @Query("app") String app);

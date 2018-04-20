@@ -5,10 +5,8 @@ import com.bearya.robot.household.entity.KeyInfo;
 import com.bearya.robot.household.entity.LoginData;
 import com.bearya.robot.household.entity.LoginInfo;
 import com.bearya.robot.household.entity.ProductInfo;
-import com.bearya.robot.household.entity.UserInfo;
 import com.bearya.robot.household.http.retrofit.HttpRetrofitClient;
 
-import retrofit2.http.Query;
 import rx.Observable;
 @SuppressWarnings("unchecked")
 public class FamilyApiWrapper extends HttpRetrofitClient {
@@ -33,7 +31,7 @@ public class FamilyApiWrapper extends HttpRetrofitClient {
         return getService(FamilyApiService.class).register(mobile, password,code).compose(this.applySchedulers());
     }
 
-    public Observable<String> sendSms(String mobile, String action) {
+    public Observable<Object> sendSms(String mobile, String action) {
         return getService(FamilyApiService.class).sendSms(mobile, action).compose(this.applySchedulers());
     }
 
@@ -41,7 +39,7 @@ public class FamilyApiWrapper extends HttpRetrofitClient {
         return getService(FamilyApiService.class).mobileLogin(mobile, password).compose(this.applySchedulers());
     }
 
-    public Observable<String> getpw(String mobile, String password, String code) {
+    public Observable<Object> getpw(String mobile, String password, String code) {
         return getService(FamilyApiService.class).getpw(mobile, password,code).compose(this.applySchedulers());
     }
 
