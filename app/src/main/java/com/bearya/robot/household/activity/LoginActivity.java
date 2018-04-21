@@ -15,12 +15,13 @@ import android.widget.EditText;
 import com.bearya.robot.household.R;
 import com.bearya.robot.household.api.FamilyApiWrapper;
 import com.bearya.robot.household.entity.LoginData;
-import com.bearya.robot.household.entity.LoginInfo;
+import com.bearya.robot.household.entity.WxUserData;
 import com.bearya.robot.household.http.retrofit.HttpRetrofitClient;
 import com.bearya.robot.household.utils.LogUtils;
 import com.bearya.robot.household.utils.NavigationHelper;
 import com.bearya.robot.household.utils.ProjectHelper;
 import com.bearya.robot.household.utils.SharedPrefUtil;
+import com.bearya.robot.household.utils.UserInfoManager;
 import com.bearya.robot.household.videoCall.RxConstants;
 import com.bearya.robot.household.views.BaseActivity;
 import com.google.gson.Gson;
@@ -128,15 +129,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
 
     public void getUserInfo(String code) {
-        /*if (!CommonUtils.isNetAvailable(this)) {
-            Toast.makeText(this, getString(R.string.wifi_disconnect), Toast.LENGTH_SHORT).show();
-            return;
-        }*/
         showLoadingView();
         String app = getString(R.string.app_evn).equals("dev")?"family":"household";
         Subscription subscribe = FamilyApiWrapper.getInstance().getUserInfo(code , app)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<LoginInfo>() {
+                .subscribe(new Subscriber<WxUserData>() {
 
                     @Override
                     public void onCompleted() {
@@ -147,18 +144,16 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     @Override
                     public void onError(Throwable e) {
                         closeLoadingView();
+                        showErrorMessage(e);
                         LogUtils.d(BaseActivity.Tag, "getUserInfo onError");
                     }
 
                     @Override
-                    public void onNext(LoginInfo loginInfo) {
+                    public void onNext(WxUserData loginInfo) {
                         LogUtils.d(BaseActivity.Tag, "getUserInfo loginInfo:"+loginInfo.toString());
                         closeLoadingView();
                         if (loginInfo.user != null && !TextUtils.isEmpty(loginInfo.token)) {
-                            Gson gson = new Gson();
-                            SharedPrefUtil.getInstance(LoginActivity.this).put(SharedPrefUtil.KEY_USER_INFO, gson.toJson(loginInfo.user));
-                            SharedPrefUtil.getInstance(LoginActivity.this).put(SharedPrefUtil.KEY_TOKEN, loginInfo.token);
-                            SharedPrefUtil.getInstance(LoginActivity.this).put(SharedPrefUtil.KEY_LOGIN_STATE, true);
+//                            UserInfoManager.getInstance().login(loginInfo);
                             NavigationHelper.startActivity(LoginActivity.this, MainActivity.class,null,true);
                         }
                     }
@@ -257,12 +252,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     @Override
                     public void onError(Throwable e) {
                         closeLoadingView();
-                        if (e instanceof HttpRetrofitClient.APIException){
-                            String message = ((HttpRetrofitClient.APIException)e).message;
-                            if (!TextUtils.isEmpty(message)){
-                                showToast(message);
-                            }
-                        }
+                        showErrorMessage(e);
                     }
 
                     @Override
@@ -270,10 +260,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         closeLoadingView();
                         showToast(getString(R.string.register_login));
                         if (result.getUser() != null && !TextUtils.isEmpty(result.getToken())) {
-                            Gson gson = new Gson();
-                            SharedPrefUtil.getInstance(LoginActivity.this).put(SharedPrefUtil.KEY_USER_INFO, gson.toJson(result.getUser()));
-                            SharedPrefUtil.getInstance(LoginActivity.this).put(SharedPrefUtil.KEY_TOKEN, result.getToken());
-                            SharedPrefUtil.getInstance(LoginActivity.this).put(SharedPrefUtil.KEY_LOGIN_STATE, true);
+                            UserInfoManager.getInstance().login(result);
                             NavigationHelper.startActivity(LoginActivity.this, MainActivity.class,null,true);
                         }
                     }

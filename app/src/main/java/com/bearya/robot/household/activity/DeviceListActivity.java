@@ -7,15 +7,17 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 import com.bearya.robot.household.R;
 import com.bearya.robot.household.adapter.DeviceListAdapter;
 import com.bearya.robot.household.api.FamilyApiWrapper;
-import com.bearya.robot.household.entity.BindDeviceList;
+import com.bearya.robot.household.entity.DeviceListData;
 import com.bearya.robot.household.entity.ItemClickCallBack;
 import com.bearya.robot.household.entity.MachineInfo;
+import com.bearya.robot.household.utils.CommonUtils;
 import com.bearya.robot.household.utils.LogUtils;
-import com.bearya.robot.household.utils.SharedPrefUtil;
+import com.bearya.robot.household.utils.UserInfoManager;
 import com.bearya.robot.household.views.BYCheckDialog;
 import com.bearya.robot.household.views.BaseActivity;
 import com.bearya.robot.household.views.DialogCallback;
@@ -27,24 +29,31 @@ import rx.subscriptions.CompositeSubscription;
 
 public class DeviceListActivity extends BaseActivity implements View.OnClickListener{
     private final static int BIND_DEVICE = 9003;
-    private BindDeviceList machineInfoList = new BindDeviceList();
+    private DeviceListData machineInfoList = new DeviceListData();
     private DeviceListAdapter deviceListAdapter;
     private RecyclerView deviceList;
     private BYCheckDialog checkDialog;
     private CompositeSubscription sc;
-
+    private FrameLayout emptyView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.string.menu_manage, R.layout.activity_device_list);
+        setContentView(R.string.menu_manage,R.mipmap.icon_add,R.layout.activity_device_list);
         initView();
         initData();
     }
 
     public void initView() {
-        findViewById(R.id.im_bind_machine).setOnClickListener(this);
+        emptyView = (FrameLayout) findViewById(R.id.emptyView);
         deviceList = (RecyclerView) findViewById(R.id.rv_bind_machine);
         deviceList.setLayoutManager(new GridLayoutManager(this, 1, OrientationHelper.VERTICAL, false));
+    }
+
+    @Override
+    protected void onRightMenu() {
+        super.onRightMenu();
+        Intent bindIntent = new Intent(DeviceListActivity.this, BindActivity.class);
+        startActivityForResult(bindIntent, BIND_DEVICE);
     }
 
     public void initData() {
@@ -77,15 +86,12 @@ public class DeviceListActivity extends BaseActivity implements View.OnClickList
             }
         });
         deviceList.setAdapter(deviceListAdapter);
+        emptyView.setVisibility(CommonUtils.isEmpty(machineInfoList.devices)?View.VISIBLE:View.GONE);
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.im_bind_machine:
-                Intent bindIntent = new Intent(DeviceListActivity.this, BindActivity.class);
-                startActivityForResult(bindIntent, BIND_DEVICE);
-                break;
             default:
                 break;
         }
@@ -104,7 +110,7 @@ public class DeviceListActivity extends BaseActivity implements View.OnClickList
         showLoadingView();
         Subscription subscribe = FamilyApiWrapper.getInstance().getDeviceList()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<BindDeviceList>() {
+                .subscribe(new Subscriber<DeviceListData>() {
 
                     @Override
                     public void onCompleted() {
@@ -115,24 +121,22 @@ public class DeviceListActivity extends BaseActivity implements View.OnClickList
                     @Override
                     public void onError(Throwable e) {
                         closeLoadingView();
+                        showErrorMessage(e);
                         LogUtils.d(BaseActivity.Tag, "getDeviceList onError");
-                        if (!SharedPrefUtil.getInstance(DeviceListActivity.this).getBoolean(SharedPrefUtil.KEY_LOGIN_STATE)) {
-                            launcherMain();
-                            return;
-                        }
                     }
 
                     @Override
-                    public void onNext(BindDeviceList bindDeviceList) {
+                    public void onNext(DeviceListData bindDeviceList) {
                         closeLoadingView();
                         machineInfoList.devices.clear();
                         deviceListAdapter.clearDevicesListener();
-                        if (bindDeviceList != null && bindDeviceList.devices != null) {
-                            if (bindDeviceList.devices.size() > 0) {
-                                machineInfoList.devices.addAll(bindDeviceList.devices);
-                            }
+                        if (bindDeviceList != null && bindDeviceList.devices != null && bindDeviceList.devices.size() > 0) {
+                            machineInfoList.devices.addAll(bindDeviceList.devices);
+                            deviceListAdapter.setNewData(machineInfoList.devices);
+                            emptyView.setVisibility(View.GONE);
+                        }else{
+                            emptyView.setVisibility(View.VISIBLE);
                         }
-                        deviceListAdapter.setNewData(machineInfoList.devices);
                     }
                 });
         sc.add(subscribe);
@@ -140,9 +144,9 @@ public class DeviceListActivity extends BaseActivity implements View.OnClickList
 
     public void unbindDevice(MachineInfo machineInfo) {
         showLoadingView();
-        Subscription subscribe = FamilyApiWrapper.getInstance().unBindDevice(machineInfo.serial_num, "XB")
+        Subscription subscribe = FamilyApiWrapper.getInstance().unBindDevice(machineInfo.serial_num)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<String>() {
+                .subscribe(new Subscriber<Object>() {
 
                     @Override
                     public void onCompleted() {
@@ -153,16 +157,12 @@ public class DeviceListActivity extends BaseActivity implements View.OnClickList
                     @Override
                     public void onError(Throwable e) {
                         closeLoadingView();
-                        if (!SharedPrefUtil.getInstance(DeviceListActivity.this).getBoolean(SharedPrefUtil.KEY_LOGIN_STATE)) {
-                            launcherMain();
-                            return;
-                        }
-                        Toast.makeText(DeviceListActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        showErrorMessage(e);
                         LogUtils.d(BaseActivity.Tag, "unBindDevice onError");
                     }
 
                     @Override
-                    public void onNext(String result) {
+                    public void onNext(Object result) {
                         closeLoadingView();
                         setResult(RESULT_OK);
                         getDeviceList();

@@ -24,9 +24,6 @@ public class SharedPrefUtil {
     public final static String KEY_USER_ID = "userid";
     public final static String KEY_UID = "uid";
     public final static String KEY_ZIP_VERSION = "zip_version";
-    public final static String KEY_LOGIN_STATE = "login_state";
-    public final static String KEY_USER_INFO = "user_info";
-    public final static String KEY_TOKEN = "token";
 
     private static SharedPrefUtil instance = null;
 

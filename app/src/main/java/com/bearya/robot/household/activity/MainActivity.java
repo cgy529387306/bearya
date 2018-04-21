@@ -25,7 +25,7 @@ import com.bearya.robot.household.carouselList.CarouselLayoutManager;
 import com.bearya.robot.household.carouselList.CarouselZoomPostLayoutListener;
 import com.bearya.robot.household.carouselList.CenterScrollListener;
 import com.bearya.robot.household.carouselList.DefaultChildSelectionListener;
-import com.bearya.robot.household.entity.BindDeviceList;
+import com.bearya.robot.household.entity.DeviceListData;
 import com.bearya.robot.household.entity.GlideCircleTransform;
 import com.bearya.robot.household.entity.ItemCallback;
 import com.bearya.robot.household.entity.MachineInfo;
@@ -35,13 +35,12 @@ import com.bearya.robot.household.services.UpdateAppService;
 import com.bearya.robot.household.utils.CommonUtils;
 import com.bearya.robot.household.utils.LogUtils;
 import com.bearya.robot.household.utils.NavigationHelper;
-import com.bearya.robot.household.utils.SharedPrefUtil;
+import com.bearya.robot.household.utils.UserInfoManager;
 import com.bearya.robot.household.videoCall.AgoraService;
 import com.bearya.robot.household.views.BaseActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.google.gson.Gson;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -70,7 +69,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private MenuAdapter menuAdapter;
     private MachineAdapter machineAdapter;
     private List<MenuInfo> menuInfoList = new ArrayList<>();
-    private BindDeviceList machineInfoList = new BindDeviceList();
+    private DeviceListData machineInfoList = new DeviceListData();
     private int[] hints = {R.string.main_device_hint_1, R.string.main_device_hint_2, R.string.main_device_hint_3, R.string.main_device_hint_4,
             R.string.main_device_hint_5, R.string.main_device_hint_6, R.string.main_device_hint_7, R.string.main_device_hint_8};
     private CompositeSubscription sc;
@@ -112,7 +111,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             public void itemClick() {
                 drawerLayout.closeDrawer(leftMenu);
                 Intent intent = new Intent(MainActivity.this, DeviceListActivity.class);
-                BindDeviceList deviceList = new BindDeviceList();
+                DeviceListData deviceList = new DeviceListData();
                 deviceList.devices = new ArrayList<>();
                 if (!(machineInfoList.devices.size() == 1 && machineInfoList.devices.get(0).uid == 0)){
                     deviceList.devices.addAll(machineInfoList.devices);
@@ -187,25 +186,22 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
     public void initUserInfo() {
-        Gson gson = new Gson();
-        userInfo = gson.fromJson(SharedPrefUtil.getInstance(this).getString(SharedPrefUtil.KEY_USER_INFO), UserInfo.class);
+        userInfo = UserInfoManager.getInstance().getUserInfo();
         if (userInfo != null) {
-            LogUtils.d(Tag, "userInfo:"+userInfo.nickname+" userInfo.uid:"+userInfo.uid);
+            LogUtils.d(Tag, "userInfo:"+userInfo.getNickname()+" userInfo.uid:"+userInfo.getUid());
             Glide.with(this)
-                    .load(userInfo.avatar)
+                    .load(userInfo.getAvatar())
                     .crossFade()
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .transform(new GlideCircleTransform(this))
                     .error(R.mipmap.my_avatar)
                     .into(userIcon);
-            userName.setText(TextUtils.isEmpty(userInfo.nickname)?"神秘人":userInfo.nickname);
+            userName.setText(TextUtils.isEmpty(userInfo.getNickname())?"神秘人":userInfo.getNickname());
             startVideoCallService();
             //Toast.makeText(this, "User:"+userInfo.nickname+" "+userInfo.uid, Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(this, "登入失败，请重新登录！", Toast.LENGTH_SHORT).show();
-            SharedPrefUtil.getInstance(this).put(SharedPrefUtil.KEY_USER_INFO, "");
-            SharedPrefUtil.getInstance(this).put(SharedPrefUtil.KEY_TOKEN, "");
-            SharedPrefUtil.getInstance(this).put(SharedPrefUtil.KEY_LOGIN_STATE, false);
+            UserInfoManager.getInstance().loginOut();
             finish();
         }
     }
@@ -286,7 +282,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         showLoadingView();
         Subscription subscribe = FamilyApiWrapper.getInstance().getDeviceList()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<BindDeviceList>() {
+                .subscribe(new Subscriber<DeviceListData>() {
 
                     @Override
                     public void onCompleted() {
@@ -303,10 +299,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     public void onError(Throwable e) {
                         closeLoadingView();
                         LogUtils.d(BaseActivity.Tag, "getDeviceList onError");
-                        if (!SharedPrefUtil.getInstance(MainActivity.this).getBoolean(SharedPrefUtil.KEY_LOGIN_STATE)) {
-                            launcherMain();
-                            return;
-                        }
+                        showErrorMessage(e);
                         if (machineInfoList.devices.size() <= 0) {
                             machineInfoList.devices.add(new MachineInfo(0,"","XB","",0));//无设备时
                             machineAdapter.setNewData(machineInfoList.devices);
@@ -315,7 +308,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     }
 
                     @Override
-                    public void onNext(BindDeviceList bindDeviceList) {
+                    public void onNext(DeviceListData bindDeviceList) {
                         closeLoadingView();
                         LogUtils.d(BaseActivity.Tag, "getDeviceList onNext");
                         machineInfoList.devices.clear();

@@ -663,7 +663,7 @@ public class CarouselLayoutManager extends RecyclerView.LayoutManager implements
     }
 
     /**
-     * Helper method that make scroll in range of [0, count). Generally this method is needed only for cycle layout.
+     * DateHelper method that make scroll in range of [0, count). Generally this method is needed only for cycle layout.
      *
      * @param currentScrollPosition any scroll position range.
      * @param count                 adapter items count
@@ -711,7 +711,7 @@ public class CarouselLayoutManager extends RecyclerView.LayoutManager implements
     }
 
     /**
-     * Helper class that holds currently visible items.
+     * DateHelper class that holds currently visible items.
      * Generally this class fills this list. <br />
      * <br />
      * This class holds all scroll and maxVisible items state.

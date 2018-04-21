@@ -8,6 +8,7 @@ import com.bearya.robot.household.http.retrofit.interceptor.CacheControlIntercep
 import com.bearya.robot.household.http.retrofit.interceptor.HttpCommonInterceptor;
 import com.bearya.robot.household.utils.LogUtils;
 import com.bearya.robot.household.utils.SharedPrefUtil;
+import com.bearya.robot.household.utils.UserInfoManager;
 
 import java.io.File;
 import java.security.KeyManagementException;
@@ -198,9 +199,7 @@ public class HttpRetrofitClient<V> implements HttpLoggingInterceptor.Logger {
                         subscriber.onNext(response.getData());
                     }
                 } else if (response.isTokenInvalid()) {
-                    SharedPrefUtil.getInstance(MyApplication.getContext()).put(SharedPrefUtil.KEY_USER_INFO, "");
-                    SharedPrefUtil.getInstance(MyApplication.getContext()).put(SharedPrefUtil.KEY_TOKEN, "");
-                    SharedPrefUtil.getInstance(MyApplication.getContext()).put(SharedPrefUtil.KEY_LOGIN_STATE, false);
+                    UserInfoManager.getInstance().loginOut();
                     if (!subscriber.isUnsubscribed()) {
                         subscriber.onError(new APIException(response.getStatus(), response.getText(), isShowTips));
                     }

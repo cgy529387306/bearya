@@ -98,12 +98,7 @@ public class ForgetPwdActivity extends BaseActivity implements View.OnClickListe
                     @Override
                     public void onError(Throwable e) {
                         closeLoadingView();
-                        if (e instanceof HttpRetrofitClient.APIException){
-                            String message = ((HttpRetrofitClient.APIException)e).message;
-                            if (!TextUtils.isEmpty(message)){
-                                showToast(message);
-                            }
-                        }
+                        showErrorMessage(e);
                     }
 
                     @Override
@@ -148,12 +143,7 @@ public class ForgetPwdActivity extends BaseActivity implements View.OnClickListe
                     @Override
                     public void onError(Throwable e) {
                         closeLoadingView();
-                        if (e instanceof HttpRetrofitClient.APIException){
-                            String message = ((HttpRetrofitClient.APIException)e).message;
-                            if (!TextUtils.isEmpty(message)){
-                                showToast(message);
-                            }
-                        }
+                        showErrorMessage(e);
                     }
 
                     @Override

@@ -6,7 +6,7 @@ package com.bearya.robot.household.entity;
 
 public class LoginData {
     private String token;
-    private UserBean user;
+    private UserInfo user;
     private Object baby;
 
     public String getToken() {
@@ -17,11 +17,11 @@ public class LoginData {
         this.token = token;
     }
 
-    public UserBean getUser() {
+    public UserInfo getUser() {
         return user;
     }
 
-    public void setUser(UserBean user) {
+    public void setUser(UserInfo user) {
         this.user = user;
     }
 

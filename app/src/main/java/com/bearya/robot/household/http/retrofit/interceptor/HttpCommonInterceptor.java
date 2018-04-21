@@ -3,9 +3,11 @@ package com.bearya.robot.household.http.retrofit.interceptor;
 import android.text.TextUtils;
 
 import com.bearya.robot.household.MyApplication;
+import com.bearya.robot.household.entity.UserInfo;
 import com.bearya.robot.household.utils.CommonUtils;
 import com.bearya.robot.household.utils.LogUtils;
 import com.bearya.robot.household.utils.SharedPrefUtil;
+import com.bearya.robot.household.utils.UserInfoManager;
 
 import java.io.IOException;
 import java.util.Iterator;
@@ -38,7 +40,7 @@ public class HttpCommonInterceptor implements Interceptor {
         builder.addHeader("User-Agent", CommonUtils.getMobileInfo(MyApplication.getContext()));
         builder.addHeader("deviceID", CommonUtils.getIMEI(MyApplication.getContext()));
         builder.addHeader("Content-Language", MyApplication.getContext().getResources().getConfiguration().locale.getLanguage());
-        String token = SharedPrefUtil.getInstance(MyApplication.getContext()).getString(SharedPrefUtil.KEY_TOKEN);
+        String token = UserInfoManager.getInstance().getToken();
         if(!TextUtils.isEmpty(token)) {
             builder.addHeader("Authorization", token);
             LogUtils.d("SetToken", "Token = "+token);

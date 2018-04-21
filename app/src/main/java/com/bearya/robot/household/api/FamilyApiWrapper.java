@@ -1,10 +1,10 @@
 package com.bearya.robot.household.api;
 
 import com.bearya.robot.household.entity.BabyInfo;
-import com.bearya.robot.household.entity.BindDeviceList;
+import com.bearya.robot.household.entity.DeviceListData;
 import com.bearya.robot.household.entity.KeyInfo;
 import com.bearya.robot.household.entity.LoginData;
-import com.bearya.robot.household.entity.LoginInfo;
+import com.bearya.robot.household.entity.WxUserData;
 import com.bearya.robot.household.entity.ProductInfo;
 import com.bearya.robot.household.http.retrofit.HttpRetrofitClient;
 
@@ -28,7 +28,7 @@ public class FamilyApiWrapper extends HttpRetrofitClient {
         return trailApiWrapper;
     }
 
-    public Observable<LoginInfo> register(String mobile, String password, String code) {
+    public Observable<LoginData> register(String mobile, String password, String code) {
         return getService(FamilyApiService.class).register(mobile, password,code).compose(this.applySchedulers());
     }
 
@@ -40,28 +40,32 @@ public class FamilyApiWrapper extends HttpRetrofitClient {
         return getService(FamilyApiService.class).mobileLogin(mobile, password).compose(this.applySchedulers());
     }
 
+    public Observable<LoginData> wxLogin(String mobile, String password) {
+        return getService(FamilyApiService.class).mobileLogin(mobile, password).compose(this.applySchedulers());
+    }
+
     public Observable<Object> setPwd(String mobile, String password, String code) {
         return getService(FamilyApiService.class).getpw(mobile, password,code).compose(this.applySchedulers());
     }
 
-    public Observable<BabyInfo> create(String name, String relationship, int birthday, int gender, String avatar, String tags, int is_default) {
+    public Observable<BabyInfo> create(String name, String relationship, String birthday, int gender, String avatar, String tags, int is_default) {
         return getService(FamilyApiService.class).create(name, relationship,birthday,gender,avatar,tags,is_default).compose(this.applySchedulers());
     }
 
-    public Observable<LoginInfo> getUserInfo(String code, String app) {
+    public Observable<WxUserData> getUserInfo(String code, String app) {
         return getService(FamilyApiService.class).getUserInfo(code, app).compose(this.applySchedulers());
     }
 
-    public Observable<BindDeviceList> getDeviceList() {
+    public Observable<DeviceListData> getDeviceList() {
         return getService(FamilyApiService.class).getDeviceList().compose(this.applySchedulers());
     }
 
-    public Observable<String> bindDevice(String serial, String dtype) {
-        return getService(FamilyApiService.class).bindDevice(serial, dtype).compose(this.applySchedulers());
+    public Observable<Object> bindDevice(String sn) {
+        return getService(FamilyApiService.class).bindDevice(sn).compose(this.applySchedulers());
     }
 
-    public Observable<String> unBindDevice(String serial, String dtype) {
-        return getService(FamilyApiService.class).unBindDevice(serial, dtype).compose(this.applySchedulers());
+    public Observable<Object> unBindDevice(String sn) {
+        return getService(FamilyApiService.class).unBindDevice(sn).compose(this.applySchedulers());
     }
 
     public Observable<KeyInfo> getMonitorKey(String deviceId, int uid) {

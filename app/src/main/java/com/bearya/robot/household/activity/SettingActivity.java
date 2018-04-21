@@ -10,6 +10,7 @@ import com.bearya.robot.household.R;
 import com.bearya.robot.household.utils.CommonUtils;
 import com.bearya.robot.household.utils.NavigationHelper;
 import com.bearya.robot.household.utils.SharedPrefUtil;
+import com.bearya.robot.household.utils.UserInfoManager;
 import com.bearya.robot.household.videoCall.AgoraService;
 import com.bearya.robot.household.views.BYCheckDialog;
 import com.bearya.robot.household.views.BaseActivity;
@@ -53,9 +54,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                     @Override
                     public void callback() {
                         stopService(new Intent(SettingActivity.this, AgoraService.class));//停止通话服务
-                        SharedPrefUtil.getInstance(SettingActivity.this).put(SharedPrefUtil.KEY_USER_INFO, "");
-                        SharedPrefUtil.getInstance(SettingActivity.this).put(SharedPrefUtil.KEY_TOKEN, "");
-                        SharedPrefUtil.getInstance(SettingActivity.this).put(SharedPrefUtil.KEY_LOGIN_STATE, false);
+                        UserInfoManager.getInstance().loginOut();
                         NavigationHelper.startActivity(SettingActivity.this,LoginActivity.class,null,true);
                     }
                 }).setDismisCallback(new DialogCallback() {

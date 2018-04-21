@@ -1,59 +1,82 @@
 package com.bearya.robot.household.entity;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 /**
- * Created by user on 2015/8/4.
+ * Created by Administrator on 2018\4\20 0020.
  */
-public class UserInfo implements Parcelable {
-    public int id;
-    public int uid;
-    public String openid;
-    public String unionid;
-    public String avatar;
-    public String nickname;
-    public int gender;
 
-    public UserInfo() {
+public class UserInfo {
+    private int user_id;
+    private String openid;
+    private String unionid;
+    private String avatar;
+    private String nickname;
+    private int gender;
+    private int uid;
+    private String mobile;
 
+    public int getUser_id() {
+        return user_id;
     }
 
-    protected UserInfo(Parcel in) {
-        id = in.readInt();
-        uid = in.readInt();
-        openid = in.readString();
-        unionid = in.readString();
-        avatar = in.readString();
-        nickname = in.readString();
-        gender = in.readInt();
+    public String getOpenid() {
+        return openid == null ? "" : openid;
     }
 
-    public static final Creator<UserInfo> CREATOR = new Creator<UserInfo>() {
-        @Override
-        public UserInfo createFromParcel(Parcel in) {
-            return new UserInfo(in);
-        }
-
-        @Override
-        public UserInfo[] newArray(int size) {
-            return new UserInfo[size];
-        }
-    };
-
-    @Override
-    public int describeContents() {
-        return 0;
+    public String getUnionid() {
+        return unionid == null ? "" : unionid;
     }
 
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeInt(id);
-        parcel.writeInt(uid);
-        parcel.writeString(openid);
-        parcel.writeString(unionid);
-        parcel.writeString(avatar);
-        parcel.writeString(nickname);
-        parcel.writeInt(gender);
+    public String getAvatar() {
+        return avatar == null ? "" : avatar;
     }
+
+    public String getNickname() {
+        return nickname == null ? "" : nickname;
+    }
+
+    public int getGender() {
+        return gender;
+    }
+
+    public int getUid() {
+        return uid;
+    }
+
+    public String getMobile() {
+        return mobile == null ? "" : mobile;
+    }
+
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
+    }
+
+    public void setOpenid(String openid) {
+        this.openid = openid;
+    }
+
+    public void setUnionid(String unionid) {
+        this.unionid = unionid;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public void setGender(int gender) {
+        this.gender = gender;
+    }
+
+    public void setUid(int uid) {
+        this.uid = uid;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+
 }

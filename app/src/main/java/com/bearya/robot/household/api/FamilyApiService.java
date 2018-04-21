@@ -1,10 +1,10 @@
 package com.bearya.robot.household.api;
 
 import com.bearya.robot.household.entity.BabyInfo;
-import com.bearya.robot.household.entity.BindDeviceList;
+import com.bearya.robot.household.entity.DeviceListData;
 import com.bearya.robot.household.entity.KeyInfo;
 import com.bearya.robot.household.entity.LoginData;
-import com.bearya.robot.household.entity.LoginInfo;
+import com.bearya.robot.household.entity.WxUserData;
 import com.bearya.robot.household.entity.ProductInfo;
 import com.bearya.robot.household.http.retrofit.HttpResult;
 
@@ -14,25 +14,31 @@ import rx.Observable;
 
 public interface FamilyApiService {
     @POST("v1/user/auth/register")
-    Observable<HttpResult<LoginInfo>> register(@Query("mobile") String mobile, @Query("password") String password,@Query("code") String code);
+    Observable<HttpResult<LoginData>> register(@Query("mobile") String mobile, @Query("password") String password, @Query("code") String code);
     @POST("v1/user/sms/send")
     Observable<HttpResult<Object>> sendSms(@Query("mobile") String mobile, @Query("action") String action);
     @POST("v1/user/login/mobile")
     Observable<HttpResult<LoginData>> mobileLogin(@Query("mobile") String mobile, @Query("password") String password);
+    @POST("v1/user/login/wechat")
+    Observable<HttpResult<LoginData>> wxLogin(@Query("mobile") String mobile, @Query("password") String password);
     @POST("v1/user/auth/getpw")
     Observable<HttpResult<Object>> getpw(@Query("mobile") String mobile, @Query("password") String password,@Query("code") String code);
     @POST("v1/user/baby/create")
-    Observable<HttpResult<BabyInfo>> create(@Query("name") String name, @Query("relationship") String relationship, @Query("birthday") int birthday,
+    Observable<HttpResult<BabyInfo>> create(@Query("name") String name, @Query("relationship") String relationship, @Query("birthday") String birthday,
                                             @Query("gender") int gender, @Query("avatar") String avatar, @Query("tags") String tags, @Query("is_default") int is_default);
 
     @POST("v1/client/wxlogin")
-    Observable<HttpResult<LoginInfo>> getUserInfo(@Query("code") String code, @Query("app") String app);
+    Observable<HttpResult<WxUserData>> getUserInfo(@Query("code") String code, @Query("app") String app);
+
+
     @POST("v1/client/device/list")
-    Observable<HttpResult<BindDeviceList>> getDeviceList();
-    @POST("v1/client/device/bind")
-    Observable<HttpResult<String>> bindDevice(@Query("serial") String serial, @Query("dtype") String dtype);
-    @POST("v1/client/device/unbind")
-    Observable<HttpResult<String>> unBindDevice(@Query("serial") String serial, @Query("dtype") String dtype);
+    Observable<HttpResult<DeviceListData>> getDeviceList();
+    @POST("v1/baby/bind/create")
+    Observable<HttpResult<Object>> bindDevice(@Query("sn") String sn);
+    @POST("v1/baby/bind/delete")
+    Observable<HttpResult<Object>> unBindDevice(@Query("sn") String sn);
+
+
     @POST("v1/service/live/getKey")
     Observable<HttpResult<KeyInfo>> getMonitorKey(@Query("device_id") String device_id, @Query("uid") int uid);
     @POST("v1/client/device/qrnum")

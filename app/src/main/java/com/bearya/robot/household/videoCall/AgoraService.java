@@ -14,10 +14,12 @@ import android.widget.Toast;
 import com.alibaba.fastjson.JSONObject;
 import com.bearya.robot.household.MyApplication;
 import com.bearya.robot.household.entity.UserInfo;
+import com.bearya.robot.household.entity.WxUserInfo;
 import com.bearya.robot.household.threadpool.ThreadPoolManager;
 import com.bearya.robot.household.utils.CommonUtils;
 import com.bearya.robot.household.utils.LogUtils;
 import com.bearya.robot.household.utils.SharedPrefUtil;
+import com.bearya.robot.household.utils.UserInfoManager;
 import com.bearya.robot.household.videoCall.beans.AgoraEventDispatch;
 import com.bearya.robot.household.videoCall.beans.AgoraRunTime;
 import com.bearya.robot.household.videoCall.beans.ITransfer;
@@ -108,10 +110,9 @@ public class AgoraService extends Service {
 
     private void initVideoCall() {
         LogUtils.d(TAG, "initVideoCall");
-        Gson gson = new Gson();
-        UserInfo userInfo = gson.fromJson(SharedPrefUtil.getInstance(this).getString(SharedPrefUtil.KEY_USER_INFO), UserInfo.class);
+        UserInfo userInfo = UserInfoManager.getInstance().getUserInfo();
         if (userInfo != null) {
-            login(""+userInfo.uid);
+            login(""+userInfo.getUid());
         }
     }
 

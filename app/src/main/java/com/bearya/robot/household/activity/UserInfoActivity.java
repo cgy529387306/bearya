@@ -1,12 +1,8 @@
 package com.bearya.robot.household.activity;
 
-import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,14 +10,14 @@ import com.bearya.robot.household.R;
 import com.bearya.robot.household.api.FamilyApiWrapper;
 import com.bearya.robot.household.entity.BabyInfo;
 import com.bearya.robot.household.http.retrofit.HttpRetrofitClient;
-import com.bearya.robot.household.utils.NavigationHelper;
+import com.bearya.robot.household.utils.DateHelper;
 import com.bearya.robot.household.views.BaseActivity;
 import com.bearya.robot.household.views.ClearableEditText;
+import com.codbking.widget.DatePickDialog;
+import com.codbking.widget.OnSureLisener;
+import com.codbking.widget.bean.DateType;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 
 import rx.Subscriber;
 import rx.Subscription;
@@ -38,14 +34,11 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
     private TextView tvBoy; //男
     private TextView tvGirl; //女
     private ClearableEditText edtBirth;//出生日期
-    private final int DATE_DIALOG = 1;
-    private int mYear, mMonth, mDay;
     private TextView tvNext;
     private ClearableEditText edtName;
     private int gender = 1;
     private String relationship = "father";
     private String avatar = "";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,10 +56,6 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
         tvBoy = (TextView) findViewById(R.id.tv_boy);
         tvGirl = (TextView) findViewById(R.id.tv_girl);
         edtBirth = (ClearableEditText) findViewById(R.id.edt_birth);
-        final Calendar ca = Calendar.getInstance();
-        mYear = ca.get(Calendar.YEAR);
-        mMonth = ca.get(Calendar.MONTH);
-        mDay = ca.get(Calendar.DAY_OF_MONTH);
         tvNext = (TextView) findViewById(R.id.tv_next);
         edtName = (ClearableEditText) findViewById(R.id.edt_name);
     }
@@ -98,15 +87,32 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
         }else if (id == R.id.tv_girl){
             checkSex(1);
         }else if (id == R.id.edt_birth){
-            showDialog(DATE_DIALOG);
+            showTimePicker();
         }else if (id == R.id.tv_next){
             doAddInfo();
+//            NavigationHelper.startActivity(this,HabitActivity.class,null,false);
         }
+    }
+
+    private void showTimePicker(){
+        DatePickDialog dialog = new DatePickDialog(this);
+        dialog.setYearLimt(100);
+        dialog.setTitle(getString(R.string.select_time));
+        dialog.setType(DateType.TYPE_YMD);
+        dialog.setMessageFormat("yyyy-MM-dd");
+        dialog.setOnChangeLisener(null);
+        dialog.setOnSureLisener(new OnSureLisener() {
+            @Override
+            public void onSure(Date date) {
+                String dateStr = DateHelper.date2String("yyyy-MM-dd");
+                edtBirth.setText(dateStr);
+            }
+        });
+        dialog.show();
     }
 
     private void doAddInfo() {
         String name = edtName.getText().toString().trim();
-        String birth = edtBirth.getText().toString().trim();
         if (TextUtils.isEmpty(name)) {
             showToast(getString(R.string.input_baby_name));
             return;
@@ -117,9 +123,10 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
 //        bundle.putString("relationship",relationship);
 //        bundle.putString("gender",String.valueOf(gender));
 //        bundle.putString("avatar",!TextUtils.isEmpty(avatar) ? avatar:"");
-
         showLoadingView();
-        Subscription subscribe = FamilyApiWrapper.getInstance().create(name,relationship,!TextUtils.isEmpty(birth)?Integer.parseInt(dataOne(birth)):0,gender,avatar,"1",0)
+        String birthDay = edtBirth.getText().toString();
+        String stamp = DateHelper.date2Stamp(birthDay);
+        Subscription subscribe = FamilyApiWrapper.getInstance().create(name,relationship,stamp,gender,avatar,"1",0)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<BabyInfo>() {
 
@@ -131,12 +138,7 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
                     @Override
                     public void onError(Throwable e) {
                         closeLoadingView();
-                        if (e instanceof HttpRetrofitClient.APIException){
-                            String message = ((HttpRetrofitClient.APIException)e).getMessage();
-                            if (!TextUtils.isEmpty(message)){
-                                showToast(message);
-                            }
-                        }
+                        showErrorMessage(e);
                     }
 
                     @Override
@@ -155,9 +157,9 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
         imvOther.setImageResource(type == 2 ? R.mipmap.icon_check:R.mipmap.icon_uncheck);
         if (type == 0){
             relationship = "father";
-        }else if (type == 0){
+        }else if (type == 1){
             relationship = "mother";
-        }else if (type == 0){
+        }else if (type == 2){
             relationship = "other";
         }
     }
@@ -168,46 +170,6 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
         tvGirl.setTextColor(type == 1 ? getResources().getColor(R.color.colorWhite):getResources().getColor(R.color.colorHint));
         gender = type;
     }
-    @Override
-    protected Dialog onCreateDialog(int id) {
-        switch (id) {
-            case DATE_DIALOG:
-                return new DatePickerDialog(this, mdateListener, mYear, mMonth, mDay);
-        }
-        return null;
-    }
 
-    /**
-     * 设置日期 利用StringBuffer追加
-     */
-    public void display() {
-        edtBirth.setText(new StringBuffer().append(mYear).append("-").append(mMonth + 1).append("-").append(mDay).append(" "));
-    }
 
-    private DatePickerDialog.OnDateSetListener mdateListener = new DatePickerDialog.OnDateSetListener() {
-
-        @Override
-        public void onDateSet(DatePicker view, int year, int monthOfYear,
-                              int dayOfMonth) {
-            mYear = year;
-            mMonth = monthOfYear;
-            mDay = dayOfMonth;
-            display();
-        }
-    };
-    public static String dataOne(String time) {
-        SimpleDateFormat sdr = new SimpleDateFormat("yyyy-MM-dd",
-                Locale.CHINA);
-        Date date;
-        String times = null;
-        try {
-            date = sdr.parse(time);
-            long l = date.getTime();
-            String stf = String.valueOf(l);
-            times = stf.substring(0, 10);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return times;
-    }
 }

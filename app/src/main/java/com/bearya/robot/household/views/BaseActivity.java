@@ -25,6 +25,7 @@ import com.bearya.robot.household.MyApplication;
 import com.bearya.robot.household.R;
 import com.bearya.robot.household.activity.RootActivity;
 import com.bearya.robot.household.entity.VersionInfo;
+import com.bearya.robot.household.http.retrofit.HttpRetrofitClient;
 import com.bearya.robot.household.update.CommonDialog;
 import com.bearya.robot.household.update.SoftUpgradeActivity;
 import com.bearya.robot.household.utils.CommonUtils;
@@ -241,16 +242,12 @@ public abstract class BaseActivity extends AppCompatActivity implements CommonDi
         contentView(title, null, 0, 0, 0, 0, null, 0, view, false);
     }
 
-    protected void setContentView(int title, int rightResId, int layout, int isRight) {
+    protected void setContentView(int title, int rightResId, int layout) {
         contentView(title, null, 0,  0, rightResId, 0, null, layout, null, false);
     }
 
     protected void setContentView(int title, int layout) {
         contentView(title, null, 0, 0, 0, 0, null, layout, null, false);
-    }
-
-    protected void setContentView(int title, int leftResId, int layout) {
-        contentView(title, null, 0, leftResId, 0, 0, null, layout, null, false);
     }
 
     protected void setContentView(String title, int rightResId, int layout) {
@@ -299,7 +296,14 @@ public abstract class BaseActivity extends AppCompatActivity implements CommonDi
         if (leftResId > 0) {
             mTitleLeft.setImageResource(leftResId);
         } else {
-            mTitleLeft.setImageResource(R.mipmap.common_back);
+            mTitleLeft.setImageResource(R.mipmap.icon_back);
+        }
+
+        if (rightResId > 0){
+            mTitleRight.setImageResource(rightResId);
+            mTitleRight.setVisibility(View.VISIBLE);
+        }else {
+            mTitleRight.setVisibility(View.GONE);
         }
 
         if (bgId == 0) {
@@ -377,4 +381,14 @@ public abstract class BaseActivity extends AppCompatActivity implements CommonDi
     public void onCancel() {
 
     }
+
+    public void showErrorMessage(Throwable e){
+        if (e instanceof HttpRetrofitClient.APIException){
+            String message = ((HttpRetrofitClient.APIException)e).message;
+            if (!TextUtils.isEmpty(message)){
+                showToast(message);
+            }
+        }
+    }
+
 }

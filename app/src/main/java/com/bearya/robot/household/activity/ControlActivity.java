@@ -33,12 +33,14 @@ import com.bearya.robot.household.entity.KeyInfo;
 import com.bearya.robot.household.entity.MachineInfo;
 import com.bearya.robot.household.entity.MsgMonitor;
 import com.bearya.robot.household.entity.UserInfo;
+import com.bearya.robot.household.entity.WxUserInfo;
 import com.bearya.robot.household.networkInteraction.BYValueEventListener;
 import com.bearya.robot.household.networkInteraction.FamilyInteraction;
 import com.bearya.robot.household.services.MonitorService;
 import com.bearya.robot.household.utils.CommonUtils;
 import com.bearya.robot.household.utils.LogUtils;
 import com.bearya.robot.household.utils.SharedPrefUtil;
+import com.bearya.robot.household.utils.UserInfoManager;
 import com.bearya.robot.household.videoCall.AgoraService;
 import com.bearya.robot.household.videoCall.VideoChatViewActivity;
 import com.bearya.robot.household.views.BaseActivity;
@@ -67,10 +69,15 @@ public class ControlActivity extends BaseActivity implements View.OnClickListene
     private TextView deviceState;
     private TextView deviceAction;
 
-    private ImageView imExpressions;
-    private ImageView imDances;
-    private ImageView imVideo;
-    private ImageView imMessage;
+    private LinearLayout llyExpressions;
+    private LinearLayout llyDances;
+    private LinearLayout llyVideo;
+    private LinearLayout llyMessage;
+
+    private ImageView ivExpressions;
+    private ImageView ivDances;
+    private ImageView ivVideo;
+    private ImageView ivMessage;
 
     private RelativeLayout rlSendMsg;
     private EditText inputMsg;
@@ -142,16 +149,22 @@ public class ControlActivity extends BaseActivity implements View.OnClickListene
         findViewById(R.id.im_turn_down).setOnClickListener(this);
         findViewById(R.id.im_turn_left).setOnClickListener(this);
         findViewById(R.id.im_turn_right).setOnClickListener(this);
+        findViewById(R.id.iv_back).setOnClickListener(this);
         actions = getResources().getStringArray(R.array.action_names);
 
-        imExpressions = (ImageView)findViewById(R.id.action_expressions);
-        imDances = (ImageView)findViewById(R.id.action_dances);
-        imVideo = (ImageView)findViewById(R.id.action_videos);
-        imMessage = (ImageView)findViewById(R.id.action_messages);
-        imExpressions.setOnClickListener(this);
-        imDances.setOnClickListener(this);
-        imVideo.setOnClickListener(this);
-        imMessage.setOnClickListener(this);
+        llyExpressions = (LinearLayout)findViewById(R.id.action_expressions);
+        llyDances = (LinearLayout)findViewById(R.id.action_dances);
+        llyVideo = (LinearLayout)findViewById(R.id.action_videos);
+        llyMessage = (LinearLayout)findViewById(R.id.action_messages);
+        llyExpressions.setOnClickListener(this);
+        llyDances.setOnClickListener(this);
+        llyVideo.setOnClickListener(this);
+        llyMessage.setOnClickListener(this);
+
+        ivExpressions = (ImageView) findViewById(R.id.iv_expressions);
+        ivDances = (ImageView)findViewById(R.id.iv_dance);
+        ivVideo = (ImageView)findViewById(R.id.iv_monitor);
+        ivMessage = (ImageView)findViewById(R.id.iv_walls);
 
         //信息发送相关
         llBottomView = (LinearLayout) findViewById(R.id.rl_bottom_view);
@@ -192,8 +205,7 @@ public class ControlActivity extends BaseActivity implements View.OnClickListene
     }
 
     private void initData() {
-        Gson gson = new Gson();
-        userInfo = gson.fromJson(SharedPrefUtil.getInstance(this).getString(SharedPrefUtil.KEY_USER_INFO), UserInfo.class);
+        userInfo = UserInfoManager.getInstance().getUserInfo();
         Log.d(TAG, "AA initData........");
         if (getIntent().hasExtra("deviceInfo")) {
             deviceInfo = getIntent().getParcelableExtra("deviceInfo");
@@ -273,13 +285,13 @@ public class ControlActivity extends BaseActivity implements View.OnClickListene
                         return;
                     }
                     showOrHideBottomInfo(MODE_NORMAL);
-                    LogUtils.d("VideoCall", "localId = "+userInfo.uid + " remoteId = "+ deviceInfo.uid);
+                    LogUtils.d("VideoCall", "localId = "+userInfo.getUid() + " remoteId = "+ deviceInfo.uid);
                     Intent intent = new Intent(ControlActivity.this, VideoChatViewActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.putExtra("beInvited", false);
                     intent.putExtra("isVideo", true);
                     intent.putExtra("remoteName", deviceInfo.name);
-                    intent.putExtra("localId", userInfo.uid);
+                    intent.putExtra("localId", userInfo.getUid());
                     intent.putExtra("remoteId", deviceInfo.uid);// 强转为fromAccount
                     startActivity(intent);
                 } else if (Integer.valueOf(videoListInfo.get(position).id) == 1) {
@@ -331,6 +343,9 @@ public class ControlActivity extends BaseActivity implements View.OnClickListene
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.iv_back:
+                finish();
+                break;
             case R.id.rl_control_view:
                 showOrHideBottomInfo(MODE_NORMAL);
                 break;
@@ -390,7 +405,7 @@ public class ControlActivity extends BaseActivity implements View.OnClickListene
     public void getMonitorKey() {
         isMonitor = 0;
         showLoadingView();
-        Subscription subscribe = FamilyApiWrapper.getInstance().getMonitorKey(deviceInfo.serial_num, userInfo.uid)
+        Subscription subscribe = FamilyApiWrapper.getInstance().getMonitorKey(deviceInfo.serial_num, userInfo.getUid())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<KeyInfo>() {
 
@@ -408,9 +423,7 @@ public class ControlActivity extends BaseActivity implements View.OnClickListene
                         closeLoadingView();
                         LogUtils.d(BaseActivity.Tag, "getMonitorKey onError");
                         isMonitor = -1;
-                        if (!SharedPrefUtil.getInstance(ControlActivity.this).getBoolean(SharedPrefUtil.KEY_LOGIN_STATE)) {
-                            launcherMain();
-                        }
+                        showErrorMessage(e);
                     }
 
                     @Override
@@ -496,9 +509,9 @@ public class ControlActivity extends BaseActivity implements View.OnClickListene
         rvExpressions.setVisibility(mMode == MODE_EXPRESSION?View.VISIBLE:View.GONE);
         rvDances.setVisibility(mMode == MODE_DANCE?View.VISIBLE:View.GONE);
         rvVideos.setVisibility(mMode == MODE_VIDEO?View.VISIBLE:View.GONE);
-        imExpressions.setSelected(mMode == MODE_EXPRESSION);
-        imDances.setSelected(mMode == MODE_DANCE);
-        imVideo.setSelected(mMode == MODE_VIDEO);
+        ivExpressions.setSelected(mMode == MODE_EXPRESSION);
+        ivDances.setSelected(mMode == MODE_DANCE);
+        ivVideo.setSelected(mMode == MODE_VIDEO);
         if (!isDoAnimate) {
             return;
         }

@@ -13,6 +13,7 @@ import com.bearya.robot.household.entity.ProductInfo;
 import com.bearya.robot.household.utils.CommonUtils;
 import com.bearya.robot.household.utils.LogUtils;
 import com.bearya.robot.household.utils.SharedPrefUtil;
+import com.bearya.robot.household.utils.UserInfoManager;
 import com.bearya.robot.household.views.BaseActivity;
 
 import rx.Subscriber;
@@ -50,7 +51,7 @@ public class BindActivity extends BaseActivity implements View.OnClickListener {
                 if (!TextUtils.isEmpty(serial)) {
                     bindDevice(serial);
                 } else {
-                    Toast.makeText(this, "请输入设备ID!",Toast.LENGTH_SHORT).show();
+                   showToast(getString(R.string.input_device_id));
                 }
                 break;
             default:
@@ -84,9 +85,9 @@ public class BindActivity extends BaseActivity implements View.OnClickListener {
 
     public void bindDevice(String serial) {
         showLoadingView();
-        Subscription subscribe = FamilyApiWrapper.getInstance().bindDevice(serial, "XB")
+        Subscription subscribe = FamilyApiWrapper.getInstance().bindDevice(serial)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<String>() {
+                .subscribe(new Subscriber<Object>() {
 
                     @Override
                     public void onCompleted() {
@@ -97,16 +98,12 @@ public class BindActivity extends BaseActivity implements View.OnClickListener {
                     @Override
                     public void onError(Throwable e) {
                         closeLoadingView();
-                        if (!SharedPrefUtil.getInstance(BindActivity.this).getBoolean(SharedPrefUtil.KEY_LOGIN_STATE)) {
-                            launcherMain();
-                            return;
-                        }
-                        Toast.makeText(BindActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        showErrorMessage(e);
                         LogUtils.d(BaseActivity.Tag, "bindDevice onError");
                     }
 
                     @Override
-                    public void onNext(String result) {
+                    public void onNext(Object result) {
                         closeLoadingView();
                         setResult(RESULT_OK);
                         finish();
@@ -130,7 +127,7 @@ public class BindActivity extends BaseActivity implements View.OnClickListener {
                     @Override
                     public void onError(Throwable e) {
                         closeLoadingView();
-                        Toast.makeText(BindActivity.this, getString(R.string.get_product_code_failed), Toast.LENGTH_SHORT).show();
+                        showErrorMessage(e);
                         LogUtils.d(BaseActivity.Tag, "getProductCode onError");
                     }
 

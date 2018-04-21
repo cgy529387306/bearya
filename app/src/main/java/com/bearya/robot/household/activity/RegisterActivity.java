@@ -9,10 +9,11 @@ import android.widget.TextView;
 
 import com.bearya.robot.household.R;
 import com.bearya.robot.household.api.FamilyApiWrapper;
-import com.bearya.robot.household.entity.LoginInfo;
+import com.bearya.robot.household.entity.LoginData;
 import com.bearya.robot.household.http.retrofit.HttpRetrofitClient;
 import com.bearya.robot.household.utils.NavigationHelper;
 import com.bearya.robot.household.utils.ProjectHelper;
+import com.bearya.robot.household.utils.UserInfoManager;
 import com.bearya.robot.household.views.BaseActivity;
 
 import rx.Subscriber;
@@ -102,12 +103,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                     @Override
                     public void onError(Throwable e) {
                         closeLoadingView();
-                        if (e instanceof HttpRetrofitClient.APIException){
-                            String message = ((HttpRetrofitClient.APIException)e).message;
-                            if (!TextUtils.isEmpty(message)){
-                                showToast(message);
-                            }
-                        }
+                        showErrorMessage(e);
                     }
 
                     @Override
@@ -142,7 +138,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         showLoadingView();
         Subscription subscribe = FamilyApiWrapper.getInstance().register(mobile,password,code)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<LoginInfo>() {
+                .subscribe(new Subscriber<LoginData>() {
 
                     @Override
                     public void onCompleted() {
@@ -152,19 +148,17 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                     @Override
                     public void onError(Throwable e) {
                         closeLoadingView();
-                        if (e instanceof HttpRetrofitClient.APIException){
-                            String message = ((HttpRetrofitClient.APIException)e).message;
-                            if (!TextUtils.isEmpty(message)){
-                                showToast(message);
-                            }
-                        }
+                        showErrorMessage(e);
                     }
 
                     @Override
-                    public void onNext(LoginInfo result) {
+                    public void onNext(LoginData result) {
                         closeLoadingView();
                         showToast(getString(R.string.register_success));
-                        NavigationHelper.startActivity(RegisterActivity.this,UserInfoActivity.class,null,true);
+                        if (result.getUser() != null && !TextUtils.isEmpty(result.getToken())) {
+                            UserInfoManager.getInstance().login(result);
+                            NavigationHelper.startActivity(RegisterActivity.this, UserInfoActivity.class,null,true);
+                        }
                     }
                 });
         subscription.add(subscribe);
