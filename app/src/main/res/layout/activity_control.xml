@@ -2,52 +2,59 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/rl_control_view"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorWhite">
+    android:layout_height="match_parent">
 
     <RelativeLayout
         android:id="@+id/rl_control_top"
         android:layout_width="match_parent"
         android:layout_height="320dp"
-        android:clickable="false"
+        android:layout_alignParentTop="true"
         android:background="@mipmap/normal_bg">
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_alignTop="@+id/tv_device_state"
+            android:padding="10dp"
+            android:src="@mipmap/icon_back_white" />
 
         <TextView
             android:id="@+id/tv_device_state"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/device_state_color"
+            android:layout_height="44dp"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="22dp"
-            android:textSize="15sp"/>
+            android:text="@string/not_install_wx"
+            android:gravity="center"
+            android:textColor="@color/colorWhite"
+            android:textSize="15sp" />
 
         <FrameLayout
             android:id="@+id/rl_remote_video_view_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="22dp"
+            android:layout_marginTop="66dp"
             android:background="@mipmap/background_calling"
             android:visibility="gone" />
-
         <TextView
             android:id="@+id/tv_device_action"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginRight="30dp"
             android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
             android:ellipsize="end"
-            android:maxLines="1"
             android:gravity="center"
+            android:maxLines="1"
             android:textColor="@color/colorWhite"
-            android:textSize="15sp"/>
+            android:textSize="15sp" />
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/rl_control_top"
-        android:clickable="false"
         android:layout_marginBottom="48dp">
 
         <ImageView
@@ -67,34 +74,34 @@
 
             <ImageView
                 android:id="@+id/im_turn_up"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
                 android:layout_centerHorizontal="true"
-                android:background="@drawable/btn_up" />
+                android:src="@mipmap/action_up" />
 
             <ImageView
                 android:id="@+id/im_turn_left"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:background="@drawable/btn_left" />
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_above="@+id/im_turn_down"
+                android:layout_alignParentStart="true"
+                android:src="@mipmap/action_left" />
 
             <ImageView
                 android:id="@+id/im_turn_right"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:background="@drawable/btn_right" />
+                android:src="@mipmap/action_right" />
 
             <ImageView
                 android:id="@+id/im_turn_down"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
-                android:background="@drawable/btn_down" />
-
+                android:src="@mipmap/action_bottom" />
         </RelativeLayout>
     </RelativeLayout>
 
@@ -117,37 +124,98 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
 
-                <ImageView
-                    android:id="@+id/action_expressions"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:scaleType="center"
-                    android:src="@drawable/expression_bg" />
+            <LinearLayout
+                android:id="@+id/action_expressions"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
 
                 <ImageView
+                    android:id="@+id/iv_expressions"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/control_expressions_selector" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:textColor="@color/gray"
+                    android:text="@string/control_expressions"/>
+
+            </LinearLayout>
+
+                <LinearLayout
                     android:id="@+id/action_dances"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:scaleType="center"
-                    android:src="@drawable/dance_bg" />
+                    android:orientation="vertical">
 
-                <ImageView
+                    <ImageView
+                        android:id="@+id/iv_dance"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/control_dance_selector" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:textColor="@color/gray"
+                        android:text="@string/control_dance"/>
+
+                </LinearLayout>
+
+                <LinearLayout
                     android:id="@+id/action_videos"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:scaleType="center"
-                    android:src="@drawable/video_bg" />
+                    android:orientation="vertical">
 
-                <ImageView
+                    <ImageView
+                        android:id="@+id/iv_monitor"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/control_monitor_selector" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:textColor="@color/gray"
+                        android:text="@string/control_monitor"/>
+
+                </LinearLayout>
+
+                <LinearLayout
                     android:id="@+id/action_messages"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:scaleType="center"
-                    android:src="@mipmap/message" />
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/iv_walls"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:layout_gravity="center"
+                        android:src="@mipmap/walls_uncheck" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:textColor="@color/gray"
+                        android:text="@string/control_walls"/>
+
+                </LinearLayout>
+
             </LinearLayout>
 
             <RelativeLayout

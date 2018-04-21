@@ -74,6 +74,7 @@
     <string name="girl">女</string>
     <string name="babyInfo">宝宝资料</string>
     <string name="title_setting">设置</string>
+    <string name="title_habit">兴趣标签</string>
     <string name="no_setting">未设置</string>
     <string name="rabitName">机器人名字</string>
     <string name="birth">生日</string>
@@ -101,4 +102,14 @@
     <string name="update_success">修改成功</string>
     <string name="input_baby_name">请输入宝宝昵称</string>
     <string name="create_success">创建成功</string>
+    <string name="habit_hint1">选择培训宝宝的兴趣</string>
+    <string name="habit_hint2">贝芽将更好的为您的宝宝成长</string>
+    <string name="select_time">选择时间</string>
+    <string name="empty_device_hint">暂无设备</string>
+    <string name="add_device_hint">点击右上角“+”新增设备</string>
+    <string name="input_device_id">请输入设备ID!</string>
+    <string name="control_expressions">表情</string>
+    <string name="control_dance">舞蹈</string>
+    <string name="control_monitor">监控</string>
+    <string name="control_walls">文字</string>
 </resources>

@@ -56,9 +56,12 @@
         android:id="@+id/tv_bind_machine"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="50dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:background="@mipmap/bind_parent"
         android:textSize="@dimen/activity_text_size"
+        android:textColor="@color/colorWhite"
         android:text="@string/bind_machine"
         android:gravity="center"/>
 </LinearLayout>
