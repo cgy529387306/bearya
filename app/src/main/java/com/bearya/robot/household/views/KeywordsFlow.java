@@ -204,7 +204,7 @@ public class KeywordsFlow extends FrameLayout implements ViewTreeObserver.OnGlob
                 txv.setOnClickListener(itemClickListener);
                 txv.setText(keyword);
                 txv.setTextColor(Color.BLACK);
-                txv.setPadding(8, 6, 8, 6);
+                txv.setPadding(12, 12, 12, 12);
                 txv.setSingleLine(true);
                 int r = random.nextInt(256);
                 int g = random.nextInt(256);
