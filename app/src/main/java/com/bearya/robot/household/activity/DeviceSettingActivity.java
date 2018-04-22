@@ -1,20 +1,13 @@
 package com.bearya.robot.household.activity;
 
-import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.DatePicker;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bearya.robot.household.R;
 import com.bearya.robot.household.utils.NavigationHelper;
 import com.bearya.robot.household.views.BaseActivity;
-import com.bearya.robot.household.views.ClearableEditText;
-
-import java.util.Calendar;
 
 
 public class DeviceSettingActivity extends BaseActivity implements View.OnClickListener{
@@ -27,7 +20,7 @@ public class DeviceSettingActivity extends BaseActivity implements View.OnClickL
     private final int EDIT_BIRTH = 2;
     private final int EDIT_WHOSEDAD = 3;
     private final int EDIT_WHOSEMOM = 4;
-
+    private int type;//0:爸爸 1：妈妈
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,10 +53,10 @@ public class DeviceSettingActivity extends BaseActivity implements View.OnClickL
             bundle.putString("edit", "生日");
             NavigationHelper.startActivityForResult(DeviceSettingActivity.this,EditActivity.class,bundle,EDIT_BIRTH);
         }else if (id == R.id.tv_whoseDad){
-            bundle.putString("edit", "他爸爸是谁");
+            bundle.putString("type", "0");
             NavigationHelper.startActivityForResult(DeviceSettingActivity.this,EditActivity.class,bundle,EDIT_WHOSEDAD);
         }else if (id == R.id.tv_whoseMom){
-            bundle.putString("edit","他妈妈是谁");
+            bundle.putString("type","1");
             NavigationHelper.startActivityForResult(DeviceSettingActivity.this,EditActivity.class,bundle,EDIT_WHOSEMOM);
         }
     }

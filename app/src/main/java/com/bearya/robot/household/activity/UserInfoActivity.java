@@ -11,6 +11,7 @@ import com.bearya.robot.household.api.FamilyApiWrapper;
 import com.bearya.robot.household.entity.BabyInfo;
 import com.bearya.robot.household.http.retrofit.HttpRetrofitClient;
 import com.bearya.robot.household.utils.DateHelper;
+import com.bearya.robot.household.utils.NavigationHelper;
 import com.bearya.robot.household.views.BaseActivity;
 import com.bearya.robot.household.views.ClearableEditText;
 import com.codbking.widget.DatePickDialog;
@@ -89,8 +90,8 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
         }else if (id == R.id.edt_birth){
             showTimePicker();
         }else if (id == R.id.tv_next){
-            doAddInfo();
-//            NavigationHelper.startActivity(this,HabitActivity.class,null,false);
+//            doAddInfo();
+            NavigationHelper.startActivity(this,HabitActivity.class,null,false);
         }
     }
 

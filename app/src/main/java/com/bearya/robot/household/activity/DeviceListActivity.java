@@ -8,7 +8,7 @@ import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.Toast;
+
 import com.bearya.robot.household.R;
 import com.bearya.robot.household.adapter.DeviceListAdapter;
 import com.bearya.robot.household.api.FamilyApiWrapper;
@@ -17,7 +17,7 @@ import com.bearya.robot.household.entity.ItemClickCallBack;
 import com.bearya.robot.household.entity.MachineInfo;
 import com.bearya.robot.household.utils.CommonUtils;
 import com.bearya.robot.household.utils.LogUtils;
-import com.bearya.robot.household.utils.UserInfoManager;
+import com.bearya.robot.household.utils.NavigationHelper;
 import com.bearya.robot.household.views.BYCheckDialog;
 import com.bearya.robot.household.views.BaseActivity;
 import com.bearya.robot.household.views.DialogCallback;
@@ -64,7 +64,7 @@ public class DeviceListActivity extends BaseActivity implements View.OnClickList
         deviceListAdapter = new DeviceListAdapter(R.layout.device_list_item, machineInfoList.devices);
         deviceListAdapter.setItemClickCallBack(new ItemClickCallBack() {
             @Override
-            public void onClick(View view) throws Exception {
+            public void onLongClick(View view) throws Exception {
                 final MachineInfo machineInfo = machineInfoList.devices.get((Integer) view.getTag());
                 String msg = String.format(getString(R.string.device_unbind_hint), machineInfo.name);
                 if (checkDialog == null) {
@@ -83,6 +83,11 @@ public class DeviceListActivity extends BaseActivity implements View.OnClickList
                 }
                 checkDialog.setMessage(msg);
                 checkDialog.showDialog();
+            }
+
+            @Override
+            public void onClick(View view) throws Exception {
+                NavigationHelper.startActivity(DeviceListActivity.this,DeviceSettingActivity.class,null,false);
             }
         });
         deviceList.setAdapter(deviceListAdapter);

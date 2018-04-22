@@ -17,6 +17,8 @@ import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
 
+import com.bearya.robot.household.R;
+
 import java.util.LinkedList;
 import java.util.Random;
 import java.util.Vector;
@@ -118,6 +120,7 @@ public class KeywordsFlow extends FrameLayout implements ViewTreeObserver.OnGlob
         return result;
     }
 
+
     /**
      * 开始动画显示。<br/>
      * 之前已经存在的TextView将会显示退出动画。<br/>
@@ -196,19 +199,19 @@ public class KeywordsFlow extends FrameLayout implements ViewTreeObserver.OnGlob
                 int xy[] = randomXY(random, listX, listY, xItem);
                 // 实例化TextView
                 final CircleView txv = new CircleView(getContext());
+                txv.setBackgroundResource(R.drawable.shape_textview_bg);
                 txv.setGravity(Gravity.CENTER);
                 txv.setOnClickListener(itemClickListener);
                 txv.setText(keyword);
-                txv.setTextColor(Color.WHITE);
+                txv.setTextColor(Color.BLACK);
                 txv.setPadding(8, 6, 8, 6);
                 txv.setSingleLine(true);
                 int r = random.nextInt(256);
-                int g= random.nextInt(256);
+                int g = random.nextInt(256);
                 int b = random.nextInt(256);
                 int mColor = Color.rgb(r, g, b);
                 GradientDrawable myGrad = (GradientDrawable)txv.getBackground();
                 myGrad.setColor(mColor);
-//              txv.setBackgroundColor(mColor);
                 // 获取文本长度
                 Paint paint = txv.getPaint();
                 int strWidth = (int) Math.ceil(paint.measureText(keyword));

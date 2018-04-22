@@ -40,7 +40,7 @@ public class DeviceListAdapter extends BaseQuickAdapter<MachineInfo, BaseViewHol
             public boolean onLongClick(View view) {
                 if (itemClickCallBack != null) {
                     try {
-                        itemClickCallBack.onClick(view);
+                        itemClickCallBack.onLongClick(view);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -48,9 +48,19 @@ public class DeviceListAdapter extends BaseQuickAdapter<MachineInfo, BaseViewHol
                 return false;
             }
         });
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (itemClickCallBack != null) {
+                    try {
+                        itemClickCallBack.onClick(view);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
         familyDeviceManage.addDeviceStateListener(helper.getView(R.id.im_device_icon), null, item);
-        //helper.setVisible(R.id.im_device_icon, item.uid <=0);
-        //helper.setText(R.id.tv_machine_state, item.state);
     }
 
     public void delDeviceListener(int uid) {

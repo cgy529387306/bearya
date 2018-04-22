@@ -17,7 +17,6 @@ public class EditActivity extends BaseActivity implements View.OnClickListener{
     private ClearableEditText edtContent; //编辑框
     private TextView tvConfirm; // 确定
     private String content = "";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

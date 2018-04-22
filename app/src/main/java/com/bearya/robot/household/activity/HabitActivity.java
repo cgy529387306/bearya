@@ -27,10 +27,10 @@ public class HabitActivity extends BaseActivity implements View.OnClickListener{
         flowView = (KeywordsFlow) findViewById(R.id.flowView);
     }
     private void initData() {
-        String[] keywords  = new String[] { "口味虾", "牛蛙", "火锅", "真功夫", "料理",
-                "密室逃", "天成房", "波比艾" };
-        feedKeywordsFlow(flowView, keywords);
-        flowView.go2Show(KeywordsFlow.ANIMATION_IN);
+        flowView.setDuration(800l);
+        flowView.setOnItemClickListener(this);
+        initKeywordsFlow();
+        flowView.go2Show(KeywordsFlow.ANIMATION_OUT);
     }
 
     private void initListener(){
@@ -52,13 +52,12 @@ public class HabitActivity extends BaseActivity implements View.OnClickListener{
         }
     }
 
-    private static void feedKeywordsFlow(KeywordsFlow keywordsFlow, String[] arr) {
-        Random random = new Random();
-        for (int i = 0; i < KeywordsFlow.MAX; i++) {
-            int ran = random.nextInt(arr.length);
-            String tmp = arr[ran];
-            keywordsFlow.feedKeyword(tmp);
+    private void initKeywordsFlow() {
+        String[] keywords  = new String[] { "口味虾", "牛蛙", "火锅", "真功夫", "料理"};
+        for (int i=0; i<keywords.length;i++){
+            flowView.feedKeyword(keywords[i]);
         }
+
     }
 
 }

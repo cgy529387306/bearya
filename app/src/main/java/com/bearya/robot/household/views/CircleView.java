@@ -1,43 +1,52 @@
 package com.bearya.robot.household.views;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PaintFlagsDrawFilter;
 import android.util.AttributeSet;
+import android.view.Gravity;
+import android.widget.TextView;
+
+import com.bearya.robot.household.R;
 
 /**
- * Created by Administrator on 2018\4\20 0020.
+ * Created by XiaoMai
  */
-public class CircleView extends android.support.v7.widget.AppCompatTextView {
+@SuppressLint("AppCompatCustomView")
+public class CircleView extends TextView {
 
-    private Paint mBgPaint = new Paint();
+    private int radius;
 
-    PaintFlagsDrawFilter pfd = new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG|Paint.FILTER_BITMAP_FLAG);
+    private int borderWidth;
 
-    public CircleView(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-        // TODO Auto-generated constructor stub
+    private int borderColor;
+
+    private int fillColor;
+
+    public CircleView(Context context) {
+        this(context, null);
     }
 
     public CircleView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        // TODO Auto-generated constructor stub
-        mBgPaint.setColor(Color.WHITE);
-        mBgPaint.setAntiAlias(true);
+        this(context, attrs, 0);
     }
 
-    public CircleView(Context context) {
-        super(context);
-        // TODO Auto-generated constructor stub
-        mBgPaint.setColor(Color.WHITE);
-        mBgPaint.setAntiAlias(true);
+    public CircleView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        borderWidth = 2;
+        borderColor = context.getResources().getColor(R.color.colorBlack);
+        fillColor = context.getResources().getColor(R.color.colorBg);
+        setGravity(Gravity.CENTER);
+    }
+
+    @Override
+    public void setBackgroundColor(int color) {
+        fillColor = color;
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        // TODO Auto-generated method stub
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         int measuredWidth = getMeasuredWidth();
         int measuredHeight = getMeasuredHeight();
@@ -46,24 +55,20 @@ public class CircleView extends android.support.v7.widget.AppCompatTextView {
     }
 
     @Override
-    public void setBackgroundColor(int color) {
-        // TODO Auto-generated method stub
-        mBgPaint.setColor(color);
+    protected void onDraw(Canvas canvas) {
+        int width = getWidth();
+        int height = getWidth();
+        // 半径
+        radius = Math.min(width, height) / 2;
+        if (borderWidth > 0) {
+            Paint borderPaint = new Paint();
+            borderPaint.setColor(borderColor);
+            canvas.drawCircle(getWidth() / 2, getWidth() / 2, radius, borderPaint);
+        }
+        Paint fillPaint = new Paint();
+        fillPaint.setColor(fillColor);
+        canvas.drawCircle(getWidth() / 2, getWidth() / 2, radius - borderWidth, fillPaint);
+        super.onDraw(canvas);
     }
 
-    /**
-     * 设置通知个数显示
-     * @param text
-     */
-    public void setNotifiText(int text){
-        setText(text+"");
-    }
-
-    @Override
-    public void draw(Canvas canvas) {
-        // TODO Auto-generated method stub
-        canvas.setDrawFilter(pfd);
-        canvas.drawCircle(getWidth()/2, getHeight()/2, Math.max(getWidth(), getHeight())/2, mBgPaint);
-        super.draw(canvas);
-    }
 }

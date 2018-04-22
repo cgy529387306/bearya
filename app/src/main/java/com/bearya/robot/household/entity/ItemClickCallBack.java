@@ -11,6 +11,7 @@ import android.view.View;
  */
 public interface ItemClickCallBack {
 
-	void onClick(View view) throws Exception;
+	void onLongClick(View view) throws Exception;
 
+	void onClick(View view) throws Exception;
 }
