@@ -218,6 +218,7 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        closeLoadingView();
                         showToast("上传成功");
                         Glide.with(UserInfoActivity.this).load(avatar).centerCrop().into(imvHead);
                     }
@@ -226,6 +227,13 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
 
             @Override
             public void onFail(CosXmlRequest cosXmlRequest, CosXmlClientException qcloudException, CosXmlServiceException qcloudServiceException) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        closeLoadingView();
+                        showToast("上传失败");
+                    }
+                });
             }
         });
         return avatar;
