@@ -9,8 +9,7 @@ import android.widget.TextView;
 
 import com.bearya.robot.household.R;
 import com.bearya.robot.household.api.FamilyApiWrapper;
-import com.bearya.robot.household.entity.LoginData;
-import com.bearya.robot.household.http.retrofit.HttpRetrofitClient;
+import com.bearya.robot.household.entity.UserData;
 import com.bearya.robot.household.utils.NavigationHelper;
 import com.bearya.robot.household.utils.ProjectHelper;
 import com.bearya.robot.household.utils.UserInfoManager;
@@ -31,7 +30,6 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     private EditText etTel;
     private EditText etCode;
     private EditText etPwd;
-
     private TextView tvSend;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,7 +136,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         showLoadingView();
         Subscription subscribe = FamilyApiWrapper.getInstance().register(mobile,password,code)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<LoginData>() {
+                .subscribe(new Subscriber<UserData>() {
 
                     @Override
                     public void onCompleted() {
@@ -152,7 +150,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                     }
 
                     @Override
-                    public void onNext(LoginData result) {
+                    public void onNext(UserData result) {
                         closeLoadingView();
                         showToast(getString(R.string.register_success));
                         if (result.getUser() != null && !TextUtils.isEmpty(result.getToken())) {

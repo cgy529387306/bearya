@@ -200,9 +200,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             startVideoCallService();
             //Toast.makeText(this, "User:"+userInfo.nickname+" "+userInfo.uid, Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(this, "登入失败，请重新登录！", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.login_error_more, Toast.LENGTH_SHORT).show();
             UserInfoManager.getInstance().loginOut();
-            finish();
+            NavigationHelper.startActivity(MainActivity.this,LoginActivity.class,null,true);
         }
     }
 

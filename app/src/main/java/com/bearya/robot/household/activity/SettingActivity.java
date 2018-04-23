@@ -3,12 +3,16 @@ package com.bearya.robot.household.activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
 import com.bearya.robot.household.R;
+import com.bearya.robot.household.api.FamilyApiWrapper;
+import com.bearya.robot.household.entity.UserData;
 import com.bearya.robot.household.utils.CommonUtils;
 import com.bearya.robot.household.utils.NavigationHelper;
+import com.bearya.robot.household.utils.ProjectHelper;
 import com.bearya.robot.household.utils.SharedPrefUtil;
 import com.bearya.robot.household.utils.UserInfoManager;
 import com.bearya.robot.household.videoCall.AgoraService;
@@ -16,12 +20,17 @@ import com.bearya.robot.household.views.BYCheckDialog;
 import com.bearya.robot.household.views.BaseActivity;
 import com.bearya.robot.household.views.DialogCallback;
 
+import rx.Subscriber;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.subscriptions.CompositeSubscription;
+
 /**
  * Created by cgy on 2018/4/19 0019.
  */
 
 public class SettingActivity extends BaseActivity implements View.OnClickListener{
-
+    private CompositeSubscription subscription;
     private BYCheckDialog checkDialog;
     private TextView tvVersion;
     private TextView tvTel;
@@ -41,6 +50,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     }
 
     private void initData() {
+        subscription = new CompositeSubscription();
         tvVersion.setText(String.format("V%s", CommonUtils.getVersionName(this)));
     }
 
@@ -53,9 +63,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 checkDialog.createDialog(SettingActivity.this).setConfirmCallback(new DialogCallback() {
                     @Override
                     public void callback() {
-                        stopService(new Intent(SettingActivity.this, AgoraService.class));//停止通话服务
-                        UserInfoManager.getInstance().loginOut();
-                        NavigationHelper.startActivity(SettingActivity.this,LoginActivity.class,null,true);
+                        logout();
                     }
                 }).setDismisCallback(new DialogCallback() {
                     @Override
@@ -77,4 +85,41 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         intent.setData(data);
         startActivity(intent);
     }
+
+    private void logout(){
+        showLoadingView();
+        Subscription subscribe = FamilyApiWrapper.getInstance().logout()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Object>() {
+
+                    @Override
+                    public void onCompleted() {
+                        closeLoadingView();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        closeLoadingView();
+                        showErrorMessage(e);
+                    }
+
+                    @Override
+                    public void onNext(Object result) {
+                        closeLoadingView();
+                        stopService(new Intent(SettingActivity.this, AgoraService.class));//停止通话服务
+                        UserInfoManager.getInstance().loginOut();
+                        NavigationHelper.startActivity(SettingActivity.this,LoginActivity.class,null,true);
+                    }
+                });
+        subscription.add(subscribe);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(subscription != null) {
+            subscription.unsubscribe();
+        }
+    }
+
 }

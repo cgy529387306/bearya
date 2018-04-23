@@ -14,17 +14,13 @@ import android.widget.EditText;
 
 import com.bearya.robot.household.R;
 import com.bearya.robot.household.api.FamilyApiWrapper;
-import com.bearya.robot.household.entity.LoginData;
-import com.bearya.robot.household.entity.WxUserData;
-import com.bearya.robot.household.http.retrofit.HttpRetrofitClient;
+import com.bearya.robot.household.entity.UserData;
 import com.bearya.robot.household.utils.LogUtils;
 import com.bearya.robot.household.utils.NavigationHelper;
 import com.bearya.robot.household.utils.ProjectHelper;
-import com.bearya.robot.household.utils.SharedPrefUtil;
 import com.bearya.robot.household.utils.UserInfoManager;
 import com.bearya.robot.household.videoCall.RxConstants;
 import com.bearya.robot.household.views.BaseActivity;
-import com.google.gson.Gson;
 import com.hwangjr.rxbus.RxBus;
 import com.hwangjr.rxbus.annotation.Subscribe;
 import com.hwangjr.rxbus.thread.EventThread;
@@ -121,8 +117,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 boolean isOK = !TextUtils.isEmpty(code);
                 if (isOK) {
                     getUserInfo(code);
-                } else {
-
                 }
             }
         });
@@ -133,7 +127,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         String app = getString(R.string.app_evn).equals("dev")?"family":"household";
         Subscription subscribe = FamilyApiWrapper.getInstance().getUserInfo(code , app)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<WxUserData>() {
+                .subscribe(new Subscriber<UserData>() {
 
                     @Override
                     public void onCompleted() {
@@ -149,12 +143,19 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     }
 
                     @Override
-                    public void onNext(WxUserData loginInfo) {
-                        LogUtils.d(BaseActivity.Tag, "getUserInfo loginInfo:"+loginInfo.toString());
+                    public void onNext(UserData result) {
+                        LogUtils.d(BaseActivity.Tag, "getUserInfo loginInfo:"+result.toString());
                         closeLoadingView();
-                        if (loginInfo.user != null && !TextUtils.isEmpty(loginInfo.token)) {
-//                            UserInfoManager.getInstance().login(loginInfo);
-                            NavigationHelper.startActivity(LoginActivity.this, MainActivity.class,null,true);
+                        if (result.getUser() != null && !TextUtils.isEmpty(result.getToken())) {
+                            if (TextUtils.isEmpty(result.getUser().getMobile())){
+                                showToast(getString(R.string.login_to_bind_tip));
+                                UserInfoManager.getInstance().login(result);
+                                NavigationHelper.startActivity(LoginActivity.this, BindMobileActivity.class,null,true);
+                            }else{
+                                showToast(getString(R.string.login_success));
+                                UserInfoManager.getInstance().login(result);
+                                NavigationHelper.startActivity(LoginActivity.this, MainActivity.class,null,true);
+                            }
                         }
                     }
                 });
@@ -242,7 +243,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         showLoadingView();
         Subscription subscribe = FamilyApiWrapper.getInstance().mobileLogin(mobile,password)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<LoginData>() {
+                .subscribe(new Subscriber<UserData>() {
 
                     @Override
                     public void onCompleted() {
@@ -256,10 +257,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     }
 
                     @Override
-                    public void onNext(LoginData result) {
+                    public void onNext(UserData result) {
                         closeLoadingView();
-                        showToast(getString(R.string.register_login));
                         if (result.getUser() != null && !TextUtils.isEmpty(result.getToken())) {
+                            showToast(getString(R.string.login_success));
                             UserInfoManager.getInstance().login(result);
                             NavigationHelper.startActivity(LoginActivity.this, MainActivity.class,null,true);
                         }

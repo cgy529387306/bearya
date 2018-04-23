@@ -1,7 +1,7 @@
 package com.bearya.robot.household.utils;
 
 import com.bearya.robot.household.MyApplication;
-import com.bearya.robot.household.entity.LoginData;
+import com.bearya.robot.household.entity.UserData;
 import com.bearya.robot.household.entity.UserInfo;
 
 /**
@@ -11,9 +11,9 @@ import com.bearya.robot.household.entity.UserInfo;
 public class UserInfoManager {
 
     private static UserInfoManager instance;
-//    public final static String KEY_IS_LOGIN = "KEY_IS_LOGIN";
-//    public final static String KEY_USER_INFO = "KEY_USER_INFO";
-//    public final static String KEY_TOKEN = "KEY_TOKEN";
+    public final static String KEY_IS_LOGIN = "KEY_IS_LOGIN";
+    public final static String KEY_USER_INFO = "KEY_USER_INFO";
+    public final static String KEY_TOKEN = "KEY_TOKEN";
     public static UserInfoManager getInstance() {
         if (instance == null) {
             instance = new UserInfoManager();
@@ -22,40 +22,40 @@ public class UserInfoManager {
     }
 
 
-    public void login(LoginData loginData){
-        setUserInfo(loginData.getUser());
-        setToken(loginData.getToken());
+    public void login(UserData userData){
+        setUserInfo(userData.getUser());
+        setToken(userData.getToken());
         setIsLogin(true);
     }
 
     public UserInfo getUserInfo(){
-       String userInfo = SharedPrefUtil.getInstance(MyApplication.getContext()).getString("KEY_USER_INFO");
+       String userInfo = SharedPrefUtil.getInstance(MyApplication.getContext()).getString(KEY_USER_INFO);
        return JsonHelper.fromJson(userInfo,UserInfo.class);
     }
 
     public void setUserInfo(UserInfo userInfo){
-        SharedPrefUtil.getInstance(MyApplication.getContext()).put("KEY_USER_INFO", JsonHelper.toExposeJson(userInfo));
+        SharedPrefUtil.getInstance(MyApplication.getContext()).put(KEY_USER_INFO, JsonHelper.toExposeJson(userInfo));
     }
 
     public String getToken(){
-        return SharedPrefUtil.getInstance(MyApplication.getContext()).getString("KEY_TOKEN");
+        return SharedPrefUtil.getInstance(MyApplication.getContext()).getString(KEY_TOKEN);
     }
 
     public void setToken(String token){
-        SharedPrefUtil.getInstance(MyApplication.getContext()).put("KEY_TOKEN", token);
+        SharedPrefUtil.getInstance(MyApplication.getContext()).put(KEY_TOKEN, token);
     }
 
     public Boolean isLogin(){
-        return SharedPrefUtil.getInstance(MyApplication.getContext()).getBoolean("KEY_IS_LOGIN",false);
+        return SharedPrefUtil.getInstance(MyApplication.getContext()).getBoolean(KEY_IS_LOGIN,false);
     }
 
     public void setIsLogin(boolean isLogin){
-        SharedPrefUtil.getInstance(MyApplication.getContext()).put("KEY_IS_LOGIN", isLogin);
+        SharedPrefUtil.getInstance(MyApplication.getContext()).put(KEY_IS_LOGIN, isLogin);
     }
 
     public void loginOut() {
         setUserInfo(null);
         setToken("");
-        setIsLogin(true);
+        setIsLogin(false);
     }
 }

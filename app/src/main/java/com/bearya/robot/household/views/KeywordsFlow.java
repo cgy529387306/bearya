@@ -18,10 +18,12 @@ import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
 
 import com.bearya.robot.household.R;
+import com.bearya.robot.household.entity.HabitInfo;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
-import java.util.Vector;
 
 /**
  * Created by Administrator on 2018\4\20 0020.
@@ -46,7 +48,6 @@ public class KeywordsFlow extends FrameLayout implements ViewTreeObserver.OnGlob
     /** 位移动画类型：从坐标点移动到中心点。 */
     public static final int LOCATION_TO_CENTER = 4;
     public static final long ANIM_DURATION = 800l;
-    public static final int MAX = 12;
     public static final int TEXT_SIZE_MAX = 20;
     public static final int TEXT_SIZE_MIN = 10;
     private OnClickListener itemClickListener;
@@ -56,7 +57,9 @@ public class KeywordsFlow extends FrameLayout implements ViewTreeObserver.OnGlob
     private static ScaleAnimation animScaleLarge2Normal, animScaleNormal2Large,
             animScaleZero2Normal, animScaleNormal2Zero;
     /** 存储显示的关键字。 */
-    private Vector<String> vecKeywords;
+//    private Vector<String> vecKeywords;
+
+            private List<HabitInfo> dataList;
     private int width, height;
     /**
      * go2Show()中被赋值为true，标识开发人员触发其开始动画显示。<br/>
@@ -92,7 +95,7 @@ public class KeywordsFlow extends FrameLayout implements ViewTreeObserver.OnGlob
         lastStartAnimationTime = 0l;
         animDuration = ANIM_DURATION;
         random = new Random();
-        vecKeywords = new Vector<String>(MAX);
+        dataList = new ArrayList<>();
         getViewTreeObserver().addOnGlobalLayoutListener(this);
         interpolator = AnimationUtils.loadInterpolator(getContext(),
                 android.R.anim.decelerate_interpolator);
@@ -112,12 +115,9 @@ public class KeywordsFlow extends FrameLayout implements ViewTreeObserver.OnGlob
         animDuration = duration;
     }
 
-    public boolean feedKeyword(String keyword) {
-        boolean result = false;
-        if (vecKeywords.size() < MAX) {
-            result = vecKeywords.add(keyword);
-        }
-        return result;
+
+    public void setDataList(List<HabitInfo> list){
+        dataList = list;
     }
 
 
@@ -178,12 +178,12 @@ public class KeywordsFlow extends FrameLayout implements ViewTreeObserver.OnGlob
     }
 
     private boolean show() {
-        if (width > 0 && height > 0 && vecKeywords != null
-                && vecKeywords.size() > 0 && enableShow) {
+        if (width > 0 && height > 0 && dataList != null
+                && dataList.size() > 0 && enableShow) {
             enableShow = false;
             lastStartAnimationTime = System.currentTimeMillis();
             int xCenter = width >> 1, yCenter = height >> 1;
-            int size = vecKeywords.size();
+            int size = dataList.size();
             int xItem = width / size, yItem = height / size;
             LinkedList<Integer> listX = new LinkedList<Integer>(), listY = new LinkedList<Integer>();
             for (int i = 0; i < size; i++) {
@@ -194,7 +194,7 @@ public class KeywordsFlow extends FrameLayout implements ViewTreeObserver.OnGlob
             LinkedList<CircleView> listTxtTop = new LinkedList<CircleView>();
             LinkedList<CircleView> listTxtBottom = new LinkedList<CircleView>();
             for (int i = 0; i < size; i++) {
-                String keyword = vecKeywords.get(i);
+                HabitInfo habitInfo = dataList.get(i);
                 // 随机位置，糙值
                 int xy[] = randomXY(random, listX, listY, xItem);
                 // 实例化TextView
@@ -202,9 +202,9 @@ public class KeywordsFlow extends FrameLayout implements ViewTreeObserver.OnGlob
                 txv.setBackgroundResource(R.drawable.shape_textview_bg);
                 txv.setGravity(Gravity.CENTER);
                 txv.setOnClickListener(itemClickListener);
-                txv.setText(keyword);
+                txv.setText(habitInfo.getTag_name());
                 txv.setTextColor(Color.BLACK);
-                txv.setPadding(12, 12, 12, 12);
+                txv.setPadding(50, 50, 50, 50);
                 txv.setSingleLine(true);
                 int r = random.nextInt(256);
                 int g = random.nextInt(256);
@@ -214,7 +214,7 @@ public class KeywordsFlow extends FrameLayout implements ViewTreeObserver.OnGlob
                 myGrad.setColor(mColor);
                 // 获取文本长度
                 Paint paint = txv.getPaint();
-                int strWidth = (int) Math.ceil(paint.measureText(keyword));
+                int strWidth = (int) Math.ceil(paint.measureText(habitInfo.getTag_name()));
                 xy[IDX_TXT_LENGTH] = strWidth;
                 // 第一次修正:修正x坐标
                 if (xy[IDX_X] + strWidth > width - (xItem >> 1)) {
@@ -386,13 +386,7 @@ public class KeywordsFlow extends FrameLayout implements ViewTreeObserver.OnGlob
         }
     }
 
-    public Vector<String> getKeywords() {
-        return vecKeywords;
-    }
 
-    public void rubKeywords() {
-        vecKeywords.clear();
-    }
 
     /** 直接清除所有的TextView。在清除之前不会显示动画。 */
     public void rubAllViews() {

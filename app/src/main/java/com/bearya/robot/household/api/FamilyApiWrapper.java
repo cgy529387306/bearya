@@ -3,9 +3,9 @@ package com.bearya.robot.household.api;
 import com.bearya.robot.household.entity.BabyInfo;
 import com.bearya.robot.household.entity.DeviceInfo;
 import com.bearya.robot.household.entity.DeviceListData;
+import com.bearya.robot.household.entity.HabitData;
 import com.bearya.robot.household.entity.KeyInfo;
-import com.bearya.robot.household.entity.LoginData;
-import com.bearya.robot.household.entity.WxUserData;
+import com.bearya.robot.household.entity.UserData;
 import com.bearya.robot.household.entity.ProductInfo;
 import com.bearya.robot.household.http.retrofit.HttpRetrofitClient;
 
@@ -29,7 +29,7 @@ public class FamilyApiWrapper extends HttpRetrofitClient {
         return trailApiWrapper;
     }
 
-    public Observable<LoginData> register(String mobile, String password, String code) {
+    public Observable<UserData> register(String mobile, String password, String code) {
         return getService(FamilyApiService.class).register(mobile, password,code).compose(this.applySchedulers());
     }
 
@@ -37,12 +37,16 @@ public class FamilyApiWrapper extends HttpRetrofitClient {
         return getService(FamilyApiService.class).sendSms(mobile, action).compose(this.applySchedulers());
     }
 
-    public Observable<LoginData> mobileLogin(String mobile, String password) {
+    public Observable<UserData> mobileLogin(String mobile, String password) {
         return getService(FamilyApiService.class).mobileLogin(mobile, password).compose(this.applySchedulers());
     }
 
-    public Observable<LoginData> wxLogin(String mobile, String password) {
-        return getService(FamilyApiService.class).mobileLogin(mobile, password).compose(this.applySchedulers());
+    public Observable<UserData> mobileBind(String mobile) {
+        return getService(FamilyApiService.class).mobileBind(mobile).compose(this.applySchedulers());
+    }
+
+    public Observable<Object> logout() {
+        return getService(FamilyApiService.class).logout().compose(this.applySchedulers());
     }
 
     public Observable<Object> setPwd(String mobile, String password, String code) {
@@ -53,8 +57,12 @@ public class FamilyApiWrapper extends HttpRetrofitClient {
         return getService(FamilyApiService.class).create(name, relationship,birthday,gender,avatar,tags,is_default).compose(this.applySchedulers());
     }
 
-    public Observable<WxUserData> getUserInfo(String code, String app) {
+    public Observable<UserData> getUserInfo(String code, String app) {
         return getService(FamilyApiService.class).getUserInfo(code, app).compose(this.applySchedulers());
+    }
+
+    public Observable<HabitData> getHabitList() {
+        return getService(FamilyApiService.class).getHabitList(1, Integer.MAX_VALUE).compose(this.applySchedulers());
     }
 
     public Observable<DeviceListData> getDeviceList() {

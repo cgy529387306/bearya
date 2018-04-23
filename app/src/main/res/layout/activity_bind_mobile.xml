@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    android:orientation="vertical">
+
+    <com.bearya.robot.household.views.ClearableEditText
+        android:id="@+id/et_tel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:textColorHint="@color/colorHint"
+        android:textColor="@color/colorBlack"
+        android:background="@null"
+        android:hint="@string/input_phone"
+        android:textSize="@dimen/activity_text_size"
+        android:inputType="number"
+        tools:ignore="TextFields" />
+
+
+    <TextView
+        android:id="@+id/tv_confirm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@mipmap/bind_parent"
+        android:textSize="@dimen/activity_text_size"
+        android:text="@string/confirm"
+        android:textColor="@color/colorWhite"
+        android:gravity="center"/>
+
+</LinearLayout>

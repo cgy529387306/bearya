@@ -19,6 +19,8 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import com.bearya.robot.household.MyApplication;
+
 import org.json.JSONObject;
 
 import java.io.File;
@@ -299,6 +301,51 @@ public class CommonUtils {
      */
     public static boolean isNotEmpty(Object object){
         return !isEmpty(object);
+    }
+
+    /**
+     * <p> 取得基本的缓存路径(无SD卡则使用RAM)
+     *
+     * @return 类似这样的路径 /mnt/sdcard/Android/data/demo.android/cache/ 或者 /data/data/demo.android/cache/
+     */
+    public static String getBaseCachePath() {
+        String result = null;
+        // 有些机型外部存储不按套路出牌的
+        try {
+            if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())
+                    && Environment.getExternalStorageDirectory().canWrite()) {
+                result = MyApplication.getContext().getExternalCacheDir().getAbsolutePath().concat(File.separator);
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (TextUtils.isEmpty(result)) {
+            result = MyApplication.getContext().getCacheDir().getPath().concat(File.separator);
+        }
+        return result;
+    }
+
+    /**
+     * <p> 取得默认类型的基本的文件路径(无SD卡则使用RAM)
+     * <p> 默认为下载目录
+     *
+     * @return 类似这样的路径 /mnt/sdcard/Android/data/demo.android/files/Download/ 或者 /data/data/demo.android/files/
+     */
+    public static String getBaseFilePath() {
+        String result = null;
+        try {
+            if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())
+                    && Environment.getExternalStorageDirectory().canWrite()) {
+                result = MyApplication.getContext().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)
+                        .getAbsolutePath().concat(File.separator);
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (TextUtils.isEmpty(result)) {
+            result = MyApplication.getContext().getFilesDir().getPath().concat(File.separator);
+        }
+        return result;
     }
 
 }
