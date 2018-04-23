@@ -67,6 +67,7 @@ public abstract class BaseActivity extends AppCompatActivity implements CommonDi
     private boolean isSupportExit = false;
     private List<VersionInfo> mVersionInfos = new ArrayList<>();
     private boolean isInitRobotUpdater = false;
+    private TextView mRightTip;
 
     public static void checkAppVersion(final Context context) {
         String url = "https://api.bearya.com/v1/source/apk/update?device=3";
@@ -249,6 +250,9 @@ public abstract class BaseActivity extends AppCompatActivity implements CommonDi
     protected void setContentView(int title, int layout) {
         contentView(title, null, 0, 0, 0, 0, null, layout, null, false);
     }
+    protected void setContentView(int title, int layout ,String rightString) {
+        contentView(title, null, 0, 0, 0, 0, rightString, layout, null, false);
+    }
 
     protected void setContentView(String title, int rightResId, int layout) {
         contentView(0, title,  0,  0, rightResId, 0, null, layout, null, false);
@@ -283,6 +287,7 @@ public abstract class BaseActivity extends AppCompatActivity implements CommonDi
         mTitleRight = (ImageView) findViewById(R.id.btn_right);
         mTitleLeft = (ImageView) findViewById(R.id.btn_left);
         mTitle = (TextView) findViewById(R.id.tv_title);
+        mRightTip = (TextView) findViewById(R.id.tv_right_tip);
         String titleRes = titleResId > 0 ? getString(titleResId)
                 : titleString;
         if (TextUtils.isEmpty(titleRes)) {
@@ -290,8 +295,16 @@ public abstract class BaseActivity extends AppCompatActivity implements CommonDi
         } else {
             mTitle.setText(titleRes);
         }
+        String rightTip = rightString;
+        if (TextUtils.isEmpty(rightTip)) {
+            mRightTip.setVisibility(View.GONE);
+        } else {
+            mRightTip.setVisibility(View.VISIBLE);
+            mRightTip.setText(rightString);
+        }
         mTitleRight.setOnClickListener(listener);
         mTitleLeft.setOnClickListener(listener);
+        mRightTip.setOnClickListener(listener);
 
         if (leftResId > 0) {
             mTitleLeft.setImageResource(leftResId);
@@ -344,8 +357,13 @@ public abstract class BaseActivity extends AppCompatActivity implements CommonDi
             } else if(id == R.id.btn_left) {
                 onBack();
             }
+            else if(id == R.id.tv_right_tip) {
+                onRightTip();
+            }
         }
     };
+
+    protected  void onRightTip(){}
 
     public void exitApp() {
         Intent intent = new Intent(this, RootActivity.class);

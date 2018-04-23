@@ -1,6 +1,7 @@
 package com.bearya.robot.household.api;
 
 import com.bearya.robot.household.entity.BabyInfo;
+import com.bearya.robot.household.entity.DeviceInfo;
 import com.bearya.robot.household.entity.DeviceListData;
 import com.bearya.robot.household.entity.KeyInfo;
 import com.bearya.robot.household.entity.LoginData;
@@ -66,6 +67,13 @@ public class FamilyApiWrapper extends HttpRetrofitClient {
 
     public Observable<Object> unBindDevice(String sn) {
         return getService(FamilyApiService.class).unBindDevice(sn).compose(this.applySchedulers());
+    }
+
+    public Observable<DeviceInfo> getDeviceDetail(String sn) {
+        return getService(FamilyApiService.class).getDeviceDetail(sn).compose(this.applySchedulers());
+    }
+    public Observable<DeviceInfo> modify(String sn,String wakeup,String name,String gender,String birthday,String mother_name,String father_name) {
+        return getService(FamilyApiService.class).modify(sn,wakeup,name,gender,birthday,mother_name,father_name).compose(this.applySchedulers());
     }
 
     public Observable<KeyInfo> getMonitorKey(String deviceId, int uid) {

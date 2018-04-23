@@ -26,4 +26,5 @@
     <color name="colorTextGray">#ff999999</color>
     <color name="colorBackground">#fff7f7f8</color>
     <color name="colorSex">#ffec6941</color>
+    <color name="colorWakeup">#fff8b551</color>
 </resources>

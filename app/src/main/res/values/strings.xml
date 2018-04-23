@@ -112,4 +112,10 @@
     <string name="control_dance">舞蹈</string>
     <string name="control_monitor">监控</string>
     <string name="control_walls">文字</string>
+    <string name="wakeup_walls">评估唤醒词</string>
+    <string name="input_4">请输入4个字名称</string>
+    <string name="wakeup_content">唤醒词:\n1、您可以使用自定义的唤醒词来唤醒设备\n2、音节覆盖尽量多，
+    长度最好为4个音节；尽量覆盖多个不用音节，同事避免使用只有元音音节的字\n3、相似音节要规避，
+    发音要清晰响亮\n4、不要使用家庭成员的名字，不然都不知道在喊谁呢</string>
+    <string name="goto_wakeup">请前往设置唤醒词</string>
 </resources>

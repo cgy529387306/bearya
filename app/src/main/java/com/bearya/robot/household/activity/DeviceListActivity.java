@@ -12,6 +12,7 @@ import android.widget.FrameLayout;
 import com.bearya.robot.household.R;
 import com.bearya.robot.household.adapter.DeviceListAdapter;
 import com.bearya.robot.household.api.FamilyApiWrapper;
+import com.bearya.robot.household.entity.DeviceInfo;
 import com.bearya.robot.household.entity.DeviceListData;
 import com.bearya.robot.household.entity.ItemClickCallBack;
 import com.bearya.robot.household.entity.MachineInfo;
@@ -87,7 +88,8 @@ public class DeviceListActivity extends BaseActivity implements View.OnClickList
 
             @Override
             public void onClick(View view) throws Exception {
-                NavigationHelper.startActivity(DeviceListActivity.this,DeviceSettingActivity.class,null,false);
+                final MachineInfo machineInfo = machineInfoList.devices.get((Integer) view.getTag());
+                getDeviceDetail(machineInfo);
             }
         });
         deviceList.setAdapter(deviceListAdapter);
@@ -171,6 +173,42 @@ public class DeviceListActivity extends BaseActivity implements View.OnClickList
                         closeLoadingView();
                         setResult(RESULT_OK);
                         getDeviceList();
+                    }
+                });
+        sc.add(subscribe);
+    }
+
+    public void getDeviceDetail(MachineInfo machineInfo) {
+        showLoadingView();
+        Subscription subscribe = FamilyApiWrapper.getInstance().getDeviceDetail(machineInfo.serial_num)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<DeviceInfo>() {
+
+                    @Override
+                    public void onCompleted() {
+                        closeLoadingView();
+                        LogUtils.d(BaseActivity.Tag, "getDeviceDetail onCompleted");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        closeLoadingView();
+                        showErrorMessage(e);
+                        LogUtils.d(BaseActivity.Tag, "getDeviceDetail onError");
+                    }
+
+                    @Override
+                    public void onNext(DeviceInfo result) {
+                        closeLoadingView();
+                        Bundle bundle = new Bundle();
+                        bundle.putString("name",result.getName());
+                        bundle.putString("dtype",result.getDtype());
+                        bundle.putString("father_name",result.getFather_name());
+                        bundle.putString("mother_name",result.getMother_name());
+                        bundle.putString("sn",result.getSn());
+                        bundle.putString("birth",String.valueOf(result.getBirthday()));
+                        bundle.putString("gender",String.valueOf(result.getGender()));
+                        NavigationHelper.startActivity(DeviceListActivity.this,DeviceSettingActivity.class,bundle,false);
                     }
                 });
         sc.add(subscribe);

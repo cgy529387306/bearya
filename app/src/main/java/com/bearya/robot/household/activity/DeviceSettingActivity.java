@@ -2,12 +2,21 @@ package com.bearya.robot.household.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
 import com.bearya.robot.household.R;
+import com.bearya.robot.household.api.FamilyApiWrapper;
+import com.bearya.robot.household.entity.DeviceInfo;
+import com.bearya.robot.household.utils.LogUtils;
 import com.bearya.robot.household.utils.NavigationHelper;
 import com.bearya.robot.household.views.BaseActivity;
+
+import rx.Subscriber;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.subscriptions.CompositeSubscription;
 
 
 public class DeviceSettingActivity extends BaseActivity implements View.OnClickListener{
@@ -21,11 +30,21 @@ public class DeviceSettingActivity extends BaseActivity implements View.OnClickL
     private final int EDIT_WHOSEDAD = 3;
     private final int EDIT_WHOSEMOM = 4;
     private int type;//0:爸爸 1：妈妈
+    private CompositeSubscription sc;
+    private String gender = "";
+    private String sn = "";
+    private String wakeup = "";
+    private String name = "";
+    private String birth = "";
+    private String father_name = "";
+    private String mother_name = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.string.device_setting,R.layout.activity_device_setting);
+        setContentView(R.string.device_setting,R.layout.activity_device_setting,"保存");
         initView();
+        initData();
         initListener();
     }
 
@@ -35,11 +54,65 @@ public class DeviceSettingActivity extends BaseActivity implements View.OnClickL
         tvWhoseDad = (TextView) findViewById(R.id.tv_whoseDad);
         tvWhoseMom = (TextView) findViewById(R.id.tv_whoseMom);
     }
+
+    @Override
+    protected void onRightTip() { //右上角点击事件
+        super.onRightTip();
+        save();
+    }
+
+    private void initData() {
+        sc = new CompositeSubscription();
+        Bundle bundle = getIntent().getExtras();
+        name = bundle.getString("name");
+        birth = bundle.getString("dtype");
+        father_name = bundle.getString("father_name");
+        mother_name = bundle.getString("mother_name");
+        gender = bundle.getString("gender");
+        sn = bundle.getString("sn");
+        tvRabitName.setText(!TextUtils.isEmpty(name)? name: "");
+        tvBirth.setText(!TextUtils.isEmpty(birth)? birth: "");
+        tvWhoseDad.setText(!TextUtils.isEmpty(father_name)? father_name: "");
+        tvWhoseMom.setText(!TextUtils.isEmpty(mother_name)? mother_name: "");
+    }
+
     private void initListener(){
         tvRabitName.setOnClickListener(this);
         tvBirth.setOnClickListener(this);
         tvWhoseDad.setOnClickListener(this);
         tvWhoseMom.setOnClickListener(this);
+    }
+
+
+    private void save() {
+        if (TextUtils.isEmpty(wakeup)){
+            showToast(getString(R.string.goto_wakeup));
+            return;
+        }
+        showLoadingView();
+        Subscription subscribe = FamilyApiWrapper.getInstance().modify(sn,wakeup,name,gender,birth,mother_name,father_name)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<DeviceInfo>() {
+
+                    @Override
+                    public void onCompleted() {
+                        closeLoadingView();
+                        LogUtils.d(BaseActivity.Tag, "save onCompleted");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        closeLoadingView();
+                        showErrorMessage(e);
+                        LogUtils.d(BaseActivity.Tag, "save onError");
+                    }
+
+                    @Override
+                    public void onNext(DeviceInfo result) {
+                        closeLoadingView();
+                    }
+                });
+        sc.add(subscribe);
     }
 
     @Override
@@ -48,7 +121,7 @@ public class DeviceSettingActivity extends BaseActivity implements View.OnClickL
         Bundle bundle = new Bundle();
         if (id == R.id.tv_rabitName){
             bundle.putString("edit", "机器人名字");
-            NavigationHelper.startActivityForResult(DeviceSettingActivity.this,EditActivity.class,bundle,EDIT_RABITNAME);
+            NavigationHelper.startActivityForResult(DeviceSettingActivity.this,WakeUpActivity.class,bundle,EDIT_RABITNAME);
         }else if (id == R.id.tv_birth){
             bundle.putString("edit", "生日");
             NavigationHelper.startActivityForResult(DeviceSettingActivity.this,EditActivity.class,bundle,EDIT_BIRTH);
@@ -66,6 +139,7 @@ public class DeviceSettingActivity extends BaseActivity implements View.OnClickL
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == 0){
             if (requestCode == EDIT_RABITNAME){
+                wakeup = data.getStringExtra("content");
                 tvRabitName.setText(data.getStringExtra("content"));
             }else if (requestCode == EDIT_BIRTH){
                 tvBirth.setText(data.getStringExtra("content"));

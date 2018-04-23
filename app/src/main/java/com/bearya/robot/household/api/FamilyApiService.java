@@ -1,6 +1,7 @@
 package com.bearya.robot.household.api;
 
 import com.bearya.robot.household.entity.BabyInfo;
+import com.bearya.robot.household.entity.DeviceInfo;
 import com.bearya.robot.household.entity.DeviceListData;
 import com.bearya.robot.household.entity.KeyInfo;
 import com.bearya.robot.household.entity.LoginData;
@@ -37,6 +38,12 @@ public interface FamilyApiService {
     Observable<HttpResult<Object>> bindDevice(@Query("sn") String sn);
     @POST("v1/baby/bind/delete")
     Observable<HttpResult<Object>> unBindDevice(@Query("sn") String sn);
+
+    @POST("v1/baby/info/detail")
+    Observable<HttpResult<DeviceInfo>> getDeviceDetail(@Query("sn") String sn);
+    @POST("v1/baby/info/modify")
+    Observable<HttpResult<Object>> modify(@Query("sn") String sn,@Query("wakeup") String wakeup,@Query("name") String name,@Query("gender") String gender,@Query("birthday") String birthday,
+                                          @Query("mother_name") String mother_name,@Query("father_name") String father_name);
 
 
     @POST("v1/service/live/getKey")
