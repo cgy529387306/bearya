@@ -91,7 +91,7 @@
     <string name="send_success">发送成功</string>
     <string name="register_success">注册成功</string>
     <string name="login_success">登录成功</string>
-    <string name="login_to_bind_tip">还未绑定手机号，请先绑定手机号</string>
+    <string name="login_to_bind_tip">您是第一次登陆，请先绑定手机号</string>
     <string name="bind_success">绑定成功</string>
     <string name="input_password">请输入密码</string>
     <string name="input_valid_code">请输入验证码</string>

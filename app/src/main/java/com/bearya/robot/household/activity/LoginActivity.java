@@ -146,7 +146,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     public void onNext(UserData result) {
                         LogUtils.d(BaseActivity.Tag, "getUserInfo loginInfo:"+result.toString());
                         closeLoadingView();
-                        if (result.getUser() != null && !TextUtils.isEmpty(result.getToken())) {
+                        if (result.getUser() != null) {
                             if (TextUtils.isEmpty(result.getUser().getMobile())){
                                 showToast(getString(R.string.login_to_bind_tip));
                                 UserInfoManager.getInstance().login(result);
