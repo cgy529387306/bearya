@@ -7,22 +7,18 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bearya.robot.household.R;
-import com.bearya.robot.household.api.FamilyApiWrapper;
-import com.bearya.robot.household.entity.UserData;
 import com.bearya.robot.household.qcloud.QServiceCfg;
 import com.bearya.robot.household.utils.CommonUtils;
 import com.bearya.robot.household.utils.DateHelper;
 import com.bearya.robot.household.utils.NavigationHelper;
-import com.bearya.robot.household.utils.ProjectHelper;
-import com.bearya.robot.household.utils.UserInfoManager;
 import com.bearya.robot.household.views.BaseActivity;
 import com.bearya.robot.household.views.BottomMenuDialog;
+import com.bearya.robot.household.views.CircleCrop;
 import com.bearya.robot.household.views.ClearableEditText;
 import com.bumptech.glide.Glide;
 import com.codbking.widget.DatePickDialog;
@@ -30,7 +26,6 @@ import com.codbking.widget.OnSureLisener;
 import com.codbking.widget.bean.DateType;
 import com.tencent.cos.xml.exception.CosXmlClientException;
 import com.tencent.cos.xml.exception.CosXmlServiceException;
-import com.tencent.cos.xml.listener.CosXmlProgressListener;
 import com.tencent.cos.xml.listener.CosXmlResultListener;
 import com.tencent.cos.xml.model.CosXmlRequest;
 import com.tencent.cos.xml.model.CosXmlResult;
@@ -38,16 +33,6 @@ import com.tencent.cos.xml.model.object.PutObjectRequest;
 
 import java.io.File;
 import java.util.Date;
-import java.util.List;
-import java.util.function.Consumer;
-import java.util.function.Function;
-
-import rx.Observable;
-import rx.Subscriber;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
-import rx.subscriptions.CompositeSubscription;
 
 
 public class UserInfoActivity extends BaseActivity implements View.OnClickListener {
@@ -69,7 +54,8 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
     private BottomMenuDialog pickDialog;
     private String mTempFilePath = CommonUtils.getBaseCachePath()
             .concat(String.valueOf(System.currentTimeMillis())).concat(".png");
-    private CompositeSubscription subscription;
+    private static final String imageUrlPre = "http://s1.bearya.com/app-photo/family/";
+    private static final String imagePathPre = "app-photo/family/";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,7 +67,6 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
 
     private void initData(){
         qServiceCfg = QServiceCfg.instance(UserInfoActivity.this);
-        subscription = new CompositeSubscription();
     }
 
     @Override
@@ -194,35 +179,32 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
      * 采用异步回调操作
      */
     public void uploadAvatar() {
+        if (TextUtils.isEmpty(mTempFilePath)){
+            return;
+        }
         showLoadingView();
-        qServiceUpload();
-    }
-
-    private String qServiceUpload(){
         String bucket = QServiceCfg.bucket;
-        String cosPath = "app-photo/family/" + System.currentTimeMillis() + ".png";
+        String cosPath = imagePathPre + System.currentTimeMillis() + ".png";
         putObjectRequest = new PutObjectRequest(bucket, cosPath,
                 mTempFilePath);
-        putObjectRequest.setProgressListener(new CosXmlProgressListener() {
-            @Override
-            public void onProgress(long progress, long max) {
-                float result = (float) (progress * 100.0 / max);
-                Log.w("XIAO", "progress =" + (long) result + "%");
-            }
-        });
-        putObjectRequest.setSign(600, null, null);
         qServiceCfg.cosXmlService.putObjectAsync(putObjectRequest, new CosXmlResultListener() {
             @Override
             public void onSuccess(CosXmlRequest cosXmlRequest, CosXmlResult cosXmlResult) {
-                avatar = cosXmlResult.accessUrl;
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        closeLoadingView();
-                        showToast("上传成功");
-                        Glide.with(UserInfoActivity.this).load(avatar).centerCrop().into(imvHead);
-                    }
-                });
+                if (cosXmlResult!=null && !TextUtils.isEmpty(cosXmlResult.accessUrl)){
+                    String fileName = cosXmlResult.accessUrl.substring(cosXmlResult.accessUrl.lastIndexOf("/"));
+                    avatar = imageUrlPre+fileName;
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            closeLoadingView();
+                            showToast("上传成功");
+                            Glide.with(UserInfoActivity.this).load(avatar)
+                                    .placeholder(R.mipmap.header_mom)
+                                    .error(R.mipmap.header_dad)
+                                    .transform(new CircleCrop(UserInfoActivity.this)).into(imvHead);
+                        }
+                    });
+                }
             }
 
             @Override
@@ -236,7 +218,6 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
                 });
             }
         });
-        return avatar;
     }
 
     private void pickPhoto() {
@@ -351,14 +332,6 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
             startActivityForResult(intent, 3);
         } catch (ActivityNotFoundException e) {
             e.printStackTrace();
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if(subscription != null) {
-            subscription.unsubscribe();
         }
     }
 

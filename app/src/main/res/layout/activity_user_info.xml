@@ -11,7 +11,7 @@
         android:layout_height="150dp"
         android:layout_marginTop="30dp"
         android:layout_gravity="center"
-        android:src="@mipmap/icon_uncheck"/>
+        android:src="@mipmap/header_dad"/>
 
     <LinearLayout
         android:layout_width="match_parent"
