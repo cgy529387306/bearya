@@ -79,8 +79,8 @@ public class HabitActivity extends BaseActivity implements View.OnClickListener 
 
     private void doAddInfo() {
         showLoadingView();
-        String stamp = DateHelper.date2Stamp(birth);
-        Subscription subscribe = FamilyApiWrapper.getInstance().create(name, relationship, stamp, gender, avatar, "1", 0)
+        long stamp = DateHelper.dateString2Long(birth);
+        Subscription subscribe = FamilyApiWrapper.getInstance().create(name, relationship, String.valueOf(stamp), gender, avatar, "1", 0)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<BabyInfo>() {
 

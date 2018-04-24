@@ -132,7 +132,7 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
             bundle.putString("relationship", relationship);
             bundle.putInt("gender", gender);
             bundle.putString("avatar", !TextUtils.isEmpty(avatar) ? avatar : "");
-            NavigationHelper.startActivity(this, HabitActivity.class, null, false);
+            NavigationHelper.startActivity(this, HabitActivity.class, bundle, false);
         }
     }
 

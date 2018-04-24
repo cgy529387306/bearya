@@ -28,7 +28,7 @@
             android:layout_height="match_parent"
             android:gravity="end|center"
             android:textColor="@color/colorTextGray"
-            android:text="小贝你好"
+            android:text="@string/no_setting"
             android:textSize="@dimen/activity_text_size"
             android:drawableRight="@mipmap/icon_list_arrow"
             android:drawablePadding="5dp"/>

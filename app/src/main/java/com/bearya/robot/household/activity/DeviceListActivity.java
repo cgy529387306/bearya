@@ -90,7 +90,9 @@ public class DeviceListActivity extends BaseActivity implements View.OnClickList
             @Override
             public void onClick(View view) throws Exception {
                 final MachineInfo machineInfo = machineInfoList.devices.get((Integer) view.getTag());
-                getDeviceDetail(machineInfo);
+                Bundle bundle = new Bundle();
+                bundle.putString("sn",machineInfo.serial_num);
+                NavigationHelper.startActivity(DeviceListActivity.this,DeviceSettingActivity.class,bundle,false);
             }
         });
         deviceList.setAdapter(deviceListAdapter);
@@ -179,42 +181,6 @@ public class DeviceListActivity extends BaseActivity implements View.OnClickList
         sc.add(subscribe);
     }
 
-    public void getDeviceDetail(MachineInfo machineInfo) {
-        showLoadingView();
-        Subscription subscribe = FamilyApiWrapper.getInstance().getDeviceDetail(machineInfo.serial_num)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<DeviceInfo>() {
-
-                    @Override
-                    public void onCompleted() {
-                        closeLoadingView();
-                        LogUtils.d(BaseActivity.Tag, "getDeviceDetail onCompleted");
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        closeLoadingView();
-                        showErrorMessage(e);
-                        LogUtils.d(BaseActivity.Tag, "getDeviceDetail onError");
-                    }
-
-                    @Override
-                    public void onNext(DeviceInfo result) {
-                        closeLoadingView();
-                        Bundle bundle = new Bundle();
-                        bundle.putString("name",result.getName());
-                        bundle.putString("dtype",result.getDtype());
-                        bundle.putString("father_name",result.getFather_name());
-                        bundle.putString("mother_name",result.getMother_name());
-                        bundle.putString("sn",result.getSn());
-                        bundle.putString("birth",String.valueOf(result.getBirthday()));
-                        bundle.putString("gender",String.valueOf(result.getGender()));
-                        bundle.putString("wakeup",!TextUtils.isEmpty(result.getWakeup()) ? result.getWakeup() : "");
-                        NavigationHelper.startActivity(DeviceListActivity.this,DeviceSettingActivity.class,bundle,false);
-                    }
-                });
-        sc.add(subscribe);
-    }
 
     @Override
     protected void onDestroy() {

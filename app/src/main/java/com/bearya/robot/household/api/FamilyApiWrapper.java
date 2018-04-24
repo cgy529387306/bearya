@@ -8,7 +8,9 @@ import com.bearya.robot.household.entity.KeyInfo;
 import com.bearya.robot.household.entity.UserData;
 import com.bearya.robot.household.entity.ProductInfo;
 import com.bearya.robot.household.http.retrofit.HttpRetrofitClient;
+import com.bearya.robot.household.utils.JsonHelper;
 
+import okhttp3.RequestBody;
 import rx.Observable;
 @SuppressWarnings("unchecked")
 public class FamilyApiWrapper extends HttpRetrofitClient {
@@ -80,8 +82,9 @@ public class FamilyApiWrapper extends HttpRetrofitClient {
     public Observable<DeviceInfo> getDeviceDetail(String sn) {
         return getService(FamilyApiService.class).getDeviceDetail(sn).compose(this.applySchedulers());
     }
-    public Observable<DeviceInfo> modify(String sn,String wakeup,String name,String gender,String birthday,String mother_name,String father_name) {
-        return getService(FamilyApiService.class).modify(sn,wakeup,name,gender,birthday,mother_name,father_name).compose(this.applySchedulers());
+    public Observable<DeviceInfo> modify(DeviceInfo deviceInfo) {
+        RequestBody body = RequestBody.create(okhttp3.MediaType.parse("text/json; charset=utf-8"), JsonHelper.toJson(deviceInfo));
+        return getService(FamilyApiService.class).modify(body).compose(this.applySchedulers());
     }
 
     public Observable<KeyInfo> getMonitorKey(String deviceId, int uid) {

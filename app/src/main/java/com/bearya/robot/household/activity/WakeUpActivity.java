@@ -18,21 +18,18 @@ public class WakeUpActivity extends BaseActivity implements View.OnClickListener
     private ClearableEditText edtName; //编辑框
     private TextView tvEvaluate; // 评估
     private ImageView ivStar1,ivStar2,ivStar3,ivStar4,ivStar5;
-    private String wakeup = "";
-    private String name = "";
-
+    private String content;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initData();
-        setContentView(name,R.layout.activity_wakeup,"生成");
+        setContentView("机器人名字",R.layout.activity_wakeup,"生成");
+        getIntentData();
         initView();
         initListener();
     }
 
-    private void initData() {
-        wakeup = getIntent().getStringExtra("wakeup");
-        name = getIntent().getStringExtra("name");
+    private void getIntentData() {
+        content = getIntent().getStringExtra("edit");
     }
 
     private void initView() {
@@ -44,7 +41,8 @@ public class WakeUpActivity extends BaseActivity implements View.OnClickListener
         ivStar4 = (ImageView) findViewById(R.id.iv_star_4);
         ivStar5 = (ImageView) findViewById(R.id.iv_star_5);
         tvEvaluate = (TextView) findViewById(R.id.tv_evaluate);
-        edtName.setText(wakeup);
+        edtName.setText(content==null?"":content);
+        edtName.setSelection(content==null?0:content.length());
     }
 
     private void initListener() {
@@ -68,7 +66,7 @@ public class WakeUpActivity extends BaseActivity implements View.OnClickListener
             }
             Intent intent = new Intent();
             intent.putExtra("content",content);
-            setResult(0,intent);
+            setResult(RESULT_OK,intent);
             finish();
         }else if (id == R.id.iv_star_1){
             starEvaluate(0,0,0,0,0);

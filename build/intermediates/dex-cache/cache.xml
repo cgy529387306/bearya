@@ -1,0 +1,473 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="false"
+        jar="C:\Users\Administrator\.gradle\caches\modules-2\files-2.1\com.squareup.okhttp3\okhttp\3.8.0\5a11f020cce2d11eb71ba916700600e18c4547e7\okhttp-3.8.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="5a11f020cce2d11eb71ba916700600e18c4547e7">
+        <dex dex="E:\workspace\bearya.git\trunk\app\build\intermediates\pre-dexed\debug\okhttp-3.8.0_33bf805d1981bef7597a6907c10bb939ca43c5d6.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Administrator\.android\build-cache\a4c64b27dc30698ac74633d4323baa0cefbdd613\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="f577701fa1e05f14bde07bfbd522ced08fe1f7a0">
+        <dex dex="E:\workspace\bearya.git\trunk\app\build\intermediates\pre-dexed\debug\classes_207c2ce986c8357d7e39707992a25008d43c52de.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Administrator\.android\build-cache\c5b423b72f72401d0ac5b6246c00c2158b1def4a\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="952944218ecedea1554a513dec0c14d570642843">
+        <dex dex="E:\workspace\bearya.git\trunk\app\build\intermediates\pre-dexed\debug\classes_65e4af8d93e82208994cd4c4451527775ebf26b0.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Administrator\.gradle\caches\modules-2\files-2.1\com.alibaba\fastjson\1.1.56.android\4eef0ac3ef5e18db7af5d44ca0228ca5c29dd2f6\fastjson-1.1.56.android.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="4eef0ac3ef5e18db7af5d44ca0228ca5c29dd2f6">
+        <dex dex="E:\workspace\bearya.git\trunk\app\build\intermediates\pre-dexed\debug\fastjson-1.1.56.android_386c2456554c2ec5c2fcf94721f36062490b99c1.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Administrator\.android\build-cache\32acb04031b182ec8fa7a02931fbabfbae02d59a\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="9a08bb61a384b4d8267d8e1a82ca3ea8b77c9924">
+        <dex dex="E:\workspace\bearya.git\trunk\app\build\intermediates\pre-dexed\debug\classes_90325af86abad29905a4f3d5e3f9363fec0741ae.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Administrator\.gradle\caches\modules-2\files-2.1\com.squareup.retrofit2\retrofit\2.3.0\bcacde6a8ccedcc56c127403d26b76072fe6214d\retrofit-2.3.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="bcacde6a8ccedcc56c127403d26b76072fe6214d">
+        <dex dex="E:\workspace\bearya.git\trunk\app\build\intermediates\pre-dexed\debug\retrofit-2.3.0_098b09b6a11593dc20fc4b42f55a6f8fd8090285.jar" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="E:\workspace\bearya.git\trunk\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.2"
+        sha1="83537adea4736fb915a82488b29d01f75825765c">
+        <dex dex="E:\workspace\bearya.git\trunk\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_7d63e78c2931e206a5b51bf1a352e84bf1c72312\classes.dex" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Administrator\.gradle\caches\modules-2\files-2.1\com.squareup.okio\okio\1.13.0\a9283170b7305c8d92d25aff02a6ab7e45d06cbe\okio-1.13.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="a9283170b7305c8d92d25aff02a6ab7e45d06cbe">
+        <dex dex="E:\workspace\bearya.git\trunk\app\build\intermediates\pre-dexed\debug\okio-1.13.0_f63c7ab08dbed3c34e0fe0b9b1a691240ffa1bb7.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Administrator\.gradle\caches\modules-2\files-2.1\com.wilddog.client\wilddog-common-android\2.0.2\5e48817ef166ae4e9d6e58e3e86ec24f5e27f63d\wilddog-common-android-2.0.2.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="5e48817ef166ae4e9d6e58e3e86ec24f5e27f63d">
+        <dex dex="E:\workspace\bearya.git\trunk\app\build\intermediates\pre-dexed\debug\wilddog-common-android-2.0.2_8645ffcece2740fb6c2ed0e99c8bea1988d7d3fa.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Administrator\.gradle\caches\modules-2\files-2.1\io.socket\engine.io-client\0.8.3\854b49396e1e9f9bb0ab025062ddb49c4ed65ca1\engine.io-client-0.8.3.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="854b49396e1e9f9bb0ab025062ddb49c4ed65ca1">
+        <dex dex="E:\workspace\bearya.git\trunk\app\build\intermediates\pre-dexed\debug\engine.io-client-0.8.3_d175d08b7d99dcb4224bf9002c57e21750f71b81.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Administrator\.android\build-cache\e87cf7be6a04e207bc00cf2998f17c9b1e47ef60\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="5079e5fd491e9cda6597074c383db035e25e4696">
+        <dex dex="E:\workspace\bearya.git\trunk\app\build\intermediates\pre-dexed\debug\classes_b5f8274ae0855e63d2447f9f7a3a7cc288477364.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Administrator\.gradle\caches\modules-2\files-2.1\com.tencent.mm.opensdk\wechat-sdk-android-with-mta\1.4.0\55f95375f268e0cd7ebe65f433969233990b12b7\wechat-sdk-android-with-mta-1.4.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="55f95375f268e0cd7ebe65f433969233990b12b7">
+        <dex dex="E:\workspace\bearya.git\trunk\app\build\intermediates\pre-dexed\debug\wechat-sdk-android-with-mta-1.4.0_1b173ad5bbe5064b281081533a487292d3850701.jar" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="E:\workspace\bearya.git\trunk\app\libs\agora-sig-sdk.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.2"
+        sha1="6e3ae33b98452e290d063b3867c4f80c065875de">
+        <dex dex="E:\workspace\bearya.git\trunk\app\build\intermediates\transforms\dex\debug\folders\1000\2\agora-sig-sdk_1a18631d636a01ff7cc222f57861933e3d57eec7\classes.dex" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Administrator\.gradle\caches\modules-2\files-2.1\com.fasterxml.jackson.core\jackson-core\2.2.2\d20be6a5ddd6f8cfd36ebf6dea329873a1c41f1b\jackson-core-2.2.2.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="d20be6a5ddd6f8cfd36ebf6dea329873a1c41f1b">
+        <dex dex="E:\workspace\bearya.git\trunk\app\build\intermediates\pre-dexed\debug\jackson-core-2.2.2_cdf2755fbc282bcba497937bfd17a11e2da6266e.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Administrator\.gradle\caches\modules-2\files-2.1\com.fasterxml.jackson.core\jackson-annotations\2.2.2\285cb9c666f0f0f3dd8a1be04e1f457eb7b15113\jackson-annotations-2.2.2.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="285cb9c666f0f0f3dd8a1be04e1f457eb7b15113">
+        <dex dex="E:\workspace\bearya.git\trunk\app\build\intermediates\pre-dexed\debug\jackson-annotations-2.2.2_3f36bdc4e3c1814b9dee5e0d90f4077ea814d37a.jar" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="E:\workspace\bearya.git\trunk\app\libs\agora-rtc-sdk.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.2"
+        sha1="51b247a4cd47f9f9138918c70d5e4e522a27252e">
+        <dex dex="E:\workspace\bearya.git\trunk\app\build\intermediates\transforms\dex\debug\folders\1000\2\agora-rtc-sdk_a176acb08730369c7430157ca714f5170b26fe70\classes.dex" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Administrator\.android\build-cache\2cd0e69deff3f39bc1a40182a369efabad9125b7\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
+        <dex dex="E:\workspace\bearya.git\trunk\app\build\intermediates\pre-dexed\debug\classes_9865b45eacca9f0c3611135d471c5eca91c6d7b9.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Administrator\.android\build-cache\cdb78172ca4f20d956d03669ec448731f2c1689e\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="fa61569ed84bc6979e529ec7d92bb4756b1c3572">
+        <dex dex="E:\workspace\bearya.git\trunk\app\build\intermediates\pre-dexed\debug\classes_21602d492b8a1069234e5b5995230c1dd52a1cde.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Administrator\.android\build-cache\0247fd71d443e5e19ef334cf94633cd4a9607a4d\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="2e92aa0163544a804a0b34f169ca61801770839a">
+        <dex dex="E:\workspace\bearya.git\trunk\app\build\intermediates\pre-dexed\debug\classes_94459114b157f810292626e6b04ce4c1e13244e9.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Administrator\.android\build-cache\afe38d432a40558ee24e333575f678cc65d72414\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="47471eb19df288158b00b8d9cfa41bce7373f5cc">
+        <dex dex="E:\workspace\bearya.git\trunk\app\build\intermediates\pre-dexed\debug\classes_92d4532379c33647cf3ce04d96fb5e38e4a30d5e.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Administrator\.android\build-cache\ae3ddbd9b6d4e4f93f589199b3857a90a0c23ba9\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="5a2386ad9bfff580b206a7fe305cdccd00798159">
+        <dex dex="E:\workspace\bearya.git\trunk\app\build\intermediates\pre-dexed\debug\classes_9eaed4ba6de6589d7d0b53b21efa9321deab9f18.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Administrator\.android\build-cache\b82d1ae9636a71f5a76e4fe21ee6731b75c2dc62\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="18d31838aa4fcc768a8a0516e22cc13b94655d89">
+        <dex dex="E:\workspace\bearya.git\trunk\app\build\intermediates\pre-dexed\debug\classes_280056bc27cbfd805c2b31d2515f99aaa4fc47b5.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Administrator\.gradle\caches\modules-2\files-2.1\com.squareup.okhttp3\logging-interceptor\3.8.0\f765f004f3e201bd6ad0904266e605d7fb776d5\logging-interceptor-3.8.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="0f765f004f3e201bd6ad0904266e605d7fb776d5">
+        <dex dex="E:\workspace\bearya.git\trunk\app\build\intermediates\pre-dexed\debug\logging-interceptor-3.8.0_da846f3f372d79d88ab1c3f4960f74b5b606aa3b.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Administrator\.android\build-cache\1db4361b6602050a9535cbfbf9f0697d1e4e4421\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="8df0e365e40beb151bc42dee20817721a6cab7b0">
+        <dex dex="E:\workspace\bearya.git\trunk\app\build\intermediates\pre-dexed\debug\classes_90fdd7c97a2f840a95f72f93dc1c90b6e0b416d1.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Administrator\.gradle\caches\modules-2\files-2.1\com.squareup.retrofit2\adapter-rxjava\2.3.0\43e4ac24adc40a24c51b2d2a71a2483ef1b0ce9a\adapter-rxjava-2.3.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="43e4ac24adc40a24c51b2d2a71a2483ef1b0ce9a">
+        <dex dex="E:\workspace\bearya.git\trunk\app\build\intermediates\pre-dexed\debug\adapter-rxjava-2.3.0_d5955ab47add8086cb4a2d5a8f22934b604ae638.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Administrator\.android\build-cache\a8d51c71ddd462c76fe2347cd5ab6c8cd7d271b2\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="8b534207608aa1c205263d7426e634872ae34f08">
+        <dex dex="E:\workspace\bearya.git\trunk\app\build\intermediates\pre-dexed\debug\classes_7163a8acf5f46c19dc7575dabcfb69cce3389197.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Administrator\.gradle\caches\modules-2\files-2.1\com.google.code.gson\gson\2.7\751f548c85fa49f330cecbb1875893f971b33c4e\gson-2.7.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="751f548c85fa49f330cecbb1875893f971b33c4e">
+        <dex dex="E:\workspace\bearya.git\trunk\app\build\intermediates\pre-dexed\debug\gson-2.7_2e85dbf641c4a16c73925139bd4ff50ebb0450dd.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Android\sdk\extras\m2repository\com\android\support\constraint\constraint-layout-solver\1.0.2\constraint-layout-solver-1.0.2.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="b9cd8fc6bd15cb915735d34535db30ece0c44603">
+        <dex dex="E:\workspace\bearya.git\trunk\app\build\intermediates\pre-dexed\debug\constraint-layout-solver-1.0.2_3c9f5880fec0a880f40ecbbebb3a60ccb1f35afa.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\26.0.0-alpha1\support-annotations-26.0.0-alpha1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="023ee503b631f69511e335a061ea008f8da60f40">
+        <dex dex="E:\workspace\bearya.git\trunk\app\build\intermediates\pre-dexed\debug\support-annotations-26.0.0-alpha1_6c8e520b4b8bc88684c41fa789e63cce32bc80c4.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Administrator\.android\build-cache\f50911f5c6de5bd301cd8883dce14f865b8f463c\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="3c37bf24d298101c1277b133920da64b7d4233bf">
+        <dex dex="E:\workspace\bearya.git\trunk\app\build\intermediates\pre-dexed\debug\classes_44fdfff174a16192e6e6f07d87bd5cdb702f0b11.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Administrator\.gradle\caches\modules-2\files-2.1\eu.the4thfloor.volley\com.android.volley\2015.05.28\b0b08cc0ac897e596abe6b263a9507cba875b705\com.android.volley-2015.05.28.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="b0b08cc0ac897e596abe6b263a9507cba875b705">
+        <dex dex="E:\workspace\bearya.git\trunk\app\build\intermediates\pre-dexed\debug\com.android.volley-2015.05.28_c6370b5044be90158f474fc6fb3579fca2216951.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Administrator\.android\build-cache\3b4fd04d4585336fb9fceea770704921d1511836\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="44ee06abb66da30f5855e6bf54574e64cdcd982a">
+        <dex dex="E:\workspace\bearya.git\trunk\app\build\intermediates\pre-dexed\debug\classes_7172547605f7a5266081c9a855118cdafb5d6eaa.jar" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="E:\workspace\bearya.git\trunk\app\libs\qcloud-core.1.3.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.2"
+        sha1="4800ee86044fe2d9489001e8f0e771c9e00a4f53">
+        <dex dex="E:\workspace\bearya.git\trunk\app\build\intermediates\transforms\dex\debug\folders\1000\2\qcloud-core.1.3.0_db905a5fd33aabf61f8007596717347c3aab27d1\classes.dex" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Administrator\.gradle\caches\modules-2\files-2.1\com.github.bumptech.glide\glide\3.8.0\9bada650e1afe9c6174ddc0d113c1fce4dc26fe0\glide-3.8.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="9bada650e1afe9c6174ddc0d113c1fce4dc26fe0">
+        <dex dex="E:\workspace\bearya.git\trunk\app\build\intermediates\pre-dexed\debug\glide-3.8.0_a96f8003bbe82e33082bdbb64b5d8c73bfb5d56e.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Administrator\.android\build-cache\d11968ec8960b7302884a03d3448b6a44ee3f178\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="d58f6d029f1af31adcddda9d397a6481d1c00e64">
+        <dex dex="E:\workspace\bearya.git\trunk\app\build\intermediates\pre-dexed\debug\classes_a539ecea548c3f113f034f14fceca69493387ce9.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Administrator\.gradle\caches\modules-2\files-2.1\com.google.zxing\core\3.2.1\2287494d4f5f9f3a9a2bb6980e3f32053721b315\core-3.2.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="2287494d4f5f9f3a9a2bb6980e3f32053721b315">
+        <dex dex="E:\workspace\bearya.git\trunk\app\build\intermediates\pre-dexed\debug\core-3.2.1_3f96f72d8bc40481fc852122e0314b3485c288eb.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Administrator\.android\build-cache\13854eef3ec8a7449e932eae433bf2cc1e9e19d1\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="9935891f23923f39d002087085d9696568a9f657">
+        <dex dex="E:\workspace\bearya.git\trunk\app\build\intermediates\pre-dexed\debug\classes_7df994d364fdb11fbb7f1259bbcca45cf9427812.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Administrator\.gradle\caches\modules-2\files-2.1\com.fasterxml.jackson.core\jackson-databind\2.2.2\3c8f6018eaa72d43b261181e801e6f8676c16ef6\jackson-databind-2.2.2.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="3c8f6018eaa72d43b261181e801e6f8676c16ef6">
+        <dex dex="E:\workspace\bearya.git\trunk\app\build\intermediates\pre-dexed\debug\jackson-databind-2.2.2_34cebb7d9c0f05222a7630657f0a6116e850f5cd.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Administrator\.android\build-cache\a1091191719b448637b30ff0974bfe36a2fce24d\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="5a7cf2a41aedccc427107ebb37762a5e2f5be590">
+        <dex dex="E:\workspace\bearya.git\trunk\app\build\intermediates\pre-dexed\debug\classes_2cb6082bb63ad0533d517f22deda0112a64db746.jar" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="E:\workspace\bearya.git\trunk\app\libs\cos-xml-android-sdk.1.3.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.2"
+        sha1="829cdb794fab4d15b2bb41e8b525d3de93c539e7">
+        <dex dex="E:\workspace\bearya.git\trunk\app\build\intermediates\transforms\dex\debug\folders\1000\2\cos-xml-android-sdk.1.3.0_04925e63fece5c1ab0ba7bcb52f6d3c7fe0cc81d\classes.dex" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Administrator\.android\build-cache\238c68270bce1c27e5b25f9464c58c578d9b392d\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="88246166d5afb106f532f6e6deae683c66b42c89">
+        <dex dex="E:\workspace\bearya.git\trunk\app\build\intermediates\pre-dexed\debug\classes_696ac29ff6e25720fd7f59a12485009a52c57ea3.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Administrator\.android\build-cache\072c1fc44e068363930b5dae94633ddd824bbf4c\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="fcd01fd11233459f546c437ec927e9b61bf7caf1">
+        <dex dex="E:\workspace\bearya.git\trunk\app\build\intermediates\pre-dexed\debug\classes_a3a4becdc96a0b55723f3632e5561ef375613457.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Administrator\.android\build-cache\d84788e1a3dcce2fefd6a367ace977d8dd4333bd\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="56b24cbd303368a3dc7a0cf1efbeb4f59b9ad742">
+        <dex dex="E:\workspace\bearya.git\trunk\app\build\intermediates\pre-dexed\debug\classes_7aab0f6b42d35af591eb53f96bd92546d1fe8768.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Administrator\.android\build-cache\c0d46c9e63ddb544b6d9dfd3ea4615d720d31fb7\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="155fef2600f48631a9e9665c0873743b6d24e324">
+        <dex dex="E:\workspace\bearya.git\trunk\app\build\intermediates\pre-dexed\debug\classes_375d86ac44faea5b599aad315bc37246c520bd58.jar" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="E:\workspace\bearya.git\trunk\app\libs\okio-1.13.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.2"
+        sha1="a9283170b7305c8d92d25aff02a6ab7e45d06cbe">
+        <dex dex="E:\workspace\bearya.git\trunk\app\build\intermediates\transforms\dex\debug\folders\1000\2\okio-1.13.0_d8507d5fc83b2e96a9e6fa4f993b163719da8727\classes.dex" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Administrator\.android\build-cache\38aee42831d1a4820e3970cfb5d0b2e565027e25\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="c4f45092eee6cdf1a5dbd597b2b6819be652ce2e">
+        <dex dex="E:\workspace\bearya.git\trunk\app\build\intermediates\pre-dexed\debug\classes_d8811d3c6345dc991d76adac873201d7c092576f.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\workspace\bearya.git\trunk\app\libs\agora-sig-sdk.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="6e3ae33b98452e290d063b3867c4f80c065875de">
+        <dex dex="E:\workspace\bearya.git\trunk\app\build\intermediates\pre-dexed\debug\agora-sig-sdk_1a18631d636a01ff7cc222f57861933e3d57eec7.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\workspace\bearya.git\trunk\app\libs\agora-rtc-sdk.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="51b247a4cd47f9f9138918c70d5e4e522a27252e">
+        <dex dex="E:\workspace\bearya.git\trunk\app\build\intermediates\pre-dexed\debug\agora-rtc-sdk_a176acb08730369c7430157ca714f5170b26fe70.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Administrator\.gradle\caches\modules-2\files-2.1\com.wilddog.client\wilddog-sync-android\2.3.7\79ef4310058971c7e314abc1c1301b07ef7f7489\wilddog-sync-android-2.3.7.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="79ef4310058971c7e314abc1c1301b07ef7f7489">
+        <dex dex="E:\workspace\bearya.git\trunk\app\build\intermediates\pre-dexed\debug\wilddog-sync-android-2.3.7_b208b482db77bc1cebafc0e2d7569c37442378b8.jar" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="E:\workspace\bearya.git\trunk\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.2"
+        sha1="3be78ebc2706b2e1fe2f12d5726887a92d6c183b">
+        <dex dex="E:\workspace\bearya.git\trunk\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run_f34c5fa62cdf65997c3662357ca128a7814e197c\classes.dex" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Administrator\.gradle\caches\modules-2\files-2.1\com.squareup.retrofit2\converter-gson\2.3.0\9e09011e9767bb76b5e27c9b8223476b93b14631\converter-gson-2.3.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="9e09011e9767bb76b5e27c9b8223476b93b14631">
+        <dex dex="E:\workspace\bearya.git\trunk\app\build\intermediates\pre-dexed\debug\converter-gson-2.3.0_553680e635ae731332198bb4f76e9def80b56aa3.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Administrator\.gradle\caches\modules-2\files-2.1\io.reactivex\rxjava\1.3.0\af000bec2036a2a9d07197c4b03b8966bfc60b03\rxjava-1.3.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="af000bec2036a2a9d07197c4b03b8966bfc60b03">
+        <dex dex="E:\workspace\bearya.git\trunk\app\build\intermediates\pre-dexed\debug\rxjava-1.3.0_07a75d7443549d05d9106a49b0497bd04cd04ea9.jar" />
+    </item>
+
+</items>

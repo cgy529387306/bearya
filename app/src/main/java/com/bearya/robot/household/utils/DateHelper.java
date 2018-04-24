@@ -153,19 +153,5 @@ public class DateHelper {
 		return 0;
 	}
 
-	/*
-     * 将时间转换为时间戳
-     */
-	public static String date2Stamp(String time) {
-		try{
-			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd",Locale.getDefault());
-			Date date = simpleDateFormat.parse(time);
-			long ts = date.getTime();
-			time = String.valueOf(ts);
-			return time.substring(0, 10);
-		}catch (Exception e){
-			return time;
-		}
-	}
 
 }
