@@ -9,9 +9,15 @@ import android.widget.TextView;
 import com.bearya.robot.household.R;
 import com.bearya.robot.household.api.FamilyApiWrapper;
 import com.bearya.robot.household.entity.DeviceInfo;
+import com.bearya.robot.household.utils.DateHelper;
 import com.bearya.robot.household.utils.LogUtils;
 import com.bearya.robot.household.utils.NavigationHelper;
 import com.bearya.robot.household.views.BaseActivity;
+import com.codbking.widget.DatePickDialog;
+import com.codbking.widget.OnSureLisener;
+import com.codbking.widget.bean.DateType;
+
+import java.util.Date;
 
 import rx.Subscriber;
 import rx.Subscription;
@@ -85,6 +91,7 @@ public class DeviceSettingActivity extends BaseActivity implements View.OnClickL
 
 
     private void save() {
+        wakeup = "小乖你好";
         if (TextUtils.isEmpty(wakeup)){
             showToast(getString(R.string.goto_wakeup));
             return;
@@ -110,6 +117,7 @@ public class DeviceSettingActivity extends BaseActivity implements View.OnClickL
                     @Override
                     public void onNext(DeviceInfo result) {
                         closeLoadingView();
+                        onBack();
                     }
                 });
         sc.add(subscribe);
@@ -120,16 +128,18 @@ public class DeviceSettingActivity extends BaseActivity implements View.OnClickL
         int id = v.getId();
         Bundle bundle = new Bundle();
         if (id == R.id.tv_rabitName){
-            bundle.putString("edit", "机器人名字");
+            bundle.putString("name",name);
+            bundle.putString("wakeup",wakeup);
             NavigationHelper.startActivityForResult(DeviceSettingActivity.this,WakeUpActivity.class,bundle,EDIT_RABITNAME);
         }else if (id == R.id.tv_birth){
-            bundle.putString("edit", "生日");
-            NavigationHelper.startActivityForResult(DeviceSettingActivity.this,EditActivity.class,bundle,EDIT_BIRTH);
+            showTimePicker();
         }else if (id == R.id.tv_whoseDad){
-            bundle.putString("type", "0");
+            bundle.putString("name","爸爸");
+            bundle.putString("edit", father_name);
             NavigationHelper.startActivityForResult(DeviceSettingActivity.this,EditActivity.class,bundle,EDIT_WHOSEDAD);
         }else if (id == R.id.tv_whoseMom){
-            bundle.putString("type","1");
+            bundle.putString("name","妈妈");
+            bundle.putString("edit",mother_name);
             NavigationHelper.startActivityForResult(DeviceSettingActivity.this,EditActivity.class,bundle,EDIT_WHOSEMOM);
         }
     }
@@ -141,14 +151,36 @@ public class DeviceSettingActivity extends BaseActivity implements View.OnClickL
             if (requestCode == EDIT_RABITNAME){
                 wakeup = data.getStringExtra("content");
                 tvRabitName.setText(data.getStringExtra("content"));
-            }else if (requestCode == EDIT_BIRTH){
-                tvBirth.setText(data.getStringExtra("content"));
             }else if (requestCode == EDIT_WHOSEDAD){
                 tvWhoseDad.setText(data.getStringExtra("content"));
             }else if (requestCode == EDIT_WHOSEMOM){
                 tvWhoseMom.setText(data.getStringExtra("content"));
             }
 
+        }
+    }
+    private void showTimePicker() {
+        DatePickDialog dialog = new DatePickDialog(this);
+        dialog.setYearLimt(100);
+        dialog.setTitle(getString(R.string.select_time));
+        dialog.setType(DateType.TYPE_YMD);
+        dialog.setMessageFormat("yyyy-MM-dd");
+        dialog.setOnChangeLisener(null);
+        dialog.setOnSureLisener(new OnSureLisener() {
+            @Override
+            public void onSure(Date date) {
+                String dateStr = DateHelper.date2String("yyyy-MM-dd");
+                tvBirth.setText(dateStr);
+            }
+        });
+        dialog.show();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(sc != null) {
+            sc.unsubscribe();
         }
     }
 }

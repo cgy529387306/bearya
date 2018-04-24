@@ -154,4 +154,11 @@ public class ForgetPwdActivity extends BaseActivity implements View.OnClickListe
                 });
         subscription.add(subscribe);
     }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(subscription != null) {
+            subscription.unsubscribe();
+        }
+    }
 }

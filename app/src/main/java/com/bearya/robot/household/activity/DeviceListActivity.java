@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.FrameLayout;
 
@@ -208,6 +209,7 @@ public class DeviceListActivity extends BaseActivity implements View.OnClickList
                         bundle.putString("sn",result.getSn());
                         bundle.putString("birth",String.valueOf(result.getBirthday()));
                         bundle.putString("gender",String.valueOf(result.getGender()));
+                        bundle.putString("wakeup",!TextUtils.isEmpty(result.getWakeup()) ? result.getWakeup() : "");
                         NavigationHelper.startActivity(DeviceListActivity.this,DeviceSettingActivity.class,bundle,false);
                     }
                 });

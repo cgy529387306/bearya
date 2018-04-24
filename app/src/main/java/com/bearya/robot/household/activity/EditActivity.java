@@ -17,11 +17,12 @@ public class EditActivity extends BaseActivity implements View.OnClickListener{
     private ClearableEditText edtContent; //编辑框
     private TextView tvConfirm; // 确定
     private String content = "";
+    private String name = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initData();
-        setContentView(!TextUtils.isEmpty(content) ? content:"" ,R.layout.activity_edit);
+        setContentView(!TextUtils.isEmpty(name) ? name:"" ,R.layout.activity_edit);
         initView();
         initListener();
     }
@@ -29,9 +30,11 @@ public class EditActivity extends BaseActivity implements View.OnClickListener{
     private void initView() {
         edtContent = (ClearableEditText) findViewById(R.id.edt_content);
         tvConfirm = (TextView) findViewById(R.id.tv_confirm);
+        edtContent.setText(content);
     }
 
     private void initData() {
+        name = getIntent().getStringExtra("name");
         content = getIntent().getStringExtra("edit");
     }
 

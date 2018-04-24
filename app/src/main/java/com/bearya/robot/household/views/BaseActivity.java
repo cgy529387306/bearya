@@ -210,6 +210,9 @@ public abstract class BaseActivity extends AppCompatActivity implements CommonDi
     protected void onRightMenu() {
 
     }
+    protected void onRightTip() {
+
+    }
 
     public Activity getActivityParent() {
         if (this.getParent() != null) {
@@ -252,6 +255,9 @@ public abstract class BaseActivity extends AppCompatActivity implements CommonDi
     }
     protected void setContentView(int title, int layout ,String rightString) {
         contentView(title, null, 0, 0, 0, 0, rightString, layout, null, false);
+    }
+    protected void setContentView(String title, int layout ,String rightString) {
+        contentView(0, title, 0, 0, 0, 0, rightString, layout, null, false);
     }
 
     protected void setContentView(String title, int rightResId, int layout) {
@@ -300,6 +306,7 @@ public abstract class BaseActivity extends AppCompatActivity implements CommonDi
             mRightTip.setVisibility(View.GONE);
         } else {
             mRightTip.setVisibility(View.VISIBLE);
+            mRightTip.setTextColor(getResources().getColor(R.color.colorBlack));
             mRightTip.setText(rightString);
         }
         mTitleRight.setOnClickListener(listener);
@@ -362,8 +369,6 @@ public abstract class BaseActivity extends AppCompatActivity implements CommonDi
             }
         }
     };
-
-    protected  void onRightTip(){}
 
     public void exitApp() {
         Intent intent = new Intent(this, RootActivity.class);

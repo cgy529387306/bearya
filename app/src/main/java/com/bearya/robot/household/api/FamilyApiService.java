@@ -44,7 +44,7 @@ public interface FamilyApiService {
     @POST("v1/baby/info/detail")
     Observable<HttpResult<DeviceInfo>> getDeviceDetail(@Query("sn") String sn);
     @POST("v1/baby/info/modify")
-    Observable<HttpResult<Object>> modify(@Query("sn") String sn,@Query("wakeup") String wakeup,@Query("name") String name,@Query("gender") String gender,@Query("birthday") String birthday,
+    Observable<HttpResult<DeviceInfo>> modify(@Query("sn") String sn,@Query("wakeup") String wakeup,@Query("name") String name,@Query("gender") String gender,@Query("birthday") String birthday,
                                           @Query("mother_name") String mother_name,@Query("father_name") String father_name);
 
 

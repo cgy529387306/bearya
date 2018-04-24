@@ -18,13 +18,21 @@ public class WakeUpActivity extends BaseActivity implements View.OnClickListener
     private ClearableEditText edtName; //编辑框
     private TextView tvEvaluate; // 评估
     private ImageView ivStar1,ivStar2,ivStar3,ivStar4,ivStar5;
+    private String wakeup = "";
+    private String name = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.string.rabitName,R.layout.activity_device_setting,"生成");
+        initData();
+        setContentView(name,R.layout.activity_wakeup,"生成");
         initView();
         initListener();
+    }
+
+    private void initData() {
+        wakeup = getIntent().getStringExtra("wakeup");
+        name = getIntent().getStringExtra("name");
     }
 
     private void initView() {
@@ -35,6 +43,8 @@ public class WakeUpActivity extends BaseActivity implements View.OnClickListener
         ivStar3 = (ImageView) findViewById(R.id.iv_star_3);
         ivStar4 = (ImageView) findViewById(R.id.iv_star_4);
         ivStar5 = (ImageView) findViewById(R.id.iv_star_5);
+        tvEvaluate = (TextView) findViewById(R.id.tv_evaluate);
+        edtName.setText(wakeup);
     }
 
     private void initListener() {
