@@ -42,8 +42,8 @@ public class FamilyApiWrapper extends HttpRetrofitClient {
         return getService(FamilyApiService.class).mobileLogin(mobile, password).compose(this.applySchedulers());
     }
 
-    public Observable<UserData> mobileBind(String mobile) {
-        return getService(FamilyApiService.class).mobileBind(mobile).compose(this.applySchedulers());
+    public Observable<UserData> mobileBind(String mobile,String password, String code,String unionid, String openid) {
+        return getService(FamilyApiService.class).mobileBind(mobile,password,code,unionid,openid,"family").compose(this.applySchedulers());
     }
 
     public Observable<Object> logout() {

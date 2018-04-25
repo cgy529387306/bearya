@@ -108,7 +108,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                         closeLoadingView();
                         stopService(new Intent(SettingActivity.this, AgoraService.class));//停止通话服务
                         UserInfoManager.getInstance().loginOut();
-                        NavigationHelper.startActivity(SettingActivity.this,LoginActivity.class,null,true);
+                        launcherLogin();
                     }
                 });
         subscription.add(subscribe);

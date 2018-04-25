@@ -1,10 +1,12 @@
 package com.bearya.robot.household.entity;
 
+import java.io.Serializable;
+
 /**
  * Created by Administrator on 2018\4\20 0020.
  */
 
-public class UserInfo {
+public class UserInfo implements Serializable{
     private int user_id;
     private String openid;
     private String unionid;

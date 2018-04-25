@@ -149,12 +149,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         if (result.getUser() != null) {
                             if (TextUtils.isEmpty(result.getUser().getMobile())){
                                 showToast(getString(R.string.login_to_bind_tip));
-                                UserInfoManager.getInstance().login(result);
-                                NavigationHelper.startActivity(LoginActivity.this, BindMobileActivity.class,null,true);
+                                Bundle bundle = new Bundle();
+                                bundle.putSerializable("userInfo",result.getUser());
+                                NavigationHelper.startActivity(LoginActivity.this, BindMobileActivity.class,bundle,false);
                             }else{
                                 showToast(getString(R.string.login_success));
                                 UserInfoManager.getInstance().login(result);
-                                NavigationHelper.startActivity(LoginActivity.this, MainActivity.class,null,true);
+                                launcherMain();
                             }
                         }
                     }
@@ -262,7 +263,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         if (result.getUser() != null && !TextUtils.isEmpty(result.getToken())) {
                             showToast(getString(R.string.login_success));
                             UserInfoManager.getInstance().login(result);
-                            NavigationHelper.startActivity(LoginActivity.this, MainActivity.class,null,true);
+                            launcherMain();
                         }
                     }
                 });

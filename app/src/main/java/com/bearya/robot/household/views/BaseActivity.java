@@ -20,14 +20,15 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bearya.robot.household.MainActivity;
 import com.bearya.robot.household.MyApplication;
 import com.bearya.robot.household.R;
-import com.bearya.robot.household.activity.RootActivity;
+import com.bearya.robot.household.activity.LoginActivity;
+import com.bearya.robot.household.activity.MainActivity;
 import com.bearya.robot.household.entity.VersionInfo;
 import com.bearya.robot.household.http.retrofit.HttpRetrofitClient;
 import com.bearya.robot.household.update.CommonDialog;
 import com.bearya.robot.household.update.SoftUpgradeActivity;
+import com.bearya.robot.household.utils.ActivityManager;
 import com.bearya.robot.household.utils.CommonUtils;
 import com.bearya.robot.household.utils.LogUtils;
 import com.bearya.robot.household.utils.NavigationHelper;
@@ -131,6 +132,7 @@ public abstract class BaseActivity extends AppCompatActivity implements CommonDi
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
+        ActivityManager.getInstance().putActivity(getClass().getName(), this);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             setTranslucentStatus(true);
         }
@@ -138,6 +140,7 @@ public abstract class BaseActivity extends AppCompatActivity implements CommonDi
         tintManager.setStatusBarTintEnabled(true);
         tintManager.setStatusBarTintResource(android.R.color.transparent);  //设置上方状态栏透明
     }
+
 
     @TargetApi(19)
     private void setTranslucentStatus(boolean on) {
@@ -201,6 +204,7 @@ public abstract class BaseActivity extends AppCompatActivity implements CommonDi
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        ActivityManager.getInstance().removeActivity(getClass().getName());
     }
 
     protected void onBack() {
@@ -371,22 +375,18 @@ public abstract class BaseActivity extends AppCompatActivity implements CommonDi
     };
 
     public void exitApp() {
-        Intent intent = new Intent(this, RootActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
-                | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra(EXTRA_FLAG, true);
-        startActivity(intent);
+        ActivityManager.getInstance().closeAllActivity();
         finish();
     }
 
     public void launcherMain() {
         NavigationHelper.startActivity(this, MainActivity.class,null,true);
-//        Intent intent = new Intent(this, RootActivity.class);
-//        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
-//                | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-//        intent.putExtra(EXTRA_FLAG, false);
-//        startActivity(intent);
-//        finish();
+        ActivityManager.getInstance().closeAllActivityExceptOne(MainActivity.class.getName());
+    }
+
+    public void launcherLogin() {
+        NavigationHelper.startActivity(this, LoginActivity.class,null,true);
+        ActivityManager.getInstance().closeAllActivityExceptOne(LoginActivity.class.getName());
     }
 
     @Override

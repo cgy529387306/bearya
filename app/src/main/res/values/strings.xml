@@ -65,7 +65,7 @@
     <string name="loginOut">退出登录</string>
     <string name="title_register">注册</string>
     <string name="title_forget_pwd">忘记密码</string>
-    <string name="title_bind_mobile">绑定手机</string>
+    <string name="title_bind_mobile">绑定手机号</string>
     <string name="dad">爸爸</string>
     <string name="mom">妈妈</string>
     <string name="other">其他</string>
@@ -103,6 +103,7 @@
     <string name="call_permission">您需要授权麦克权限才可以通话!</string>
     <string name="storage_permission">您需要授权读写权限才可以保存用户信息!</string>
     <string name="update_success">修改成功</string>
+    <string name="save_success">保存成功</string>
     <string name="input_baby_name">请输入宝宝昵称</string>
     <string name="create_success">创建成功</string>
     <string name="habit_hint1">选择培训宝宝的兴趣</string>

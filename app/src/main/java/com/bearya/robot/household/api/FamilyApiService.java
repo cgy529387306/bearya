@@ -21,7 +21,7 @@ public interface FamilyApiService {
     @POST("v1/user/login/mobile")
     Observable<HttpResult<UserData>> mobileLogin(@Query("mobile") String mobile, @Query("password") String password);
     @POST("v1/user/account/mbind")
-    Observable<HttpResult<UserData>> mobileBind(@Query("mobile") String mobile);
+    Observable<HttpResult<UserData>> mobileBind(@Query("mobile") String mobile,@Query("password") String password, @Query("code") String code,@Query("unionid") String unionid,@Query("openid") String openid,@Query("app") String app);
     @POST("v1/user/account/logout")
     Observable<HttpResult<Object>> logout();
     @POST("v1/user/login/wechat")

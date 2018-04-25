@@ -37,8 +37,6 @@ public class ScanQRActivity extends Activity implements EasyPermissions.Permissi
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_qc_scan);
-        //setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
-
         mQRCodeView = (ZXingView) findViewById(R.id.zxingview);
         mQRCodeView.setDelegate(this);
         mQRCodeView.startSpot();
@@ -49,8 +47,6 @@ public class ScanQRActivity extends Activity implements EasyPermissions.Permissi
         super.onStart();
         requestCodeQRCodePermissions();
         mQRCodeView.startCamera();
-//        mQRCodeView.startCamera(Camera.CameraInfo.CAMERA_FACING_FRONT);
-
         mQRCodeView.showScanRect();
     }
 
@@ -96,7 +92,6 @@ public class ScanQRActivity extends Activity implements EasyPermissions.Permissi
     @Override
     public void onScanQRCodeSuccess(String result) {
         Log.i(TAG, "result:" + result);
-        //Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
         vibrate();
         mQRCodeView.startSpot();
         setResult(RESULT_OK, new Intent().putExtra("result", result));
@@ -160,9 +155,7 @@ public class ScanQRActivity extends Activity implements EasyPermissions.Permissi
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         mQRCodeView.showScanRect();
-
         if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE_CHOOSE_QRCODE_FROM_GALLERY) {
 //            final String picturePath = BGAPhotoPickerActivity.getSelectedImages(data).get(0);
 //

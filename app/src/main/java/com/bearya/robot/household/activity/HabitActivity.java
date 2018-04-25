@@ -96,8 +96,8 @@ public class HabitActivity extends BaseActivity implements View.OnClickListener 
                     @Override
                     public void onNext(BabyInfo result) {
                         closeLoadingView();
-                        showToast(getString(R.string.create_success));
-                        finish();
+                        showToast(getString(R.string.save_success));
+                        launcherMain();
                     }
                 });
         subscription.add(subscribe);
