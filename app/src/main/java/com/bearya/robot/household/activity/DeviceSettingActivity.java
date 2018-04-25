@@ -2,6 +2,7 @@ package com.bearya.robot.household.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
@@ -65,8 +66,8 @@ public class DeviceSettingActivity extends BaseActivity implements View.OnClickL
             startDate = DateHelper.string2Date(birth,DATE_FORMAT);
             tvRabitName.setText(deviceInfo.getName());
             tvBirth.setText(birth);
-            tvWhoseDad.setText(deviceInfo.getFather_name());
-            tvWhoseMom.setText(deviceInfo.getMother_name());
+            tvWhoseDad.setText(TextUtils.isEmpty(deviceInfo.getFather_name()) ? "未设置" : deviceInfo.getFather_name());
+            tvWhoseMom.setText(TextUtils.isEmpty(deviceInfo.getMother_name()) ? "未设置" : deviceInfo.getMother_name());
         }
     }
 
