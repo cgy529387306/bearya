@@ -2,16 +2,13 @@ package com.bearya.robot.household.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
 import com.bearya.robot.household.R;
 import com.bearya.robot.household.api.FamilyApiWrapper;
 import com.bearya.robot.household.entity.DeviceInfo;
-import com.bearya.robot.household.entity.MachineInfo;
 import com.bearya.robot.household.utils.DateHelper;
-import com.bearya.robot.household.utils.LogUtils;
 import com.bearya.robot.household.utils.NavigationHelper;
 import com.bearya.robot.household.views.BaseActivity;
 import com.codbking.widget.DatePickDialog;
@@ -37,6 +34,8 @@ public class DeviceSettingActivity extends BaseActivity implements View.OnClickL
     private final int EDIT_WHOSEMOM = 4;
     private CompositeSubscription subscription;
     private DeviceInfo deviceInfo;
+    private Date startDate;
+    private static final String DATE_FORMAT = "yyyy-MM-dd";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +61,8 @@ public class DeviceSettingActivity extends BaseActivity implements View.OnClickL
     private void initData(DeviceInfo info) {
         deviceInfo = info;
         if (deviceInfo!=null){
-            String birth = DateHelper.long2DateString(deviceInfo.getBirthday(),"yyyy-MM-dd");
+            String birth = DateHelper.timeStamp2Date(deviceInfo.getBirthday(),DATE_FORMAT);
+            startDate = DateHelper.string2Date(birth,DATE_FORMAT);
             tvRabitName.setText(deviceInfo.getName());
             tvBirth.setText(birth);
             tvWhoseDad.setText(deviceInfo.getFather_name());
@@ -81,21 +81,19 @@ public class DeviceSettingActivity extends BaseActivity implements View.OnClickL
     private void save() {
         if (deviceInfo!=null){
             showLoadingView();
-            Subscription subscribe = FamilyApiWrapper.getInstance().modify(deviceInfo)
+            Subscription subscribe = FamilyApiWrapper.getInstance().modify(deviceInfo.getSn(),deviceInfo.getWakeup(),deviceInfo.getName(),deviceInfo.getGender(),deviceInfo.getBirthday(),deviceInfo.getMother_name(),deviceInfo.getFather_name())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Subscriber<DeviceInfo>() {
 
                         @Override
                         public void onCompleted() {
                             closeLoadingView();
-                            LogUtils.d(BaseActivity.Tag, "save onCompleted");
                         }
 
                         @Override
                         public void onError(Throwable e) {
                             closeLoadingView();
                             showErrorMessage(e);
-                            LogUtils.d(BaseActivity.Tag, "save onError");
                         }
 
                         @Override
@@ -175,19 +173,20 @@ public class DeviceSettingActivity extends BaseActivity implements View.OnClickL
     }
 
     private void showTimePicker() {
+        Date date = startDate==null?new Date():startDate;
         DatePickDialog dialog = new DatePickDialog(this);
         dialog.setYearLimt(100);
         dialog.setTitle(getString(R.string.select_time));
         dialog.setType(DateType.TYPE_YMD);
-        dialog.setMessageFormat("yyyy-MM-dd");
+        dialog.setStartDate(date);
+        dialog.setMessageFormat(DATE_FORMAT);
         dialog.setOnChangeLisener(null);
         dialog.setOnSureLisener(new OnSureLisener() {
             @Override
             public void onSure(Date date) {
-                String dateStr = DateHelper.date2String("yyyy-MM-dd");
-                long stamp = DateHelper.dateString2Long(dateStr,"yyyy-MM-dd");
-                tvBirth.setText(dateStr);
-                deviceInfo.setBirthday(stamp);
+                startDate = date;
+                tvBirth.setText(DateHelper.date2String(startDate,DATE_FORMAT));
+                deviceInfo.setBirthday(DateHelper.date2TimeStamp(startDate));
             }
         });
         dialog.show();

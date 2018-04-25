@@ -5,13 +5,12 @@ import com.bearya.robot.household.entity.DeviceInfo;
 import com.bearya.robot.household.entity.DeviceListData;
 import com.bearya.robot.household.entity.HabitData;
 import com.bearya.robot.household.entity.KeyInfo;
-import com.bearya.robot.household.entity.UserData;
 import com.bearya.robot.household.entity.ProductInfo;
+import com.bearya.robot.household.entity.UserData;
 import com.bearya.robot.household.http.retrofit.HttpRetrofitClient;
-import com.bearya.robot.household.utils.JsonHelper;
 
-import okhttp3.RequestBody;
 import rx.Observable;
+
 @SuppressWarnings("unchecked")
 public class FamilyApiWrapper extends HttpRetrofitClient {
     private static FamilyApiWrapper trailApiWrapper;
@@ -32,7 +31,7 @@ public class FamilyApiWrapper extends HttpRetrofitClient {
     }
 
     public Observable<UserData> register(String mobile, String password, String code) {
-        return getService(FamilyApiService.class).register(mobile, password,code).compose(this.applySchedulers());
+        return getService(FamilyApiService.class).register(mobile, password, code).compose(this.applySchedulers());
     }
 
     public Observable<Object> sendSms(String mobile, String action) {
@@ -52,11 +51,11 @@ public class FamilyApiWrapper extends HttpRetrofitClient {
     }
 
     public Observable<Object> setPwd(String mobile, String password, String code) {
-        return getService(FamilyApiService.class).getpw(mobile, password,code).compose(this.applySchedulers());
+        return getService(FamilyApiService.class).getpw(mobile, password, code).compose(this.applySchedulers());
     }
 
     public Observable<BabyInfo> create(String name, String relationship, String birthday, int gender, String avatar, String tags, int is_default) {
-        return getService(FamilyApiService.class).create(name, relationship,birthday,gender,avatar,tags,is_default).compose(this.applySchedulers());
+        return getService(FamilyApiService.class).create(name, relationship, birthday, gender, avatar, tags, is_default).compose(this.applySchedulers());
     }
 
     public Observable<UserData> getUserInfo(String code, String app) {
@@ -82,9 +81,14 @@ public class FamilyApiWrapper extends HttpRetrofitClient {
     public Observable<DeviceInfo> getDeviceDetail(String sn) {
         return getService(FamilyApiService.class).getDeviceDetail(sn).compose(this.applySchedulers());
     }
-    public Observable<DeviceInfo> modify(DeviceInfo deviceInfo) {
-        RequestBody body = RequestBody.create(okhttp3.MediaType.parse("text/json; charset=utf-8"), JsonHelper.toJson(deviceInfo));
-        return getService(FamilyApiService.class).modify(body).compose(this.applySchedulers());
+
+    //    public Observable<DeviceInfo> modify(DeviceInfo deviceInfo) {
+//        RequestBody body = RequestBody.create(okhttp3.MediaType.parse("text/json; charset=utf-8"), JsonHelper.toJson(deviceInfo));
+//        return getService(FamilyApiService.class).modify(body).compose(this.applySchedulers());
+//    }
+
+    public Observable<DeviceInfo> modify(String sn, String wakeup, String name, int gender, long birthday, String mother_name, String father_name) {
+        return getService(FamilyApiService.class).modify(sn, wakeup, name, gender, birthday, mother_name, father_name).compose(this.applySchedulers());
     }
 
     public Observable<KeyInfo> getMonitorKey(String deviceId, int uid) {

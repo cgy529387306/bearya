@@ -56,6 +56,8 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
             .concat(String.valueOf(System.currentTimeMillis())).concat(".png");
     private static final String imageUrlPre = "http://s1.bearya.com/app-photo/family/";
     private static final String imagePathPre = "app-photo/family/";
+    private static final String DATE_FORMAT = "yyyy-MM-dd";
+    private String birth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -137,17 +139,19 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void showTimePicker() {
+        Date date = TextUtils.isEmpty(birth)?new Date():DateHelper.string2Date(birth,DATE_FORMAT);
         DatePickDialog dialog = new DatePickDialog(this);
         dialog.setYearLimt(100);
         dialog.setTitle(getString(R.string.select_time));
         dialog.setType(DateType.TYPE_YMD);
-        dialog.setMessageFormat("yyyy-MM-dd");
+        dialog.setMessageFormat(DATE_FORMAT);
+        dialog.setStartDate(date);
         dialog.setOnChangeLisener(null);
         dialog.setOnSureLisener(new OnSureLisener() {
             @Override
             public void onSure(Date date) {
-                String dateStr = DateHelper.date2String("yyyy-MM-dd");
-                edtBirth.setText(dateStr);
+                birth = DateHelper.date2String(date,DATE_FORMAT);
+                edtBirth.setText(birth);
             }
         });
         dialog.show();

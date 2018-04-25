@@ -1,7 +1,6 @@
 package com.bearya.robot.household.activity;
 
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
@@ -13,8 +12,6 @@ import com.bearya.robot.household.utils.CommonUtils;
 import com.bearya.robot.household.utils.DateHelper;
 import com.bearya.robot.household.views.BaseActivity;
 import com.bearya.robot.household.views.KeywordsFlow;
-
-import java.util.Random;
 
 import rx.Subscriber;
 import rx.Subscription;
@@ -30,6 +27,7 @@ public class HabitActivity extends BaseActivity implements View.OnClickListener 
     private String relationship;
     private int gender;
     private String avatar;
+    private static final String DATE_FORMAT = "yyyy-MM-dd";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,7 +77,7 @@ public class HabitActivity extends BaseActivity implements View.OnClickListener 
 
     private void doAddInfo() {
         showLoadingView();
-        long stamp = DateHelper.dateString2Long(birth);
+        long stamp = DateHelper.date2TimeStamp(DateHelper.string2Date(birth,DATE_FORMAT));
         Subscription subscribe = FamilyApiWrapper.getInstance().create(name, relationship, String.valueOf(stamp), gender, avatar, "1", 0)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<BabyInfo>() {

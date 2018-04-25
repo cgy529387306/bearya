@@ -1,5 +1,7 @@
 package com.bearya.robot.household.utils;
 
+import android.text.TextUtils;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -32,7 +34,7 @@ public class DateHelper {
 	public static Date string2Date(String dateStr, String dateFormat) {
 		Date result = null;
 		try {
-			DateFormat df = new SimpleDateFormat(dateFormat);
+			DateFormat df = new SimpleDateFormat(dateFormat,Locale.CHINA);
 			result = df.parse(dateStr);
 		} catch (Exception e) {
 			result = null;
@@ -71,87 +73,76 @@ public class DateHelper {
 	public static String date2String(Date date, String dateFormat){
 		String dateStr = "";
 		try{
-			DateFormat df = new SimpleDateFormat(dateFormat);
+			DateFormat df = new SimpleDateFormat(dateFormat,Locale.CHINA);
 			dateStr = df.format(date);
 		}catch (Exception e){
 			dateStr = "";
 		}
 		return dateStr;
 	}
+
+
 	/**
-	 * 日期转换成毫秒
-	 * @param date
-	 * @return
+	 * Java将Unix时间戳转换成指定格式日期字符串
+	 * @param timestampString 时间戳 如："1473048265";
+	 * @param formats 要格式化的格式 默认："yyyy-MM-dd HH:mm:ss";
+	 *
+	 * @return 返回结果 如："2016-09-05 16:06:42";
 	 */
-	public static long date2Long(Date date){
-		return date.getTime();
+	public static String timeStamp2Date(String timestampString, String formats) {
+		if (TextUtils.isEmpty(formats))
+			formats = "yyyy-MM-dd HH:mm:ss";
+		Long timestamp = Long.parseLong(timestampString) * 1000;
+        return new SimpleDateFormat(formats, Locale.CHINA).format(new Date(timestamp));
 	}
+
+    /**
+     * Java将Unix时间戳转换成指定格式日期字符串
+     * @param timestamp 时间戳 如："1473048265";
+     * @param formats 要格式化的格式 默认："yyyy-MM-dd HH:mm:ss";
+     *
+     * @return 返回结果 如："2016-09-05 16:06:42";
+     */
+    public static String timeStamp2Date(long timestamp, String formats) {
+        if (TextUtils.isEmpty(formats))
+            formats = "yyyy-MM-dd HH:mm:ss";
+        Long time = timestamp * 1000;
+        return new SimpleDateFormat(formats, Locale.CHINA).format(new Date(time));
+    }
+
+
 	/**
-	 * 当前日期转换成毫秒
-	 * @return
-	 */
-	public static long date2Long(){
-		return new Date().getTime();
-	}
-	/**
-	 * 当前日期转换成毫秒字符串
-	 * @return
-	 */
-	public static String date2LongString(){
-		return String.valueOf(date2Long());
-	}
-	/**
-	 * 毫秒转换成日期
-	 * @param ms
-	 * @return
-	 */
-	public static Date long2Date(long ms){
-		return new Date(ms);
-	}
-	/**
-	 * 将时间ms数转换为日期字符串
-	 * @param ms
-	 * @return
-	 */
-	public static String long2DateString(long ms){
-		return long2DateString(ms, DATE_FORMAT);
-	}
-	/**
-	 * 将时间ms数转换为日期字符串
-	 * @param ms
-	 * @param dateFormat
-	 * @return
-	 */
-	public static String long2DateString(long ms, String dateFormat){
-		String result = null;
-		Date date = long2Date(ms);
-		result = date2String(date, dateFormat);
-		if (result==null){
-			result = String.valueOf(ms);
-		}
-		return result;
-	}
-	/**
-	 * 日期字符串转换为ms值
-	 * @param dateString
-	 * @return
-	 */
-	public static long dateString2Long(String dateString){
-		return dateString2Long(dateString, DATE_FORMAT);
-	}
-	/**
-	 * 日期字符串转换为ms值
-	 * @param dateString
-	 * @param dateFormat
-	 * @return
-	 */
-	public static long dateString2Long(String dateString, String dateFormat){
-		Date date = string2Date(dateString, dateFormat);
-		if (date!=null){
-			return date2Long(date);
-		}
-		return 0;
-	}
+     * 日期格式字符串转换成时间戳
+     *
+     * @param dateStr 字符串日期
+     * @param format   如：yyyy-MM-dd HH:mm:ss
+     *
+     * @return
+     */
+    public static String date2TimeStamp(String dateStr, String format) {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat(format,Locale.CHINA);
+            return String.valueOf(sdf.parse(dateStr).getTime() / 1000);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+
+    /**
+     * 日期格式字符串转换成时间戳
+     *
+     *
+     * @return
+     */
+    public static long date2TimeStamp(Date date) {
+        return date==null?new Date().getTime()/1000:date.getTime()/1000;
+    }
+
+
+
+
 
 
 }

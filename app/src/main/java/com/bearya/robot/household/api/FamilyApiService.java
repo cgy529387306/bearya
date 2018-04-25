@@ -5,12 +5,10 @@ import com.bearya.robot.household.entity.DeviceInfo;
 import com.bearya.robot.household.entity.DeviceListData;
 import com.bearya.robot.household.entity.HabitData;
 import com.bearya.robot.household.entity.KeyInfo;
-import com.bearya.robot.household.entity.UserData;
 import com.bearya.robot.household.entity.ProductInfo;
+import com.bearya.robot.household.entity.UserData;
 import com.bearya.robot.household.http.retrofit.HttpResult;
 
-import okhttp3.RequestBody;
-import retrofit2.http.Body;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 import rx.Observable;
@@ -45,8 +43,11 @@ public interface FamilyApiService {
     Observable<HttpResult<Object>> unBindDevice(@Query("sn") String sn);
     @POST("v1/baby/info/detail")
     Observable<HttpResult<DeviceInfo>> getDeviceDetail(@Query("sn") String sn);
+//    @POST("v1/baby/info/modify")
+//    Observable<HttpResult<DeviceInfo>> modify(@Body RequestBody requestBody);
     @POST("v1/baby/info/modify")
-    Observable<HttpResult<DeviceInfo>> modify(@Body RequestBody requestBody);
+    Observable<HttpResult<DeviceInfo>> modify(@Query("sn") String sn,@Query("wakeup") String wakeup,@Query("name") String name,@Query("gender") int gender,@Query("birthday") long birthday,
+                                          @Query("mother_name") String mother_name,@Query("father_name") String father_name);
 
 
     @POST("v1/service/live/getKey")
