@@ -196,7 +196,7 @@ public class ControlActivity extends BaseActivity implements View.OnClickListene
             }
         });
 
-        rvExpressions.setLayoutManager(new GridLayoutManager(this, 2, OrientationHelper.HORIZONTAL, false));
+        rvExpressions.setLayoutManager(new GridLayoutManager(this, 1, OrientationHelper.HORIZONTAL, false));
         rvDances.setLayoutManager(new GridLayoutManager(this, 1, OrientationHelper.HORIZONTAL, false));
         rvVideos.setLayoutManager(new GridLayoutManager(this, 1, OrientationHelper.HORIZONTAL, false));
     }
@@ -218,7 +218,7 @@ public class ControlActivity extends BaseActivity implements View.OnClickListene
         String [] expressionNames = getResources().getStringArray(R.array.expression_names);
         String [] expressionValues = getResources().getStringArray(R.array.expression_values);
         for (int i = 0; i<expressionNames.length; i++) {
-            expressionListInfo.add(new ItemInfo(expressionValues[i],expressionNames[i]));
+            expressionListInfo.add(new ItemInfo(expressionValues[i],expressionNames[i],R.mipmap.img_dormant));
         }
         expressionListAdapter = new ExpressionListAdapter(R.layout.expression_item_view, expressionListInfo);
         expressionListAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
@@ -241,7 +241,7 @@ public class ControlActivity extends BaseActivity implements View.OnClickListene
         String [] danceNames = getResources().getStringArray(R.array.dance_names);
         String [] danceValues = getResources().getStringArray(R.array.dance_values);
         for (int i = 0; i<danceNames.length; i++) {
-            danceListInfo.add(new ItemInfo(danceValues[i],danceNames[i]));
+            danceListInfo.add(new ItemInfo(danceValues[i],danceNames[i],R.mipmap.img_tiger));
         }
         danceListAdapter = new DanceListAdapter(R.layout.dance_item_view, danceListInfo);
         danceListAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
@@ -261,8 +261,9 @@ public class ControlActivity extends BaseActivity implements View.OnClickListene
         });
         rvDances.setAdapter(danceListAdapter);
 
-        videoListInfo.add(new ItemInfo("0","视频"));
-        videoListInfo.add(new ItemInfo("1","监护"));
+        videoListInfo.add(new ItemInfo("0","视频",R.mipmap.img_video));
+        videoListInfo.add(new ItemInfo("1","语音",R.mipmap.img_voice));
+        videoListInfo.add(new ItemInfo("2","监护",R.mipmap.img_monitor));
         videoListAdapter = new VideoListAdapter(R.layout.video_item_view, videoListInfo);
         videoListAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
@@ -291,7 +292,10 @@ public class ControlActivity extends BaseActivity implements View.OnClickListene
                     intent.putExtra("localId", userInfo.getUid());
                     intent.putExtra("remoteId", deviceInfo.uid);// 强转为fromAccount
                     startActivity(intent);
-                } else if (Integer.valueOf(videoListInfo.get(position).id) == 1) {
+                }else if (Integer.valueOf(videoListInfo.get(position).id) == 1){
+                    //TODO voice
+
+                }else if (Integer.valueOf(videoListInfo.get(position).id) == 2) {
                     if (isMonitor == -1) {
                         getMonitorKey();
                     } else if (isMonitor == 1) {

@@ -6,14 +6,16 @@ package com.bearya.robot.household.entity;
 
 public class ItemInfo {
     public String id;
+    public int resId;
     public String name;
 
     public ItemInfo() {
 
     }
 
-    public ItemInfo(String i, String n) {
+    public ItemInfo(String i, String n,int res) {
         id = i;
         name = n;
+        resId = res;
     }
 }

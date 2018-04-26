@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="73dp"
-    android:layout_height="40dp"
-    android:layout_marginTop="7dp"
-    android:layout_marginLeft="11dp"
-    android:layout_marginRight="11dp"
-    android:layout_marginBottom="7dp"
-    android:background="@drawable/shape_expression_item_bg">
-
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_margin="10dp">
+    <ImageView
+        android:id="@+id/iv_expression_image"
+        android:layout_width="75dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center_horizontal"
+        android:src="@mipmap/img_dormant"/>
     <TextView
         android:id="@+id/tv_expression_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/colorWhite"
-        android:layout_centerInParent="true"
-        android:padding="3dp"
-        android:maxLines="2"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@color/colorBlack"
+        android:layout_marginTop="10dp"
+        android:singleLine="true"
         android:gravity="center"
-        android:textSize="@dimen/activity_text_size"/>
-</RelativeLayout>
+        android:textSize="16sp"/>
+</LinearLayout>

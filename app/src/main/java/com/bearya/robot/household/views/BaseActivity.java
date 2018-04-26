@@ -32,6 +32,7 @@ import com.bearya.robot.household.utils.ActivityManager;
 import com.bearya.robot.household.utils.CommonUtils;
 import com.bearya.robot.household.utils.LogUtils;
 import com.bearya.robot.household.utils.NavigationHelper;
+import com.bearya.robot.household.utils.Utils;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -63,7 +64,6 @@ public abstract class BaseActivity extends AppCompatActivity implements CommonDi
     private ImageView mTitleRight;
     private ImageView mSettingWifi;
     protected boolean isResume = false;
-    protected SystemBarTintManager tintManager;
     private long lastBackTime = 0;
     private boolean isSupportExit = false;
     private List<VersionInfo> mVersionInfos = new ArrayList<>();
@@ -134,26 +134,13 @@ public abstract class BaseActivity extends AppCompatActivity implements CommonDi
         super.onCreate(savedInstanceState);
         ActivityManager.getInstance().putActivity(getClass().getName(), this);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            setTranslucentStatus(true);
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            Utils.StatusBarIconManager.MIUI(this, Utils.StatusBarIconManager.TYPE.BLACK);
+            Utils.StatusBarIconManager.Flyme(this, Utils.StatusBarIconManager.TYPE.BLACK);
         }
-        tintManager = new SystemBarTintManager(this);
-        tintManager.setStatusBarTintEnabled(true);
-        tintManager.setStatusBarTintResource(android.R.color.transparent);  //设置上方状态栏透明
     }
 
 
-    @TargetApi(19)
-    private void setTranslucentStatus(boolean on) {
-        Window win = getWindow();
-        WindowManager.LayoutParams winParams = win.getAttributes();
-        final int bits = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
-        if (on) {
-            winParams.flags |= bits;
-        } else {
-            winParams.flags &= ~bits;
-        }
-        win.setAttributes(winParams);
-    }
 
     @Override
     protected void onStart() {
