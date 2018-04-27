@@ -1,17 +1,29 @@
 package com.bearya.robot.household.activity;
 
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bearya.robot.household.R;
+import com.bearya.robot.household.adapter.ViewPagerAdapter;
 import com.bearya.robot.household.api.FamilyApiWrapper;
 import com.bearya.robot.household.entity.BabyInfo;
 import com.bearya.robot.household.entity.HabitData;
+import com.bearya.robot.household.entity.HabitInfo;
 import com.bearya.robot.household.utils.CommonUtils;
 import com.bearya.robot.household.utils.DateHelper;
 import com.bearya.robot.household.views.BaseActivity;
+import com.bearya.robot.household.views.CircleView;
+import com.bearya.robot.household.views.FlowLabelLayout;
 import com.bearya.robot.household.views.KeywordsFlow;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 import rx.Subscriber;
 import rx.Subscription;
@@ -21,13 +33,17 @@ import rx.subscriptions.CompositeSubscription;
 
 public class HabitActivity extends BaseActivity implements View.OnClickListener {
     private CompositeSubscription subscription;
-    private KeywordsFlow flowView;
     private String name;
     private String birth;
     private String relationship;
     private int gender;
     private String avatar;
     private static final String DATE_FORMAT = "yyyy-MM-dd";
+    private ViewPager viewPager;
+    private ViewPagerAdapter pagerAdapter;
+    private Random random;
+    private int paddingArray[] = {10,12,14,16,18,20,22,24,26,28,30};
+    private List<FlowLabelLayout> labelLayoutList = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,23 +64,18 @@ public class HabitActivity extends BaseActivity implements View.OnClickListener 
     }
 
     private void initView() {
-        flowView = (KeywordsFlow) findViewById(R.id.flowView);
+        random = new Random();
+        viewPager = (ViewPager) findViewById(R.id.view_pager);
     }
 
     private void initData() {
+        pagerAdapter = new ViewPagerAdapter();
+        viewPager.setAdapter(pagerAdapter);
         subscription = new CompositeSubscription();
     }
 
     private void initListener() {
         findViewById(R.id.tv_confirm).setOnClickListener(this);
-        flowView.setOnItemClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                String keyword = ((TextView) v).getText().toString();// 获得点击的标签
-                showToast(keyword);
-            }
-        });
     }
 
     @Override
@@ -132,12 +143,55 @@ public class HabitActivity extends BaseActivity implements View.OnClickListener 
                     public void onNext(HabitData result) {
                         closeLoadingView();
                         if (CommonUtils.isNotEmpty(result) && CommonUtils.isNotEmpty(result.getList())){
-                            flowView.setDataList(result.getList());
-                            flowView.setOnItemClickListener(HabitActivity.this);
-                            flowView.go2Show(KeywordsFlow.ANIMATION_OUT);
+                            initPagerData(result.getList());
                         }
                     }
                 });
         subscription.add(subscribe);
     }
+
+    private void initPagerData(List<HabitInfo> list){
+        int[] colorArray = getResources().getIntArray(R.array.colors);
+        for (int i=0;i<list.size();i++){
+            int padding = paddingArray[random.nextInt(9)];
+            int color = colorArray[random.nextInt(9)];
+            HabitInfo habitInfo = list.get(i);
+            habitInfo.setPadding(padding);
+            habitInfo.setColor(color);
+        }
+        int pageSize = list.size()/6;
+        List<List<HabitInfo>> subList = CommonUtils.splitList(list, pageSize);
+        for (int i=0;i<subList.size();i++){
+            List<HabitInfo> habitInfos = subList.get(i);
+            FlowLabelLayout labelLayout = new FlowLabelLayout(HabitActivity.this);
+            ViewGroup.MarginLayoutParams lp = new ViewGroup.MarginLayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            lp.setMargins(10,10,10,10);
+            for (int j = 0; j < habitInfos.size(); j++) {
+                final HabitInfo habitInfo = habitInfos.get(j);
+                CircleView view = new CircleView(this);
+                view.setPadding(habitInfo.getPadding(),habitInfo.getPadding(),habitInfo.getPadding(),habitInfo.getPadding());
+                view.setText(habitInfo.getTag_name());
+                view.setTextColor(habitInfo.getColor());
+                view.setBorderColor(habitInfo.getColor());
+                view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        CircleView circleView = (CircleView) view;
+                        habitInfo.setSelect(!habitInfo.isSelect());
+                        circleView.setTextColor(habitInfo.getColor());
+                        circleView.setFillColor(habitInfo.getFillColor());
+                    }
+                });
+                labelLayout.addView(view, lp);
+                labelLayout.requestLayout();
+            }
+            labelLayoutList.add(labelLayout);
+            pagerAdapter.add(labelLayoutList);
+        }
+
+
+
+    }
+
+
 }

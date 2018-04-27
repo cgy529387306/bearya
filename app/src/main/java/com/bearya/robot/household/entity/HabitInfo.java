@@ -1,5 +1,7 @@
 package com.bearya.robot.household.entity;
 
+import com.bearya.robot.household.R;
+
 /**
  * Created by Administrator on 2018\4\23 0023.
  */
@@ -7,6 +9,9 @@ package com.bearya.robot.household.entity;
 public class HabitInfo {
     private int tag_id;
     private String tag_name;
+    private int color;
+    private boolean isSelect;
+    private int padding;
 
     public int getTag_id() {
         return tag_id;
@@ -22,5 +27,33 @@ public class HabitInfo {
 
     public void setTag_name(String tag_name) {
         this.tag_name = tag_name;
+    }
+
+    public int getColor() {
+        return isSelect()? R.color.colorWhite:color;
+    }
+
+    public int getFillColor() {
+        return isSelect()? color:R.color.colorWhite;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
+    }
+
+    public boolean isSelect() {
+        return isSelect;
+    }
+
+    public void setSelect(boolean select) {
+        isSelect = select;
+    }
+
+    public int getPadding() {
+        return padding;
+    }
+
+    public void setPadding(int padding) {
+        this.padding = padding;
     }
 }

@@ -27,4 +27,15 @@
     <color name="colorBackground">#fff7f7f8</color>
     <color name="colorSex">#ffec6941</color>
     <color name="colorWakeup">#fff8b551</color>
+
+    <color name="color_yellow">#f8b551</color>
+    <color name="color_red">#ec6941</color>
+    <color name="color_green">#80c269</color>
+    <color name="color_purple">#ee00ee</color>
+    <color name="color_blue">#4169e1</color>
+    <color name="color_brown">#8b4500</color>
+    <color name="color_grey">#7a7a7a</color>
+    <color name="color_red_dark">#dc143c</color>
+    <color name="color_blue_dark">#0000ff</color>
+    <color name="color_green_dark">#006400</color>
 </resources>

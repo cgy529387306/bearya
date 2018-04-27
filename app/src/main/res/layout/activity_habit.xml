@@ -24,13 +24,13 @@
         android:text="@string/habit_hint2"
         android:textSize="@dimen/activity_text_size"
         android:textColor="@color/colorBlack"/>
-    <com.bearya.robot.household.views.KeywordsFlow
-        android:id="@+id/flowView"
-        android:layout_marginTop="10dp"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
-
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp" />
     <TextView
         android:id="@+id/tv_confirm"
         android:layout_width="match_parent"

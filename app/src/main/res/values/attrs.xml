@@ -10,4 +10,9 @@
         <!-- Selected Paint Color (color). -->
         <attr name="paintSelectColor" format="reference|color"/>
     </declare-styleable>
+
+    <declare-styleable name="FlowLabelLayout">
+        <attr name="LayoutType" format="integer" />
+    </declare-styleable>
+
 </resources>

@@ -5,6 +5,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
 
+import com.bearya.robot.household.views.FlowLabelLayout;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,14 +15,14 @@ import java.util.List;
  */
 
 public class ViewPagerAdapter extends PagerAdapter {
-    private List<GridView> gridList;
+    private List<FlowLabelLayout> gridList;
 
 
     public ViewPagerAdapter() {
         gridList = new ArrayList<>();
     }
 
-    public void add(List<GridView> datas) {
+    public void add(List<FlowLabelLayout> datas) {
         if (gridList.size() > 0) {
             gridList.clear();
         }
