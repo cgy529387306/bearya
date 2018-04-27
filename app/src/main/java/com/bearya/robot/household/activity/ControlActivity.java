@@ -218,7 +218,8 @@ public class ControlActivity extends BaseActivity implements View.OnClickListene
         String [] expressionNames = getResources().getStringArray(R.array.expression_names);
         String [] expressionValues = getResources().getStringArray(R.array.expression_values);
         for (int i = 0; i<expressionNames.length; i++) {
-            expressionListInfo.add(new ItemInfo(expressionValues[i],expressionNames[i],R.mipmap.img_dormant));
+            int resID = getResources().getIdentifier("ic_expression"+i, "mipmap", getPackageName());
+            expressionListInfo.add(new ItemInfo(expressionValues[i],expressionNames[i],resID));
         }
         expressionListAdapter = new ExpressionListAdapter(R.layout.expression_item_view, expressionListInfo);
         expressionListAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
@@ -241,7 +242,8 @@ public class ControlActivity extends BaseActivity implements View.OnClickListene
         String [] danceNames = getResources().getStringArray(R.array.dance_names);
         String [] danceValues = getResources().getStringArray(R.array.dance_values);
         for (int i = 0; i<danceNames.length; i++) {
-            danceListInfo.add(new ItemInfo(danceValues[i],danceNames[i],R.mipmap.img_tiger));
+            int resID = getResources().getIdentifier("ic_dance"+i, "mipmap", getPackageName());
+            danceListInfo.add(new ItemInfo(danceValues[i],danceNames[i],resID));
         }
         danceListAdapter = new DanceListAdapter(R.layout.dance_item_view, danceListInfo);
         danceListAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {

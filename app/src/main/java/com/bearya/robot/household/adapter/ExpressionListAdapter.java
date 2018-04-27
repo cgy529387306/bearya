@@ -1,12 +1,7 @@
 package com.bearya.robot.household.adapter;
 
-import android.view.View;
-import android.widget.RelativeLayout;
-
 import com.bearya.robot.household.R;
-import com.bearya.robot.household.entity.ItemClickCallBack;
 import com.bearya.robot.household.entity.ItemInfo;
-import com.bearya.robot.household.entity.MachineInfo;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 
@@ -25,5 +20,6 @@ public class ExpressionListAdapter extends BaseQuickAdapter<ItemInfo, BaseViewHo
     @Override
     protected void convert(BaseViewHolder helper, ItemInfo item) {
         helper.setText(R.id.tv_expression_name, item.name);
+        helper.setImageResource(R.id.iv_expression_image,item.resId);
     }
 }

@@ -9,7 +9,7 @@
         android:layout_width="75dp"
         android:layout_height="50dp"
         android:layout_gravity="center_horizontal"
-        android:src="@mipmap/img_dormant"/>
+        android:src="@mipmap/ic_expression0"/>
     <TextView
         android:id="@+id/tv_expression_name"
         android:layout_width="wrap_content"
