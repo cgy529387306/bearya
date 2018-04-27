@@ -4,4 +4,10 @@
         <attr name="progressDrawable" format="reference" />
         <attr name="bgDrawable" format="reference" />
     </declare-styleable>
+    <declare-styleable name="CustomShapTextView">
+        <!-- Default Paint Color (color). -->
+        <attr name="paintNormalColor" format="reference|color"/>
+        <!-- Selected Paint Color (color). -->
+        <attr name="paintSelectColor" format="reference|color"/>
+    </declare-styleable>
 </resources>
