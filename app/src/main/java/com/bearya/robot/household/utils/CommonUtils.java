@@ -15,6 +15,7 @@ import android.provider.Settings;
 import android.support.v4.content.FileProvider;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
@@ -346,6 +347,38 @@ public class CommonUtils {
             result = MyApplication.getContext().getFilesDir().getPath().concat(File.separator);
         }
         return result;
+    }
+
+    /**
+     * 根据手机的分辨率从 dip转成为 px
+     *
+     * @param context
+     *            {@link Context} 当前界面的context
+     * @param dpValue
+     *            {@link float} 要转换的dip数值
+     */
+    public static float dip2px(Context context, float dpValue) {
+//		final float scale = context.getResources().getDisplayMetrics().density;
+//		return (dpValue * scale + 0.5f);
+        float fpx = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                dpValue, context.getResources().getDisplayMetrics());
+        return fpx;
+    }
+
+    /**
+     * 根据手机的分辨率从 px转成为 dip
+     *
+     * @param context
+     *            {@link Context} 当前界面的context
+     * @param pxValue
+     *            {@link float} 要转换的px数值
+     */
+    public static float px2dip(Context context, float pxValue) {
+//		final float scale = context.getResources().getDisplayMetrics().density;
+//		return (pxValue / scale + 0.5f);
+        float fdp = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX,
+                pxValue, context.getResources().getDisplayMetrics());
+        return fdp;
     }
 
 }
