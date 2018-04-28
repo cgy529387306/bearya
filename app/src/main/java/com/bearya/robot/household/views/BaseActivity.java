@@ -1,6 +1,5 @@
 package com.bearya.robot.household.views;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -24,6 +23,7 @@ import com.bearya.robot.household.MyApplication;
 import com.bearya.robot.household.R;
 import com.bearya.robot.household.activity.LoginActivity;
 import com.bearya.robot.household.activity.MainActivity;
+import com.bearya.robot.household.activity.UserInfoActivity;
 import com.bearya.robot.household.entity.VersionInfo;
 import com.bearya.robot.household.http.retrofit.HttpRetrofitClient;
 import com.bearya.robot.household.update.CommonDialog;
@@ -32,6 +32,7 @@ import com.bearya.robot.household.utils.ActivityManager;
 import com.bearya.robot.household.utils.CommonUtils;
 import com.bearya.robot.household.utils.LogUtils;
 import com.bearya.robot.household.utils.NavigationHelper;
+import com.bearya.robot.household.utils.UserInfoManager;
 import com.bearya.robot.household.utils.Utils;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -367,8 +368,12 @@ public abstract class BaseActivity extends AppCompatActivity implements CommonDi
     }
 
     public void launcherMain() {
-        NavigationHelper.startActivity(this, MainActivity.class,null,true);
-        ActivityManager.getInstance().closeAllActivityExceptOne(MainActivity.class.getName());
+        if (UserInfoManager.getInstance().getBabyInfo()==null){
+            NavigationHelper.startActivity(this, UserInfoActivity.class,null,false);
+        }else{
+            NavigationHelper.startActivity(this, MainActivity.class,null,true);
+            ActivityManager.getInstance().closeAllActivityExceptOne(MainActivity.class.getName());
+        }
     }
 
     public void launcherLogin() {

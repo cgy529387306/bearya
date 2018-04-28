@@ -16,6 +16,7 @@ import com.bearya.robot.household.entity.HabitInfo;
 import com.bearya.robot.household.indicator.CirclePageIndicator;
 import com.bearya.robot.household.utils.CommonUtils;
 import com.bearya.robot.household.utils.DateHelper;
+import com.bearya.robot.household.utils.UserInfoManager;
 import com.bearya.robot.household.views.BaseActivity;
 import com.bearya.robot.household.views.CircleView;
 import com.bearya.robot.household.views.FlowLabelLayout;
@@ -122,6 +123,7 @@ public class HabitActivity extends BaseActivity implements View.OnClickListener 
                     public void onNext(BabyInfo result) {
                         closeLoadingView();
                         showToast(getString(R.string.save_success));
+                        UserInfoManager.getInstance().setBayInfo(result);
                         launcherMain();
                     }
                 });

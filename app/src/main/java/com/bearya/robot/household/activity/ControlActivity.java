@@ -41,6 +41,7 @@ import com.bearya.robot.household.utils.LogUtils;
 import com.bearya.robot.household.utils.UserInfoManager;
 import com.bearya.robot.household.videoCall.AgoraService;
 import com.bearya.robot.household.videoCall.VideoChatViewActivity;
+import com.bearya.robot.household.videoCall.VoiceChatViewActivity;
 import com.bearya.robot.household.views.BaseActivity;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
@@ -295,8 +296,20 @@ public class ControlActivity extends BaseActivity implements View.OnClickListene
                     intent.putExtra("remoteId", deviceInfo.uid);// 强转为fromAccount
                     startActivity(intent);
                 }else if (Integer.valueOf(videoListInfo.get(position).id) == 1){
-                    //TODO voice
-
+                    if (isMonitor >= 0) {
+                        CommonUtils.showToast(ControlActivity.this, getString(R.string.monitor_mode_toast1));
+                        return;
+                    }
+                    showOrHideBottomInfo(MODE_NORMAL);
+                    LogUtils.d("VideoCall", "localId = "+userInfo.getUid() + " remoteId = "+ deviceInfo.uid);
+                    Intent intent = new Intent(ControlActivity.this, VoiceChatViewActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra("beInvited", false);
+                    intent.putExtra("isVideo", false);
+                    intent.putExtra("remoteName", deviceInfo.name);
+                    intent.putExtra("localId", userInfo.getUid());
+                    intent.putExtra("remoteId", deviceInfo.uid);// 强转为fromAccount
+                    startActivity(intent);
                 }else if (Integer.valueOf(videoListInfo.get(position).id) == 2) {
                     if (isMonitor == -1) {
                         getMonitorKey();

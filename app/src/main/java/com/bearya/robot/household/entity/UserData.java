@@ -8,7 +8,7 @@ public class UserData {
 //    private String agrora_token;
     private String token;
     private UserInfo user;
-    private Object baby;
+    private BabyInfo baby;
 
     public String getToken() {
         return token == null ? "" : token;
@@ -26,11 +26,11 @@ public class UserData {
         this.user = user;
     }
 
-    public Object getBaby() {
+    public BabyInfo getBaby() {
         return baby;
     }
 
-    public void setBaby(Object baby) {
+    public void setBaby(BabyInfo baby) {
         this.baby = baby;
     }
 }

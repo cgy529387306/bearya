@@ -1,6 +1,7 @@
 package com.bearya.robot.household.utils;
 
 import com.bearya.robot.household.MyApplication;
+import com.bearya.robot.household.entity.BabyInfo;
 import com.bearya.robot.household.entity.UserData;
 import com.bearya.robot.household.entity.UserInfo;
 
@@ -11,9 +12,10 @@ import com.bearya.robot.household.entity.UserInfo;
 public class UserInfoManager {
 
     private static UserInfoManager instance;
-    public final static String KEY_IS_LOGIN = "KEY_IS_LOGIN";
-    public final static String KEY_USER_INFO = "KEY_USER_INFO";
-    public final static String KEY_TOKEN = "KEY_TOKEN";
+    private final static String KEY_IS_LOGIN = "KEY_IS_LOGIN";
+    private final static String KEY_USER_INFO = "KEY_USER_INFO";
+    private final static String KEY_TOKEN = "KEY_TOKEN";
+    private final static String KEY_BABY_INFO = "KEY_BABY_INFO";
     public static UserInfoManager getInstance() {
         if (instance == null) {
             instance = new UserInfoManager();
@@ -24,6 +26,7 @@ public class UserInfoManager {
 
     public void login(UserData userData){
         setUserInfo(userData.getUser());
+        setBayInfo(userData.getBaby());
         setToken(userData.getToken());
         setIsLogin(true);
     }
@@ -34,7 +37,16 @@ public class UserInfoManager {
     }
 
     public void setUserInfo(UserInfo userInfo){
-        SharedPrefUtil.getInstance(MyApplication.getContext()).put(KEY_USER_INFO, JsonHelper.toExposeJson(userInfo));
+        SharedPrefUtil.getInstance(MyApplication.getContext()).put(KEY_USER_INFO, JsonHelper.toJson(userInfo));
+    }
+
+    public BabyInfo getBabyInfo(){
+        String bayInfo = SharedPrefUtil.getInstance(MyApplication.getContext()).getString(KEY_BABY_INFO);
+        return JsonHelper.fromJson(bayInfo,BabyInfo.class);
+    }
+
+    public void setBayInfo(BabyInfo bayInfo){
+        SharedPrefUtil.getInstance(MyApplication.getContext()).put(KEY_BABY_INFO, JsonHelper.toJson(bayInfo));
     }
 
     public String getToken(){

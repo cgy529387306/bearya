@@ -1,8 +1,5 @@
 package com.bearya.robot.household.entity;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by caigy on 2018/4/20.
  */
@@ -16,7 +13,7 @@ public class BabyInfo {
     private String avatar;
     private int is_default;
     private String relationship;
-    private List<Integer> tags;
+//    private List<Integer> tags;
 
     public int getBaby_id() {
         return baby_id;
@@ -82,14 +79,14 @@ public class BabyInfo {
         this.relationship = relationship;
     }
 
-    public List<Integer> getTags() {
-        if (tags == null) {
-            return new ArrayList<>();
-        }
-        return tags;
-    }
-
-    public void setTags(List<Integer> tags) {
-        this.tags = tags;
-    }
+//    public List<Integer> getTags() {
+//        if (tags == null) {
+//            return new ArrayList<>();
+//        }
+//        return tags;
+//    }
+//
+//    public void setTags(List<Integer> tags) {
+//        this.tags = tags;
+//    }
 }

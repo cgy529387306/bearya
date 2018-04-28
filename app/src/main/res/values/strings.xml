@@ -37,6 +37,7 @@
     <string name="dialog_cancel">取消</string>
     <string name="service_start_failed">服务启动失败，不支持此功能！</string>
     <string name="monitor_mode_toast">监护模式下，无法进行视频通话！</string>
+    <string name="monitor_mode_toast1">监护模式下，无法进行语音通话！</string>
     <string name="main_device_hint_1">小宝贝，你睡着了吗？</string>
     <string name="main_device_hint_2">小宝贝，你现在乖不乖呢？</string>
     <string name="main_device_hint_3">小宝贝，你好好吃饭了吗?</string>

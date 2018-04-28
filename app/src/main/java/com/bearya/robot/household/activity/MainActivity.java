@@ -193,9 +193,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     .crossFade()
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .transform(new GlideCircleTransform(this))
-                    .error(R.mipmap.my_avatar)
+                    .error(R.mipmap.ic_avatar_default)
                     .into(userIcon);
-            userName.setText(TextUtils.isEmpty(userInfo.getNickname())?"神秘人":userInfo.getNickname());
+            userName.setText(TextUtils.isEmpty(userInfo.getNickname())?"贝芽科技":userInfo.getNickname());
             startVideoCallService();
         } else {
             Toast.makeText(this, R.string.login_error_more, Toast.LENGTH_SHORT).show();
