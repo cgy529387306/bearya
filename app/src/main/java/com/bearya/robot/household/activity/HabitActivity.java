@@ -13,6 +13,7 @@ import com.bearya.robot.household.api.FamilyApiWrapper;
 import com.bearya.robot.household.entity.BabyInfo;
 import com.bearya.robot.household.entity.HabitData;
 import com.bearya.robot.household.entity.HabitInfo;
+import com.bearya.robot.household.indicator.CirclePageIndicator;
 import com.bearya.robot.household.utils.CommonUtils;
 import com.bearya.robot.household.utils.DateHelper;
 import com.bearya.robot.household.views.BaseActivity;
@@ -43,6 +44,7 @@ public class HabitActivity extends BaseActivity implements View.OnClickListener 
     private int paddingArray[] = {10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30};
     private List<FlowLabelLayout> labelLayoutList = new ArrayList<>();
     private List<HabitInfo> mSelectedHabits = new ArrayList<>();
+    private CirclePageIndicator indicator;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +72,10 @@ public class HabitActivity extends BaseActivity implements View.OnClickListener 
     private void initData() {
         pagerAdapter = new ViewPagerAdapter();
         viewPager.setAdapter(pagerAdapter);
+        //圆点指示器
+        indicator = (CirclePageIndicator) findViewById(R.id.indicator);
+        indicator.setVisibility(View.VISIBLE);
+        indicator.setViewPager(viewPager);
         subscription = new CompositeSubscription();
     }
 
