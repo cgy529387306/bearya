@@ -1,7 +1,5 @@
 package com.bearya.robot.household.entity;
 
-import com.bearya.robot.household.R;
-
 /**
  * Created by Administrator on 2018\4\23 0023.
  */
@@ -30,11 +28,7 @@ public class HabitInfo {
     }
 
     public int getColor() {
-        return isSelect()? R.color.colorWhite:color;
-    }
-
-    public int getFillColor() {
-        return isSelect()? color:R.color.colorWhite;
+        return color;
     }
 
     public void setColor(int color) {
