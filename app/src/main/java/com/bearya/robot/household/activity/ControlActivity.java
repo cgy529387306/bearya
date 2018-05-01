@@ -22,6 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bearya.robot.household.R;
 import com.bearya.robot.household.adapter.DanceListAdapter;
@@ -48,6 +49,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import es.dmoral.toasty.Toasty;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -230,10 +232,11 @@ public class ControlActivity extends BaseActivity implements View.OnClickListene
                     CommonUtils.showToast(ControlActivity.this, getString(R.string.device_outline_toast));
                     return;
                 }
-                //MsgExpression msgExpression = new MsgExpression(expressionListInfo.get(position).id);
-                setDeviceAction("表情："+expressionListInfo.get(position).name);
+                String name = expressionListInfo.get(position).name;
+                setDeviceAction("表情："+name);
                 if (familyInteraction != null) {
                     familyInteraction.sendExpression(expressionListInfo.get(position).id);
+                    Toasty.success(ControlActivity.this, name+"发送成功", Toast.LENGTH_SHORT, true).show();
                 }
                 //mDeviceRef.child(CommonUtils.WILDDOG_CLIENT).push().setValue(msgExpression);
             }
@@ -254,11 +257,11 @@ public class ControlActivity extends BaseActivity implements View.OnClickListene
                     CommonUtils.showToast(ControlActivity.this, getString(R.string.device_outline_toast));
                     return;
                 }
-                setDeviceAction("舞蹈："+danceListInfo.get(position).name);
-                //MsgDance msgDance = new MsgDance(danceListInfo.get(position).id);
-                //mDeviceRef.child(CommonUtils.WILDDOG_CLIENT).push().setValue(msgDance);
+                String name = danceListInfo.get(position).name;
+                setDeviceAction("舞蹈："+name);
                 if (familyInteraction != null) {
                     familyInteraction.sendDance(danceListInfo.get(position).id);
+                    Toasty.success(ControlActivity.this, name+"发送成功", Toast.LENGTH_SHORT, true).show();
                 }
             }
         });
@@ -302,7 +305,7 @@ public class ControlActivity extends BaseActivity implements View.OnClickListene
                     }
                     showOrHideBottomInfo(MODE_NORMAL);
                     LogUtils.d("VideoCall", "localId = "+userInfo.getUid() + " remoteId = "+ deviceInfo.uid);
-                    Intent intent = new Intent(ControlActivity.this, VoiceChatViewActivity.class);
+                    Intent intent = new Intent(ControlActivity.this, VideoChatViewActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.putExtra("beInvited", false);
                     intent.putExtra("isVideo", false);

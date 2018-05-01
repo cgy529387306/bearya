@@ -35,7 +35,7 @@ public interface FamilyApiService {
     Observable<HttpResult<HabitData>> getHabitList(@Query("pos") int pos, @Query("limit") int limit);
     @POST("v1/user/login/wechat")
     Observable<HttpResult<UserData>> getUserInfo(@Query("code") String code, @Query("app") String app);
-    @POST("v1/client/device/list")
+    @POST("v1/baby/bind/list")
     Observable<HttpResult<DeviceListData>> getDeviceList();
     @POST("v1/baby/bind/create")
     Observable<HttpResult<Object>> bindDevice(@Query("sn") String sn);

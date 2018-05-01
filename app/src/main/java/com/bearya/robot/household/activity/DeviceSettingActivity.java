@@ -40,7 +40,12 @@ public class DeviceSettingActivity extends BaseActivity implements View.OnClickL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.string.device_setting,R.layout.activity_device_setting,"保存");
+        Boolean isFirst = getIntent().getBooleanExtra("isFirst",false);
+        if (isFirst){
+            setContentView(R.string.device_setting,R.layout.activity_device_setting,"跳过");
+        }else {
+            setContentView(R.string.device_setting,R.layout.activity_device_setting);
+        }
         initView();
         initListener();
         getDeviceDetail();
@@ -56,7 +61,7 @@ public class DeviceSettingActivity extends BaseActivity implements View.OnClickL
     @Override
     protected void onRightTip() { //右上角点击事件
         super.onRightTip();
-        save();
+        finish();
     }
 
     private void initData(DeviceInfo info) {
@@ -72,6 +77,7 @@ public class DeviceSettingActivity extends BaseActivity implements View.OnClickL
     }
 
     private void initListener(){
+        findViewById(R.id.tv_confirm).setOnClickListener(this);
         tvRabitName.setOnClickListener(this);
         tvBirth.setOnClickListener(this);
         tvWhoseDad.setOnClickListener(this);
@@ -124,6 +130,8 @@ public class DeviceSettingActivity extends BaseActivity implements View.OnClickL
             bundle.putInt("type",1);
             bundle.putString("edit", deviceInfo==null?"":deviceInfo.getMother_name());
             NavigationHelper.startActivityForResult(DeviceSettingActivity.this,EditActivity.class,bundle,EDIT_WHOSEMOM);
+        }else if (id == R.id.tv_confirm){
+            save();
         }
     }
 

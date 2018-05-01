@@ -298,7 +298,6 @@ public abstract class BaseActivity extends AppCompatActivity implements CommonDi
             mRightTip.setVisibility(View.GONE);
         } else {
             mRightTip.setVisibility(View.VISIBLE);
-            mRightTip.setTextColor(getResources().getColor(R.color.colorBlack));
             mRightTip.setText(rightString);
         }
         mTitleRight.setOnClickListener(listener);

@@ -113,6 +113,13 @@ public class DeviceListActivity extends BaseActivity implements View.OnClickList
         if (requestCode == BIND_DEVICE && resultCode == Activity.RESULT_OK) {
             setResult(RESULT_OK);
             getDeviceList();
+            Bundle bundle = new Bundle();
+            bundle.putBoolean("isFirst",true);
+            if (data!=null){
+                String sn = data.getStringExtra("sn");
+                bundle.putString("sn",sn);
+            }
+            NavigationHelper.startActivity(DeviceListActivity.this,DeviceSettingActivity.class,bundle,false);
         }
     }
 

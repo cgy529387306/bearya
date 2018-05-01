@@ -175,13 +175,7 @@ public class VoiceChatViewActivity extends AppCompatActivity {
 
     // Tutorial Step 1
     private void initSignal() {
-        if (mRtcEngine == null) {
-            try {
-                mRtcEngine = RtcEngine.create(this, AgoraCalculateHelp.appID, mRtcEventHandler);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+        initRtcEngine();
         if (!isInvitedFromRemote) {
             // 主动拨打
             RxBus.get().post(RxConstants.RxEventTag.TAG_AGORA_SERVICE,
@@ -192,6 +186,17 @@ public class VoiceChatViewActivity extends AppCompatActivity {
             bean.setBeInvitedTojoin(true);
         }
     }
+
+    private void initRtcEngine(){
+        if (mRtcEngine == null) {
+            try {
+                mRtcEngine = RtcEngine.create(this, AgoraCalculateHelp.appID, mRtcEventHandler);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 
 
 
@@ -264,7 +269,7 @@ public class VoiceChatViewActivity extends AppCompatActivity {
             }
     )
     public void endInvite(String ss) {
-//        finish();
+        finish();
     }
 
     @Subscribe(
@@ -290,6 +295,7 @@ public class VoiceChatViewActivity extends AppCompatActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                initRtcEngine();
                 bean.setVideoCall(false);
                 AgoraRunTime.Status status = AgoraRunTime.getInstance().getStatus();
                 if (status == AgoraRunTime.Status.joinFailed) {

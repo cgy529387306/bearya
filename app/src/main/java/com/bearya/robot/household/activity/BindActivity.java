@@ -83,7 +83,7 @@ public class BindActivity extends BaseActivity implements View.OnClickListener {
         }
     }
 
-    public void bindDevice(String serial) {
+    public void bindDevice(final String serial) {
         showLoadingView();
         Subscription subscribe = FamilyApiWrapper.getInstance().bindDevice(serial)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -105,7 +105,9 @@ public class BindActivity extends BaseActivity implements View.OnClickListener {
                     @Override
                     public void onNext(Object result) {
                         closeLoadingView();
-                        setResult(RESULT_OK);
+                        Intent intent = new Intent();
+                        intent.putExtra("sn",serial);
+                        setResult(RESULT_OK,intent);
                         finish();
                     }
                 });
