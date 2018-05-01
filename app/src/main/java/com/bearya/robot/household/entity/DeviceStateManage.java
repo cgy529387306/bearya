@@ -25,7 +25,7 @@ public class DeviceStateManage {
             delDeviceStateListener(item.uid);
         }
         FamilyInteraction familyInteraction = new FamilyInteraction();
-        familyInteraction.init(item.dtype, item.serial_num);
+        familyInteraction.init(item.dtype, item.sn);
         familyInteraction.setValueEventListener(new ItemValueEventListener(view, textView));
 
         /*WildDogDevice wildDogDevice = new WildDogDevice();

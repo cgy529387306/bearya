@@ -7,6 +7,7 @@ import com.bearya.robot.household.entity.HabitData;
 import com.bearya.robot.household.entity.KeyInfo;
 import com.bearya.robot.household.entity.ProductInfo;
 import com.bearya.robot.household.entity.UserData;
+import com.bearya.robot.household.entity.WakeupInfo;
 import com.bearya.robot.household.http.retrofit.HttpRetrofitClient;
 
 import rx.Observable;
@@ -80,6 +81,10 @@ public class FamilyApiWrapper extends HttpRetrofitClient {
 
     public Observable<DeviceInfo> getDeviceDetail(String sn) {
         return getService(FamilyApiService.class).getDeviceDetail(sn).compose(this.applySchedulers());
+    }
+
+    public Observable<WakeupInfo> wakeupTest(String word) {
+        return getService(FamilyApiService.class).wakeupTest(word).compose(this.applySchedulers());
     }
 
     //    public Observable<DeviceInfo> modify(DeviceInfo deviceInfo) {

@@ -13,12 +13,13 @@
 
         <ImageView
             android:id="@+id/im_setting"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:src="@mipmap/icon_home"
-            android:padding="5dp"
-            android:layout_marginLeft="15dp"
-            android:layout_centerVertical="true"/>
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="16dp"
+            android:layout_toEndOf="@+id/tv_main_title"
+            android:padding="10dp"
+            android:src="@mipmap/icon_home" />
 
         <TextView
             android:id="@+id/tv_main_title"

@@ -8,6 +8,7 @@ import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 
 import com.bearya.robot.household.R;
@@ -31,6 +32,7 @@ import rx.subscriptions.CompositeSubscription;
 
 public class DeviceListActivity extends BaseActivity implements View.OnClickListener{
     private final static int BIND_DEVICE = 9003;
+    private final static int EDIT_DEVICE = 9004;
     private DeviceListData machineInfoList = new DeviceListData();
     private DeviceListAdapter deviceListAdapter;
     private RecyclerView deviceList;
@@ -63,11 +65,11 @@ public class DeviceListActivity extends BaseActivity implements View.OnClickList
         if (getIntent().hasExtra("devices")) {
             machineInfoList = getIntent().getParcelableExtra("devices");
         }
-        deviceListAdapter = new DeviceListAdapter(R.layout.device_list_item, machineInfoList.devices);
+        deviceListAdapter = new DeviceListAdapter(R.layout.device_list_item, machineInfoList.list);
         deviceListAdapter.setItemClickCallBack(new ItemClickCallBack() {
             @Override
             public void onLongClick(View view) throws Exception {
-                final MachineInfo machineInfo = machineInfoList.devices.get((Integer) view.getTag());
+                final MachineInfo machineInfo = machineInfoList.list.get((Integer) view.getTag());
                 String msg = String.format(getString(R.string.device_unbind_hint), machineInfo.name);
                 if (checkDialog == null) {
                     checkDialog = new BYCheckDialog();
@@ -89,14 +91,14 @@ public class DeviceListActivity extends BaseActivity implements View.OnClickList
 
             @Override
             public void onClick(View view) throws Exception {
-                final MachineInfo machineInfo = machineInfoList.devices.get((Integer) view.getTag());
+                final MachineInfo machineInfo = machineInfoList.list.get((Integer) view.getTag());
                 Bundle bundle = new Bundle();
-                bundle.putString("sn",machineInfo.serial_num);
-                NavigationHelper.startActivity(DeviceListActivity.this,DeviceSettingActivity.class,bundle,false);
+                bundle.putString("sn",machineInfo.sn);
+                NavigationHelper.startActivityForResult(DeviceListActivity.this,DeviceSettingActivity.class,bundle, EDIT_DEVICE);
             }
         });
         deviceList.setAdapter(deviceListAdapter);
-        emptyView.setVisibility(CommonUtils.isEmpty(machineInfoList.devices)?View.VISIBLE:View.GONE);
+        emptyView.setVisibility(CommonUtils.isEmpty(machineInfoList.list)?View.VISIBLE:View.GONE);
     }
 
     @Override
@@ -120,6 +122,8 @@ public class DeviceListActivity extends BaseActivity implements View.OnClickList
                 bundle.putString("sn",sn);
             }
             NavigationHelper.startActivity(DeviceListActivity.this,DeviceSettingActivity.class,bundle,false);
+        }else if (requestCode == EDIT_DEVICE && resultCode == Activity.RESULT_OK) {
+            getDeviceList();
         }
     }
 
@@ -145,11 +149,11 @@ public class DeviceListActivity extends BaseActivity implements View.OnClickList
                     @Override
                     public void onNext(DeviceListData bindDeviceList) {
                         closeLoadingView();
-                        machineInfoList.devices.clear();
+                        machineInfoList.list.clear();
                         deviceListAdapter.clearDevicesListener();
-                        if (bindDeviceList != null && bindDeviceList.devices != null && bindDeviceList.devices.size() > 0) {
-                            machineInfoList.devices.addAll(bindDeviceList.devices);
-                            deviceListAdapter.setNewData(machineInfoList.devices);
+                        if (bindDeviceList != null && bindDeviceList.list != null && bindDeviceList.list.size() > 0) {
+                            machineInfoList.list.addAll(bindDeviceList.list);
+                            deviceListAdapter.setNewData(machineInfoList.list);
                             emptyView.setVisibility(View.GONE);
                         }else{
                             emptyView.setVisibility(View.VISIBLE);
@@ -161,7 +165,7 @@ public class DeviceListActivity extends BaseActivity implements View.OnClickList
 
     public void unbindDevice(MachineInfo machineInfo) {
         showLoadingView();
-        Subscription subscribe = FamilyApiWrapper.getInstance().unBindDevice(machineInfo.serial_num)
+        Subscription subscribe = FamilyApiWrapper.getInstance().unBindDevice(machineInfo.sn)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<Object>() {
 

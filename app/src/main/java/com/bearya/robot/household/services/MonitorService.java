@@ -81,7 +81,6 @@ public class MonitorService {
     public void setupLocalVideo(int uid) {
         SurfaceView surfaceView = RtcEngine.CreateRendererView(MyApplication.getContext());
         surfaceView.setZOrderOnTop(true);
-        //surfaceView.setZOrderMediaOverlay(true);
         sfvContainer.addView(surfaceView);
         int i = mRtcEngine.setupRemoteVideo(new VideoCanvas(surfaceView, VideoCanvas.RENDER_MODE_HIDDEN, uid));
         mRtcEngine.startPreview();
@@ -106,7 +105,7 @@ public class MonitorService {
                 mRtcEngine.leaveChannel();
                 mRtcEngine.destroy();
             } catch (IllegalArgumentException e) {
-
+                e.printStackTrace();
             }
             mRtcEngine = null;
         }

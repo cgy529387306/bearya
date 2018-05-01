@@ -414,4 +414,20 @@ public class CommonUtils {
         return strList;
     }
 
+    /**
+     * 判断该字符串是否为中文
+     * @param string
+     * @return
+     */
+    public static boolean isChinese(String string){
+        int n = 0;
+        for(int i = 0; i < string.length(); i++) {
+            n = (int)string.charAt(i);
+            if(!(19968 <= n && n <40869)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 }

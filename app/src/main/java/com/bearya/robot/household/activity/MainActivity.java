@@ -37,10 +37,14 @@ import com.bearya.robot.household.utils.LogUtils;
 import com.bearya.robot.household.utils.NavigationHelper;
 import com.bearya.robot.household.utils.UserInfoManager;
 import com.bearya.robot.household.videoCall.AgoraService;
+import com.bearya.robot.household.videoCall.RxConstants;
 import com.bearya.robot.household.views.BaseActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.hwangjr.rxbus.RxBus;
+import com.hwangjr.rxbus.annotation.Subscribe;
+import com.hwangjr.rxbus.thread.EventThread;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -105,16 +109,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private void initData() {
         version.setText(String.format("V%s", CommonUtils.getVersionName(MyApplication.getContext())));
         sc = new CompositeSubscription();
-        machineInfoList.devices = new ArrayList<>();
+        machineInfoList.list = new ArrayList<>();
         menuInfoList.add(new MenuInfo(R.mipmap.menu_manage, R.string.menu_manage, true,  new ItemCallback() {
             @Override
             public void itemClick() {
                 drawerLayout.closeDrawer(leftMenu);
                 Intent intent = new Intent(MainActivity.this, DeviceListActivity.class);
                 DeviceListData deviceList = new DeviceListData();
-                deviceList.devices = new ArrayList<>();
-                if (!(machineInfoList.devices.size() == 1 && machineInfoList.devices.get(0).uid == 0)){
-                    deviceList.devices.addAll(machineInfoList.devices);
+                deviceList.list = new ArrayList<>();
+                if (!(machineInfoList.list.size() == 1 && machineInfoList.list.get(0).uid == 0)){
+                    deviceList.list.addAll(machineInfoList.list);
                 }
                 intent.putExtra("devices", deviceList);
                 startActivityForResult(intent, DEVICE_LIST);
@@ -137,7 +141,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         menus.setLayoutManager(new GridLayoutManager(this, 1, OrientationHelper.VERTICAL, false));
         menus.setAdapter(menuAdapter);
         //machineInfoList.devices.add(new MachineInfo(0,"","XB","",0));//无设备时
-        machineAdapter = new MachineAdapter(R.layout.machine_item_view, machineInfoList.devices);
+        machineAdapter = new MachineAdapter(R.layout.machine_item_view, machineInfoList.list);
         initRecyclerView(machines, new CarouselLayoutManager(CarouselLayoutManager.HORIZONTAL, false), machineAdapter);
         //machines.setLayoutManager(new GridLayoutManager(this, 1, OrientationHelper.HORIZONTAL, false));
         //machines.setAdapter(machineAdapter);
@@ -160,9 +164,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             @Override
             public void onCenterItemClicked(@NonNull final RecyclerView recyclerView, @NonNull final CarouselLayoutManager carouselLayoutManager, @NonNull final View v) {
                 final int position = recyclerView.getChildLayoutPosition(v);
-                if (machineInfoList.devices.get(position).uid >0) {
+                if (machineInfoList.list.get(position).uid >0) {
                     Intent controlIntent = new Intent(MainActivity.this, ControlActivity.class);
-                    controlIntent.putExtra("deviceInfo", machineInfoList.devices.get(position));
+                    controlIntent.putExtra("deviceInfo", machineInfoList.list.get(position));
                     startActivity(controlIntent);
                 } else {
                     Intent bindIntent = new Intent(MainActivity.this, BindActivity.class);
@@ -238,6 +242,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     protected void onResume() {
         super.onResume();
         checkAppVersion(this);
+        getDeviceList();
     }
 
     @Override
@@ -275,7 +280,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         mDate.setVisibility(View.VISIBLE);
     }
 
-
     public void getDeviceList() {
         showLoadingView();
         Subscription subscribe = FamilyApiWrapper.getInstance().getDeviceList()
@@ -286,10 +290,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     public void onCompleted() {
                         closeLoadingView();
                         LogUtils.d(BaseActivity.Tag, "getDeviceList onCompleted");
-                        if (machineInfoList.devices.size() <= 0) {
-                            machineInfoList.devices.add(new MachineInfo(0,"","XB","",0));//无设备时
+                        if (machineInfoList.list.size() <= 0) {
+                            machineInfoList.list.add(new MachineInfo(0,"","XB","",0));//无设备时
                         }
-                        machineAdapter.setNewData(machineInfoList.devices);
+                        machineAdapter.setNewData(machineInfoList.list);
                         setMachineHint();
                     }
 
@@ -298,9 +302,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                         closeLoadingView();
                         LogUtils.d(BaseActivity.Tag, "getDeviceList onError");
                         showErrorMessage(e);
-                        if (machineInfoList.devices.size() <= 0) {
-                            machineInfoList.devices.add(new MachineInfo(0,"","XB","",0));//无设备时
-                            machineAdapter.setNewData(machineInfoList.devices);
+                        if (machineInfoList.list.size() <= 0) {
+                            machineInfoList.list.add(new MachineInfo(0,"","XB","",0));//无设备时
+                            machineAdapter.setNewData(machineInfoList.list);
                             setMachineHint();
                         }
                     }
@@ -309,11 +313,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     public void onNext(DeviceListData bindDeviceList) {
                         closeLoadingView();
                         LogUtils.d(BaseActivity.Tag, "getDeviceList onNext");
-                        machineInfoList.devices.clear();
+                        machineInfoList.list.clear();
                         machineAdapter.clearDevicesListener();
-                        if (bindDeviceList != null && bindDeviceList.devices != null){
-                            if (bindDeviceList.devices.size() > 0) {
-                                machineInfoList.devices.addAll(bindDeviceList.devices);
+                        if (bindDeviceList != null && bindDeviceList.list != null){
+                            if (bindDeviceList.list.size() > 0) {
+                                machineInfoList.list.addAll(bindDeviceList.list);
                             }
                         }
                     }

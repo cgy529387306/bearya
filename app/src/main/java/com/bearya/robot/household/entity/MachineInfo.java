@@ -11,9 +11,8 @@ public class MachineInfo implements Parcelable{
     public int uid;
     public String name;
     public String dtype;
-    public String serial_num;
+    public String sn;
     public int state = 0;
-
     public MachineInfo() {
 
     }
@@ -22,7 +21,7 @@ public class MachineInfo implements Parcelable{
         this.uid = uid;
         this.name = name;
         this.dtype = dtype;
-        this.serial_num = serial_num;
+        this.sn = serial_num;
         this.state = state;
     }
 
@@ -30,7 +29,7 @@ public class MachineInfo implements Parcelable{
         uid = in.readInt();
         name = in.readString();
         dtype = in.readString();
-        serial_num = in.readString();
+        sn = in.readString();
         state = in.readInt();
     }
 
@@ -56,7 +55,7 @@ public class MachineInfo implements Parcelable{
         parcel.writeInt(uid);
         parcel.writeString(name);
         parcel.writeString(dtype);
-        parcel.writeString(serial_num);
+        parcel.writeString(sn);
         parcel.writeInt(state);
     }
 }

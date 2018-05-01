@@ -90,7 +90,7 @@ public class ControlActivity extends BaseActivity implements View.OnClickListene
     private RecyclerView rvDances;
     private RecyclerView rvVideos;
     private RelativeLayout msgSendView;
-
+    private ImageView ivBack;
     private MachineInfo deviceInfo;
     private UserInfo userInfo;
     //private SyncReference mStateRef;
@@ -143,7 +143,7 @@ public class ControlActivity extends BaseActivity implements View.OnClickListene
         closeMonitor.setOnClickListener(this);
         deviceState = (TextView) findViewById(R.id.tv_device_state);
         deviceAction = (TextView) findViewById(R.id.tv_device_action);
-
+        ivBack = (ImageView) findViewById(R.id.iv_back);
         //上、下、左、右控制
         findViewById(R.id.im_turn_up).setOnClickListener(this);
         findViewById(R.id.im_turn_down).setOnClickListener(this);
@@ -209,9 +209,9 @@ public class ControlActivity extends BaseActivity implements View.OnClickListene
         Log.d(TAG, "AA initData........");
         if (getIntent().hasExtra("deviceInfo")) {
             deviceInfo = getIntent().getParcelableExtra("deviceInfo");
-            Log.d(TAG, "deviceInfo.dtype = "+deviceInfo.dtype+" deviceInfo.serial_num = "+deviceInfo.serial_num);
+            Log.d(TAG, "deviceInfo.dtype = "+deviceInfo.dtype+" deviceInfo.serial_num = "+deviceInfo.sn);
             familyInteraction = new FamilyInteraction();
-            familyInteraction.init(deviceInfo.dtype, deviceInfo.serial_num);
+            familyInteraction.init(deviceInfo.dtype, deviceInfo.sn);
             familyInteraction.setValueEventListener(this);
             //addDeviceStateListener(deviceInfo.serial_num);
             //addWildDogDeviceListener(deviceInfo.serial_num);
@@ -424,7 +424,7 @@ public class ControlActivity extends BaseActivity implements View.OnClickListene
     public void getMonitorKey() {
         isMonitor = 0;
         showLoadingView();
-        Subscription subscribe = FamilyApiWrapper.getInstance().getMonitorKey(deviceInfo.serial_num, userInfo.getUid())
+        Subscription subscribe = FamilyApiWrapper.getInstance().getMonitorKey(deviceInfo.sn, userInfo.getUid())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<KeyInfo>() {
 
@@ -451,6 +451,7 @@ public class ControlActivity extends BaseActivity implements View.OnClickListene
                         synchronized (ControlActivity.this) {
                             if (keyInfo != null && isMonitor == 0) {
                                 isMonitor = 1;
+                                ivBack.setVisibility(View.GONE);
                                 deviceState.setVisibility(View.GONE);
                                 deviceAction.setVisibility(View.GONE);
                                 closeMonitor.setVisibility(View.VISIBLE);
@@ -477,6 +478,7 @@ public class ControlActivity extends BaseActivity implements View.OnClickListene
                 isMonitor = -1;
                 sfvContainer.setVisibility(View.GONE);
                 closeMonitor.setVisibility(View.GONE);
+                ivBack.setVisibility(View.VISIBLE);
                 deviceState.setVisibility(View.VISIBLE);
                 deviceAction.setVisibility(View.VISIBLE);
                 monitorService.leaveChannel();

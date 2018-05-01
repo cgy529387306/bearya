@@ -11,10 +11,12 @@ import com.bearya.robot.household.api.FamilyApiWrapper;
 import com.bearya.robot.household.entity.DeviceInfo;
 import com.bearya.robot.household.utils.DateHelper;
 import com.bearya.robot.household.utils.NavigationHelper;
+import com.bearya.robot.household.videoCall.RxConstants;
 import com.bearya.robot.household.views.BaseActivity;
 import com.codbking.widget.DatePickDialog;
 import com.codbking.widget.OnSureLisener;
 import com.codbking.widget.bean.DateType;
+import com.hwangjr.rxbus.RxBus;
 
 import java.util.Date;
 
@@ -106,6 +108,7 @@ public class DeviceSettingActivity extends BaseActivity implements View.OnClickL
                         @Override
                         public void onNext(DeviceInfo result) {
                             closeLoadingView();
+                            setResult(RESULT_OK);
                             onBack();
                         }
                     });
@@ -141,7 +144,7 @@ public class DeviceSettingActivity extends BaseActivity implements View.OnClickL
         if (resultCode == RESULT_OK){
             String content = data.getStringExtra("content");
             if (requestCode == EDIT_RABITNAME){
-                deviceInfo.setName(content);
+                deviceInfo.setWakeup(content);
                 tvRabitName.setText(deviceInfo.getName());
             }else if (requestCode == EDIT_WHOSEDAD){
                 deviceInfo.setFather_name(content);

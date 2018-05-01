@@ -1,6 +1,8 @@
 package com.bearya.robot.household.entity;
 
 
+import android.text.TextUtils;
+
 public class DeviceInfo{
 
     private String sn;
@@ -22,7 +24,11 @@ public class DeviceInfo{
     }
 
     public String getName() {
-        return name == null ? "" : name;
+        if (TextUtils.isEmpty(wakeup)){
+            return name == null ? "" : name;
+        }else {
+            return wakeup;
+        }
     }
 
     public void setName(String name) {

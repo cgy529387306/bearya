@@ -11,7 +11,7 @@ import java.util.List;
  */
 
 public class DeviceListData implements Parcelable {
-    public List<MachineInfo> devices;
+    public List<MachineInfo> list;
     private int total;
     private int limit;
     private int count;
@@ -27,7 +27,7 @@ public class DeviceListData implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeTypedList(this.devices);
+        dest.writeTypedList(this.list);
         dest.writeInt(this.total);
         dest.writeInt(this.limit);
         dest.writeInt(this.count);
@@ -35,7 +35,7 @@ public class DeviceListData implements Parcelable {
     }
 
     protected DeviceListData(Parcel in) {
-        this.devices = in.createTypedArrayList(MachineInfo.CREATOR);
+        this.list = in.createTypedArrayList(MachineInfo.CREATOR);
         this.total = in.readInt();
         this.limit = in.readInt();
         this.count = in.readInt();
@@ -55,14 +55,14 @@ public class DeviceListData implements Parcelable {
     };
 
     public List<MachineInfo> getDevices() {
-        if (devices == null) {
+        if (list == null) {
             return new ArrayList<>();
         }
-        return devices;
+        return list;
     }
 
     public void setDevices(List<MachineInfo> devices) {
-        this.devices = devices;
+        this.list = devices;
     }
 
     public int getTotal() {

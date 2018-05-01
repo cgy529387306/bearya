@@ -109,7 +109,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     @com.hwangjr.rxbus.annotation.Tag(RxConstants.RxEventTag.RESULT_WX_LOGIN)
             }
     )
-
     public void loginFromWeiXin(final String code) {
         runOnUiThread(new Runnable() {
             @Override

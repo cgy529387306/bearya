@@ -24,6 +24,7 @@ public class RxConstants {
         public final static String RESULT_LOGIN = "result_login";
         public final static String RESULT_END_INVITE = "result_end_invite";
         public final static String RESULT_WX_LOGIN = "result_wx_login";
+        public final static String REFRESH_DEVICES = "refresh_device_list";
     }
 
     public final static int EVENT_CHECKLOGIN_AND_JOIN_CHANNEL = 1;

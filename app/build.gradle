@@ -77,6 +77,10 @@ android {
     }
 }
 
+def releaseTime() {
+    return new Date().format("yyyyMMdd", TimeZone.getTimeZone("UTC"))
+}
+
 android.applicationVariants.all { variant ->
     def buildType = variant.buildType
     if (buildType.name.equals("release")) {
@@ -106,6 +110,9 @@ android.applicationVariants.all { variant ->
                 manifestFile.write(content, 'UTF-8')
             }
         }*/
+        variant.outputs.each {
+            output -> output.outputFile = new File(output.outputFile.parent, "贝牙机器人dev" + "-${releaseTime()}.apk");
+        }
         variant.mergeResources.doLast {
             def f = file("${buildDir}/intermediates/res/merged/${variant.dirName}/values/values.xml")
             String contentValue = f.getText('UTF-8')

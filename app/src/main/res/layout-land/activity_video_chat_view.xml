@@ -88,7 +88,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/audio_chat_textview"
-            android:layout_centerHorizontal="true"></Chronometer>
+            android:layout_centerHorizontal="true"/>
 
     </RelativeLayout>
 
@@ -107,7 +107,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:layout_marginBottom="10dp"
         android:layout_toLeftOf="@+id/local_video_view_container">
 
         <LinearLayout
@@ -191,7 +191,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:textColor="@color/colorWhite"
-            android:textSize="12sp"></Chronometer>
+            android:textSize="12sp"/>
 
     </LinearLayout>
 

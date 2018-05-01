@@ -20,5 +20,6 @@ public class VideoListAdapter extends BaseQuickAdapter<ItemInfo, BaseViewHolder>
     @Override
     protected void convert(BaseViewHolder helper, ItemInfo item) {
         helper.setImageResource(R.id.iv_action, item.resId);
+        helper.setText(R.id.tv_video_name,item.name);
     }
 }

@@ -7,6 +7,7 @@ import com.bearya.robot.household.entity.HabitData;
 import com.bearya.robot.household.entity.KeyInfo;
 import com.bearya.robot.household.entity.ProductInfo;
 import com.bearya.robot.household.entity.UserData;
+import com.bearya.robot.household.entity.WakeupInfo;
 import com.bearya.robot.household.http.retrofit.HttpResult;
 
 import retrofit2.http.POST;
@@ -48,7 +49,8 @@ public interface FamilyApiService {
     @POST("v1/baby/info/modify")
     Observable<HttpResult<DeviceInfo>> modify(@Query("sn") String sn,@Query("wakeup") String wakeup,@Query("name") String name,@Query("gender") int gender,@Query("birthday") long birthday,
                                           @Query("mother_name") String mother_name,@Query("father_name") String father_name);
-
+    @POST("v1/baby/assess/wakeup")
+    Observable<HttpResult<WakeupInfo>> wakeupTest(@Query("word") String word);
 
     @POST("v1/service/live/getKey")
     Observable<HttpResult<KeyInfo>> getMonitorKey(@Query("device_id") String device_id, @Query("uid") int uid);
