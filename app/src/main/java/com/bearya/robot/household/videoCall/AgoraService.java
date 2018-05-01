@@ -137,17 +137,14 @@ public class AgoraService extends Service {
 
     // channel && myUid
     public synchronized void joinChannel(ITransfer bean) {
-
         if (agoraSignal.isOnline() == 1) {
             AgoraRunTime.Status status = AgoraRunTime.getInstance().getStatus();
-            if (status == AgoraRunTime.Status.logined
-                    || status == AgoraRunTime.Status.leaved) {
+            if (status == AgoraRunTime.Status.logined || status == AgoraRunTime.Status.leaved ) {
                 LogUtils.d(TAG,"local用户在线, 加入信道" + bean.getChannelName());
                 agoraSignal.channelJoin(bean.getChannelName());
                 AgoraRunTime.getInstance().setStatus(AgoraRunTime.Status.joining);
             } else {
-                AgoraRunTime.getInstance().setMsg("自动登录中，请稍后...");
-                RxBus.get().post(RxConstants.RxEventTag.EVENT_MSG_SHOW, "");
+                LogUtils.d(TAG,"自动登录中，请稍后...");
             }
         } else {
             AgoraRunTime.getInstance().reset();
@@ -181,8 +178,12 @@ public class AgoraService extends Service {
                     boolean isVideo = obj.getBoolean("isVideoCall");
                     String remoteName = obj.getString("remoteName");
                     LogUtils.d(TAG,"新来电："+remoteName);
-                    // 电话呼入，加入channel
-                    Intent intent = new Intent(AgoraService.this, VideoChatViewActivity.class);
+                    Intent intent = null;
+                    if (isVideo){
+                        intent = new Intent(AgoraService.this, VideoChatViewActivity.class);
+                    }else {
+                        intent = new Intent(AgoraService.this, VoiceChatViewActivity.class);
+                    }
                     intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
                     intent.putExtra("beInvited", true);
                     intent.putExtra("isVideo", isVideo);
@@ -454,7 +455,6 @@ public class AgoraService extends Service {
                     @Tag(TAG_AGORA_SERVICE)
             }
     )
-
     public void receivedMsgFromVideo(AgoraEventDispatch agoraReceived) {
         ITransfer bean = agoraReceived.getAttach();
         if (agoraReceived.getEventId() == RxConstants.EVENT_CHECKLOGIN_AND_JOIN_CHANNEL) {
@@ -487,7 +487,9 @@ public class AgoraService extends Service {
         } else if (agoraReceived.getEventId() == RxConstants.EVENT_CHANNEL_LOGOUT) {
             agoraSignal.logout();
         } else if (agoraReceived.getEventId() == RxConstants.EVENT_SEND_MESSAGE_PEER) {
+            LogUtils.d(TAG,agoraReceived.getEventId()+"");
         } else if (agoraReceived.getEventId() == RxConstants.EVENT_SEND_MESSAGE_CHANNEL) {
+            LogUtils.d(TAG,agoraReceived.getEventId()+"");
         }
     }
 

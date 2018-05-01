@@ -376,7 +376,7 @@ public class VideoChatViewActivity extends Activity {
             }
     )
     public void endInvite(String ss) {
-        showLongToast("结束呼叫" + (TextUtils.isEmpty(ss) ? "" : "[" + ss + "]"));
+//        showLongToast("结束呼叫" + (TextUtils.isEmpty(ss) ? "" : "[" + ss + "]"));
         finish();
     }
 

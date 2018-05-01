@@ -52,34 +52,62 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="@dimen/activity_vertical_margin"
         android:orientation="vertical">
-        <LinearLayout
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:orientation="horizontal">
+            android:layout_height="50dp">
+            <LinearLayout
+                android:id="@+id/call_invite_layout"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="20"
+                    android:onClick="onLocalAudioMuteClicked"
+                    android:scaleType="centerInside"
+                    android:src="@mipmap/btn_mute" />
 
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="20"
-                android:onClick="onLocalAudioMuteClicked"
-                android:scaleType="centerInside"
-                android:src="@mipmap/btn_mute" />
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="20"
+                    android:onClick="onSwitchSpeakerphoneClicked"
+                    android:scaleType="centerInside"
+                    android:src="@mipmap/btn_speaker" />
 
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="20"
-                android:onClick="onSwitchSpeakerphoneClicked"
-                android:scaleType="centerInside"
-                android:src="@mipmap/btn_speaker" />
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="20"
+                    android:onClick="onEncCallClicked"
+                    android:scaleType="centerInside"
+                    android:src="@mipmap/btn_end_call" />
+            </LinearLayout>
+            <RelativeLayout
+                android:id="@+id/callin_layout"
+                android:layout_width="match_parent"
+                android:visibility="gone"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/video_controll_hangup_iv"
+                    android:layout_width="100dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="20dp"
+                    android:onClick="onHangupVideoClicked"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/selector_btn_hangup" />
 
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="20"
-                android:onClick="onEncCallClicked"
-                android:scaleType="centerInside"
-                android:src="@mipmap/btn_end_call" />
-        </LinearLayout>
+                <ImageView
+                    android:id="@+id/video_controll_answer_iv"
+                    android:layout_width="100dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="20dp"
+                    android:onClick="onAnswerVideoClicked"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/selector_btn_answer" />
+            </RelativeLayout>
+        </FrameLayout>
     </LinearLayout>
 </RelativeLayout>

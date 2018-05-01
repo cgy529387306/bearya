@@ -1,15 +1,18 @@
 package com.bearya.robot.household.videoCall;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Chronometer;
 import android.widget.ImageView;
@@ -18,13 +21,23 @@ import android.widget.Toast;
 
 import com.bearya.robot.household.R;
 import com.bearya.robot.household.media.DynamicKeyUtil;
+import com.bearya.robot.household.utils.CommonUtils;
+import com.bearya.robot.household.videoCall.beans.AgoraEventDispatch;
+import com.bearya.robot.household.videoCall.beans.AgoraRunTime;
+import com.bearya.robot.household.videoCall.beans.AgoraTransferBean;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.hwangjr.rxbus.RxBus;
+import com.hwangjr.rxbus.annotation.Subscribe;
+import com.hwangjr.rxbus.annotation.Tag;
+import com.hwangjr.rxbus.thread.EventThread;
+import com.victor.loading.rotate.RotateLoading;
 
 import io.agora.rtc.IRtcEngineEventHandler;
 import io.agora.rtc.RtcEngine;
+import io.agora.rtc.video.VideoCanvas;
 
 public class VoiceChatViewActivity extends AppCompatActivity {
 
@@ -41,17 +54,13 @@ public class VoiceChatViewActivity extends AppCompatActivity {
     private String remotePic;
     private String localPic;
     private String channelId;
-    private boolean isVideo;
     private boolean isInvitedFromRemote;
-
+    private AgoraTransferBean bean;
+    private boolean isVideo;
+    private View callInLayout, callInviteLayout;
+    private RotateLoading headerProgressLoading;
     private final IRtcEngineEventHandler mRtcEventHandler = new IRtcEngineEventHandler() { // Tutorial Step 1
 
-
-        @Override
-        public void onJoinChannelSuccess(String channel, int uid, int elapsed) {
-            super.onJoinChannelSuccess(channel, uid, elapsed);
-            avTimeChronometer.start();
-        }
 
         @Override
         public void onUserOffline(final int uid, final int reason) { // Tutorial Step 4
@@ -78,14 +87,24 @@ public class VoiceChatViewActivity extends AppCompatActivity {
         public void onConnectionLost() {
             super.onConnectionLost();
             showLongToast("连接断开！");
+            finish();
         }
 
         @Override
         public void onLeaveChannel(RtcStats stats) {
             super.onLeaveChannel(stats);
             avTimeChronometer.stop();
-            mRtcEngine.stopPreview();
             finish();
+        }
+
+        @Override
+        public void onError(int err) {
+            super.onError(err);
+        }
+
+        @Override
+        public void onWarning(int warn) {
+            super.onWarning(warn);
         }
     };
 
@@ -96,6 +115,10 @@ public class VoiceChatViewActivity extends AppCompatActivity {
         remoteUserIv = (ImageView) findViewById(R.id.iv_avatar);
         avTitleTextView = (TextView) findViewById(R.id.av_title_textview);
         avTimeChronometer = (Chronometer) findViewById(R.id.av_time_textview);
+        callInLayout = findViewById(R.id.callin_layout);
+        callInviteLayout = findViewById(R.id.call_invite_layout);
+        headerProgressLoading = (RotateLoading) findViewById(R.id.audio_header_progress);
+
         remoteId = getIntent().getExtras().getInt("remoteId");
         localId = getIntent().getExtras().getInt("localId");
         localPic = getIntent().getExtras().getString("localPic");
@@ -106,7 +129,7 @@ public class VoiceChatViewActivity extends AppCompatActivity {
         localPic = getIntent().getExtras().getString("localPic");
         remotePic = getIntent().getExtras().getString("remotePic");
         remoteName = getIntent().getExtras().getString("remoteName");
-        isVideo = getIntent().getExtras().getBoolean("isVideo", true);
+        isVideo = getIntent().getExtras().getBoolean("isVideo", false);
         Glide.with(this).load(remotePic).error(R.mipmap.header_dad).into(new SimpleTarget<GlideDrawable>() {
             @Override
             public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
@@ -115,22 +138,189 @@ public class VoiceChatViewActivity extends AppCompatActivity {
         });
         remoteName = TextUtils.isEmpty(remoteName) ? "" : remoteName;
         isInvitedFromRemote = getIntent().getExtras().getBoolean("beInvited", false);
-
         if (!isInvitedFromRemote) {
             // 拨号对方作为channel
             channelId = remoteId + "";
             avTitleTextView.setText("呼叫" + remoteName + "中, 等待回应...");
+            headerProgressLoading.start();
         } else {
             channelId = localId + "";
+            avTitleTextView.setText("电话呼入" + remoteName);
+            headerProgressLoading.setVisibility(View.GONE);
+        }
+
+        if (TextUtils.isEmpty(channelId)) {
+            Toast.makeText(this, "语音通话无法接通！", Toast.LENGTH_SHORT).show();
+            finish();
+        }
+
+        bean = new AgoraTransferBean(channelId, remoteId + "", localId, "", false, "", 0, localPic);
+        bean.setVideoCall(isVideo);
+        setRemote(isInvitedFromRemote);
+        RxBus.get().register(this);
+        if (!CommonUtils.isServiceRunning(this, AgoraService.class)) {
+            bean.setJoinChannelAfterLogined(true);
+            startService(new Intent(this, AgoraService.class).putExtra("myUid", "" + localId));
         }
         if (checkSelfPermission(Manifest.permission.RECORD_AUDIO, PERMISSION_REQ_ID_RECORD_AUDIO)) {
-            initAgoraEngineAndJoinChannel();
+            initSignal();
+        }
+        RxConstants.isCalling = true;
+    }
+
+    private void setRemote(boolean isRemote){
+        callInLayout.setVisibility(isRemote?View.VISIBLE:View.GONE);
+        callInviteLayout.setVisibility(isRemote?View.GONE:View.VISIBLE);
+    }
+
+    // Tutorial Step 1
+    private void initSignal() {
+        if (mRtcEngine == null) {
+            try {
+                mRtcEngine = RtcEngine.create(this, AgoraCalculateHelp.appID, mRtcEventHandler);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        if (!isInvitedFromRemote) {
+            // 主动拨打
+            RxBus.get().post(RxConstants.RxEventTag.TAG_AGORA_SERVICE,
+                    new AgoraEventDispatch(RxConstants.EVENT_CHECKLOGIN_AND_JOIN_CHANNEL, bean
+                    ));
+        } else {
+            // 外部呼入
+            bean.setBeInvitedTojoin(true);
         }
     }
 
-    private void initAgoraEngineAndJoinChannel() {
-        initializeAgoraEngine();     // Tutorial Step 1
-        joinChannel();               // Tutorial Step 2
+
+
+    @Subscribe(
+            thread = EventThread.IO,
+            tags = {
+                    @Tag(RxConstants.RxEventTag.RESULT_INVITE_USER)
+            }
+    )
+
+    //@DebugLog
+    public void inviteUserResult(final String ss) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                AgoraRunTime.Status status = AgoraRunTime.getInstance().getStatus();
+                if (status == AgoraRunTime.Status.answer) {
+                    showLongToast("对方已经接通");
+                    avTimeChronometer.setBase(SystemClock.elapsedRealtime());
+                    avTimeChronometer.start();
+                    mRtcEngine.enableAudio();
+                    headerProgressLoading.stop();
+                    avTitleTextView.setText("和" + remoteName + "语音通话中");
+                    return;
+                }
+                if (status == AgoraRunTime.Status.callFailed) {
+                    showLongToast("呼叫失败!" + ss);
+                } else if (status == AgoraRunTime.Status.refuse) {
+                    showLongToast("对方拒绝");
+                } else if (status == AgoraRunTime.Status.hanguped) {
+                    // 通话中主动挂断
+                    showLongToast("主动呼叫挂断");
+                } else if (status == AgoraRunTime.Status.beHangup) {
+                    // 通话中被挂断
+                    showLongToast("电话已经被挂断");
+                }
+                if (mRtcEngine != null) {
+                    mRtcEngine.leaveChannel();
+                }
+            }
+        });
+    }
+
+    @Subscribe(
+            thread = EventThread.IO,
+            tags = {
+                    @Tag(RxConstants.RxEventTag.RESULT_LOGIN)
+            }
+    )
+    public void loginAgoraResult(String ss) {
+        if (AgoraRunTime.getInstance().getStatus() == AgoraRunTime.Status.logined) {
+            if (bean.isJoinChannelAfterLogined()) {
+                bean.setJoinChannelAfterLogined(false);
+                RxBus.get().post(RxConstants.RxEventTag.TAG_AGORA_SERVICE,
+                        new AgoraEventDispatch(RxConstants.EVENT_CHECKLOGIN_AND_JOIN_CHANNEL, bean
+                        ));
+            }
+        } else {
+            if (isInvitedFromRemote) {
+                showLongToast("登录失败！");
+                finish();
+            }
+        }
+    }
+
+    @Subscribe(
+            thread = EventThread.IO,
+            tags = {
+                    @Tag(RxConstants.RxEventTag.RESULT_END_INVITE)
+            }
+    )
+    public void endInvite(String ss) {
+//        finish();
+    }
+
+    @Subscribe(
+            thread = EventThread.IO,
+            tags = {
+                    @Tag(RxConstants.RxEventTag.EVENT_MSG_SHOW)
+            }
+    )
+    //@DebugLog
+    public void signalMessage(String ss) {
+//        showLongToast(AgoraRunTime.getInstance().getMsg());
+    }
+
+
+    @Subscribe(
+            thread = EventThread.IO,
+            tags = {
+                    @Tag(RxConstants.RxEventTag.RESULT_JOIN_CHANNEL)
+            }
+    )
+    //@DebugLog
+    public void joinChannelResult(String ss) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                bean.setVideoCall(false);
+                AgoraRunTime.Status status = AgoraRunTime.getInstance().getStatus();
+                if (status == AgoraRunTime.Status.joinFailed) {
+                    showLongToast("连接失败，稍后再试");
+                    finish();
+                    return;
+                }
+
+                /**
+                 * 信道加入成功，进行初始化和拨号
+                 */
+                String key = null;
+                try {
+                    key = DynamicKeyUtil.generateFinalDynamicKey(channelId, remoteId);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                bean.setRtcEngineJoinChannel(mRtcEngine.joinChannel(key, channelId, "", remoteId) == 0);
+                if (!bean.isBeInvitedTojoin()) {
+                    // 主动发起邀请
+                    bean.setRemoteId(remoteId + "");
+                    RxBus.get().post(RxConstants.RxEventTag.TAG_AGORA_SERVICE, new AgoraEventDispatch(RxConstants.EVENT_INVITE_USER, bean));
+                }else{
+                    avTimeChronometer.setBase(SystemClock.elapsedRealtime());
+                    avTimeChronometer.start();
+                }
+                mRtcEngine.enableAudioVolumeIndication(1000, 3);
+                mRtcEngine.setParameters("{\"rtc.log_filter\":32783}");//0x800f, log to console
+                mRtcEngine.setLogFilter(32783);
+            }
+        });
     }
 
     public boolean checkSelfPermission(String permission, int requestCode) {
@@ -156,7 +346,7 @@ public class VoiceChatViewActivity extends AppCompatActivity {
             case PERMISSION_REQ_ID_RECORD_AUDIO: {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    initAgoraEngineAndJoinChannel();
+                    initSignal();
                 } else {
                     showLongToast("您需要授权语音权限才可以通话!");
                     finish();
@@ -217,42 +407,38 @@ public class VoiceChatViewActivity extends AppCompatActivity {
         finish();
     }
 
-    // Tutorial Step 1
-    private void initializeAgoraEngine() {
-        try {
-            mRtcEngine = RtcEngine.create(getBaseContext(),  AgoraCalculateHelp.appID, mRtcEventHandler);
-        } catch (Exception e) {
-            Log.e(LOG_TAG, Log.getStackTraceString(e));
-            throw new RuntimeException("NEED TO check rtc sdk init fatal error\n" + Log.getStackTraceString(e));
-        }
-    }
 
-    // Tutorial Step 2
-    private void joinChannel() {
-        String key = null;
-        try {
-            key = DynamicKeyUtil.generateFinalDynamicKey(channelId, remoteId);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        mRtcEngine.joinChannel(key, channelId, "", 0); // if you do not specify the uid, we will generate the uid for you
-    }
 
     // Tutorial Step 3
     private void leaveChannel() {
         mRtcEngine.leaveChannel();
-
     }
 
     // Tutorial Step 4
     private void onRemoteUserLeft(int uid, int reason) {
-        showLongToast("连接失败，稍后再试");
-//        showLongToast(String.format(Locale.US, "user %d left %d", (uid & 0xFFFFFFFFL), reason));
+        showLongToast("对方已挂断");
+        finish();
     }
 
     // Tutorial Step 6
     private void onRemoteUserVoiceMuted(int uid, boolean muted) {
-        showLongToast("对方静音");
-//        showLongToast(String.format(Locale.US, "user %d muted or unmuted %b", (uid & 0xFFFFFFFFL), muted));
+        showLongToast("对方已静音");
+    }
+
+    /**
+     * 接听电话  channleID, account, uid
+     */
+    public void onAnswerVideoClicked(View view) {
+        setRemote(false);
+        RxBus.get().post(RxConstants.RxEventTag.TAG_AGORA_SERVICE, new AgoraEventDispatch(RxConstants.EVENT_CHANNEL_INVITE_ACCEPT, bean));
+    }
+
+    /**
+     * 挂断电话
+     */
+    public void onHangupVideoClicked(View view) {
+        showLongToast("正在挂断...");
+        mRtcEngine.muteAllRemoteAudioStreams(true);
+        RxBus.get().post(RxConstants.RxEventTag.TAG_AGORA_SERVICE, new AgoraEventDispatch(isInvitedFromRemote ? RxConstants.EVENT_CHANNEL_INVITE_REFUSE : RxConstants.EVENT_CHANNEL_INVITE_END, bean));
     }
 }

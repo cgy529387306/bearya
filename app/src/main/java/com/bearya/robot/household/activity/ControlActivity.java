@@ -293,7 +293,7 @@ public class ControlActivity extends BaseActivity implements View.OnClickListene
                     intent.putExtra("isVideo", true);
                     intent.putExtra("remoteName", deviceInfo.name);
                     intent.putExtra("localId", userInfo.getUid());
-                    intent.putExtra("remoteId", deviceInfo.uid);// 强转为fromAccount
+                    intent.putExtra("remoteId", 6778);// 强转为fromAccount
                     startActivity(intent);
                 }else if (Integer.valueOf(videoListInfo.get(position).id) == 1){
                     if (isMonitor >= 0) {
