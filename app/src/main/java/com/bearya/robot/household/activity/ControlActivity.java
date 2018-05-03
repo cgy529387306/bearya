@@ -42,7 +42,6 @@ import com.bearya.robot.household.utils.LogUtils;
 import com.bearya.robot.household.utils.UserInfoManager;
 import com.bearya.robot.household.videoCall.AgoraService;
 import com.bearya.robot.household.videoCall.VideoChatViewActivity;
-import com.bearya.robot.household.videoCall.VoiceChatViewActivity;
 import com.bearya.robot.household.views.BaseActivity;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 

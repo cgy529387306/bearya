@@ -3,17 +3,12 @@ package com.bearya.robot.household.activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
 import com.bearya.robot.household.R;
 import com.bearya.robot.household.api.FamilyApiWrapper;
-import com.bearya.robot.household.entity.UserData;
 import com.bearya.robot.household.utils.CommonUtils;
-import com.bearya.robot.household.utils.NavigationHelper;
-import com.bearya.robot.household.utils.ProjectHelper;
-import com.bearya.robot.household.utils.SharedPrefUtil;
 import com.bearya.robot.household.utils.UserInfoManager;
 import com.bearya.robot.household.videoCall.AgoraService;
 import com.bearya.robot.household.views.BYCheckDialog;

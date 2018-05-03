@@ -9,7 +9,7 @@ android {
         targetSdkVersion 22
         versionCode 10003
         versionName '1.0.3'
-
+        multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
             // 设置支持的SO库架构
@@ -25,6 +25,12 @@ android {
         main {
             jniLibs.srcDirs = ['libs'];
         }
+    }
+
+    dexOptions {
+        preDexLibraries = false
+        incremental true
+        javaMaxHeapSize "4g"
     }
 
     signingConfigs {
@@ -58,11 +64,9 @@ android {
         exclude 'META-INF/services/com.fasterxml.jackson.core.JsonFactory'
         exclude 'META-INF/maven/com.squareup.okhttp/okhttp/pom.properties'
         exclude 'META-INF/maven/com.fasterxml.jackson.core/jackson-core/pom.xml'
-        exclude 'META-INF/maven/com.squareup.okio/okio/pom.properties'
         exclude 'META-INF/maven/com.fasterxml.jackson.core/jackson-databind/pom.xml'
         exclude 'META-INF/maven/com.fasterxml.jackson.core/jackson-databind/pom.properties'
         exclude 'META-INF/maven/com.fasterxml.jackson.core/jackson-core/pom.properties'
-        exclude 'META-INF/maven/com.squareup.okio/okio/pom.xml'
         exclude 'META-INF/maven/com.squareup.okhttp/okhttp/pom.xml'
         exclude 'META-INF/maven/com.fasterxml.jackson.core/jackson-annotations/pom.properties'
         exclude 'META-INF/maven/com.fasterxml.jackson.core/jackson-annotations/pom.xml'
@@ -78,7 +82,7 @@ android {
 }
 
 def releaseTime() {
-    return new Date().format("yyyyMMdd", TimeZone.getTimeZone("UTC"))
+    return new Date().format("yyyyMMdd-HHmm", TimeZone.getTimeZone("UTC"))
 }
 
 android.applicationVariants.all { variant ->
@@ -111,7 +115,7 @@ android.applicationVariants.all { variant ->
             }
         }*/
         variant.outputs.each {
-            output -> output.outputFile = new File(output.outputFile.parent, "贝牙机器人dev" + "-${releaseTime()}.apk");
+            output -> output.outputFile = new File(output.outputFile.parent, "beiya" + "-${releaseTime()}.apk");
         }
         variant.mergeResources.doLast {
             def f = file("${buildDir}/intermediates/res/merged/${variant.dirName}/values/values.xml")
