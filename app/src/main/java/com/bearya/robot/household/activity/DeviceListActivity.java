@@ -19,11 +19,16 @@ import com.bearya.robot.household.entity.DeviceListData;
 import com.bearya.robot.household.entity.ItemClickCallBack;
 import com.bearya.robot.household.entity.MachineInfo;
 import com.bearya.robot.household.utils.CommonUtils;
+import com.bearya.robot.household.utils.JsonHelper;
 import com.bearya.robot.household.utils.LogUtils;
 import com.bearya.robot.household.utils.NavigationHelper;
 import com.bearya.robot.household.views.BYCheckDialog;
 import com.bearya.robot.household.views.BaseActivity;
 import com.bearya.robot.household.views.DialogCallback;
+import com.wuxiaolong.pullloadmorerecyclerview.PullLoadMoreRecyclerView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import rx.Subscriber;
 import rx.Subscription;
@@ -33,24 +38,49 @@ import rx.subscriptions.CompositeSubscription;
 public class DeviceListActivity extends BaseActivity implements View.OnClickListener{
     private final static int BIND_DEVICE = 9003;
     private final static int EDIT_DEVICE = 9004;
-    private DeviceListData machineInfoList = new DeviceListData();
+    private List<MachineInfo> machineInfoList = new ArrayList<>();
     private DeviceListAdapter deviceListAdapter;
-    private RecyclerView deviceList;
+    private PullLoadMoreRecyclerView deviceList;
     private BYCheckDialog checkDialog;
-    private CompositeSubscription sc;
+    private CompositeSubscription subscription;
     private FrameLayout emptyView;
+    private int currentPage = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.string.menu_manage,R.mipmap.icon_add,R.layout.activity_device_list);
         initView();
         initData();
+        showLoadingView();
+        getDeviceList();
     }
 
     public void initView() {
         emptyView = (FrameLayout) findViewById(R.id.emptyView);
-        deviceList = (RecyclerView) findViewById(R.id.rv_bind_machine);
-        deviceList.setLayoutManager(new GridLayoutManager(this, 1, OrientationHelper.VERTICAL, false));
+        deviceList = (PullLoadMoreRecyclerView) findViewById(R.id.rv_bind_machine);
+        deviceList.setLinearLayout();
+        deviceList.setPullRefreshEnable(true);
+        deviceList.setPushRefreshEnable(true);
+        deviceList.setOnPullLoadMoreListener(new PullLoadMoreRecyclerView.PullLoadMoreListener() {
+            @Override
+            public void onRefresh() {
+                refresh();
+            }
+
+            @Override
+            public void onLoadMore() {
+                currentPage++;
+                getDeviceList();
+            }
+        });
+    }
+
+    private void refresh(){
+        deviceList.setPushRefreshEnable(true);
+        currentPage = 1;
+        machineInfoList.clear();
+        deviceListAdapter.clearDevicesListener();
+        getDeviceList();
     }
 
     @Override
@@ -61,15 +91,12 @@ public class DeviceListActivity extends BaseActivity implements View.OnClickList
     }
 
     public void initData() {
-        sc = new CompositeSubscription();
-        if (getIntent().hasExtra("devices")) {
-            machineInfoList = getIntent().getParcelableExtra("devices");
-        }
-        deviceListAdapter = new DeviceListAdapter(R.layout.device_list_item, machineInfoList.list);
+        subscription = new CompositeSubscription();
+        deviceListAdapter = new DeviceListAdapter(R.layout.device_list_item, machineInfoList);
         deviceListAdapter.setItemClickCallBack(new ItemClickCallBack() {
             @Override
             public void onLongClick(View view) throws Exception {
-                final MachineInfo machineInfo = machineInfoList.list.get((Integer) view.getTag());
+                final MachineInfo machineInfo = machineInfoList.get((Integer) view.getTag());
                 String msg = String.format(getString(R.string.device_unbind_hint), machineInfo.name);
                 if (checkDialog == null) {
                     checkDialog = new BYCheckDialog();
@@ -91,14 +118,13 @@ public class DeviceListActivity extends BaseActivity implements View.OnClickList
 
             @Override
             public void onClick(View view) throws Exception {
-                final MachineInfo machineInfo = machineInfoList.list.get((Integer) view.getTag());
+                final MachineInfo machineInfo =machineInfoList.get((Integer) view.getTag());
                 Bundle bundle = new Bundle();
                 bundle.putString("sn",machineInfo.sn);
                 NavigationHelper.startActivityForResult(DeviceListActivity.this,DeviceSettingActivity.class,bundle, EDIT_DEVICE);
             }
         });
         deviceList.setAdapter(deviceListAdapter);
-        emptyView.setVisibility(CommonUtils.isEmpty(machineInfoList.list)?View.VISIBLE:View.GONE);
     }
 
     @Override
@@ -128,8 +154,7 @@ public class DeviceListActivity extends BaseActivity implements View.OnClickList
     }
 
     public void getDeviceList() {
-        showLoadingView();
-        Subscription subscribe = FamilyApiWrapper.getInstance().getDeviceList()
+        Subscription subscribe = FamilyApiWrapper.getInstance().getDeviceList(String.valueOf(currentPage),"20")
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<DeviceListData>() {
 
@@ -149,18 +174,22 @@ public class DeviceListActivity extends BaseActivity implements View.OnClickList
                     @Override
                     public void onNext(DeviceListData bindDeviceList) {
                         closeLoadingView();
-                        machineInfoList.list.clear();
-                        deviceListAdapter.clearDevicesListener();
+                        deviceList.setPullLoadMoreCompleted();
                         if (bindDeviceList != null && bindDeviceList.list != null && bindDeviceList.list.size() > 0) {
-                            machineInfoList.list.addAll(bindDeviceList.list);
-                            deviceListAdapter.setNewData(machineInfoList.list);
                             emptyView.setVisibility(View.GONE);
+                            if (!bindDeviceList.isHasNext()){
+                                deviceList.setPushRefreshEnable(false);
+                            }
+                            machineInfoList.addAll(bindDeviceList.list);
+                            deviceListAdapter.setNewData(machineInfoList);
                         }else{
-                            emptyView.setVisibility(View.VISIBLE);
+                           if (currentPage == 1){
+                               emptyView.setVisibility(View.VISIBLE);
+                           }
                         }
                     }
                 });
-        sc.add(subscribe);
+        subscription.add(subscribe);
     }
 
     public void unbindDevice(MachineInfo machineInfo) {
@@ -189,7 +218,7 @@ public class DeviceListActivity extends BaseActivity implements View.OnClickList
                         getDeviceList();
                     }
                 });
-        sc.add(subscribe);
+        subscription.add(subscribe);
     }
 
 

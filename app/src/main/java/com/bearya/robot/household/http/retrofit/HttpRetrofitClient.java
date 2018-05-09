@@ -57,7 +57,7 @@ public class HttpRetrofitClient<V> implements HttpLoggingInterceptor.Logger {
     private V apiService;
     private SSLSocketFactory sslSocketFactory;
     private X509TrustManager trustManager;
-    private String baseUrl = BASE_URL_DEBUG;
+    private String baseUrl = BASE_URL_DEFAULT;
 
     public SSLSocketFactory getSslSocketFactory() {
         if (sslSocketFactory == null) {

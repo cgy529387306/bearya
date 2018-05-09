@@ -10,6 +10,7 @@ import com.bearya.robot.household.entity.UserData;
 import com.bearya.robot.household.entity.WakeupInfo;
 import com.bearya.robot.household.http.retrofit.HttpRetrofitClient;
 
+import retrofit2.http.Query;
 import rx.Observable;
 
 @SuppressWarnings("unchecked")
@@ -67,8 +68,8 @@ public class FamilyApiWrapper extends HttpRetrofitClient {
         return getService(FamilyApiService.class).getHabitList(1, Integer.MAX_VALUE).compose(this.applySchedulers());
     }
 
-    public Observable<DeviceListData> getDeviceList() {
-        return getService(FamilyApiService.class).getDeviceList().compose(this.applySchedulers());
+    public Observable<DeviceListData> getDeviceList(String pos,  String limit) {
+        return getService(FamilyApiService.class).getDeviceList(pos,limit).compose(this.applySchedulers());
     }
 
     public Observable<Object> bindDevice(String sn) {

@@ -24,6 +24,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.bearya.robot.household.MyApplication;
+import com.bearya.robot.household.entity.BabyInfo;
 
 import org.json.JSONObject;
 
@@ -458,6 +459,10 @@ public class CommonUtils {
                 return 0;
             }
         }
+    }
+
+    public static boolean isHasBaby(BabyInfo babyInfo){
+        return babyInfo!=null && !TextUtils.isEmpty(babyInfo.getName());
     }
 
 }

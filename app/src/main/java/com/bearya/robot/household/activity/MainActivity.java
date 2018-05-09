@@ -282,7 +282,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     public void getDeviceList() {
         showLoadingView();
-        Subscription subscribe = FamilyApiWrapper.getInstance().getDeviceList()
+        Subscription subscribe = FamilyApiWrapper.getInstance().getDeviceList("1",String.valueOf(Integer.MAX_VALUE))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<DeviceListData>() {
 

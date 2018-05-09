@@ -138,7 +138,7 @@ public class VideoChatViewActivity extends Activity {
             localContainer.setVisibility(View.GONE);
         }
 
-        if (TextUtils.isEmpty(channelId)) {
+        if (/*TextUtils.isEmpty(remoteName) ||*/ TextUtils.isEmpty(channelId)) {
             Toast.makeText(this, "视频通话无法接通！", Toast.LENGTH_SHORT).show();
             finish();
         }

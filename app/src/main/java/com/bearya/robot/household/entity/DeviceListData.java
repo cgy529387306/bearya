@@ -16,9 +16,16 @@ public class DeviceListData implements Parcelable {
     private int limit;
     private int count;
     private int pos;
+    private boolean hasNext;
+
+    public boolean isHasNext() {
+        return limit*pos <= total;
+    }
+
     public DeviceListData(){
 
     }
+
 
     @Override
     public int describeContents() {

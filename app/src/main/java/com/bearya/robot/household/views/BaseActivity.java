@@ -44,6 +44,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Currency;
 import java.util.List;
 
 import okhttp3.Call;
@@ -367,11 +368,11 @@ public abstract class BaseActivity extends AppCompatActivity implements CommonDi
     }
 
     public void launcherMain() {
-        if (UserInfoManager.getInstance().getBabyInfo()==null){
-            NavigationHelper.startActivity(this, UserInfoActivity.class,null,false);
-        }else{
+        if (CommonUtils.isHasBaby(UserInfoManager.getInstance().getBabyInfo())){
             NavigationHelper.startActivity(this, MainActivity.class,null,true);
             ActivityManager.getInstance().closeAllActivityExceptOne(MainActivity.class.getName());
+        }else{
+            NavigationHelper.startActivity(this, UserInfoActivity.class,null,false);
         }
     }
 
