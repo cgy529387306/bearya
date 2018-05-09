@@ -12,8 +12,6 @@ import com.bearya.robot.household.api.FamilyApiWrapper;
 import com.bearya.robot.household.entity.ProductInfo;
 import com.bearya.robot.household.utils.CommonUtils;
 import com.bearya.robot.household.utils.LogUtils;
-import com.bearya.robot.household.utils.SharedPrefUtil;
-import com.bearya.robot.household.utils.UserInfoManager;
 import com.bearya.robot.household.views.BaseActivity;
 
 import rx.Subscriber;
@@ -44,7 +42,7 @@ public class BindActivity extends BaseActivity implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_scan_qc:
-                startActivityForResult(new Intent(this, ScanQRActivity.class), REQUEST_SCAN_CODE);
+                startActivityForResult(new Intent(this, ScanCodeActivity.class), REQUEST_SCAN_CODE);
                 break;
             case R.id.tv_bind_machine:
                 String serial = machineId.getText().toString();

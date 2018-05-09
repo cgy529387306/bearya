@@ -17,6 +17,9 @@ import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.ScaleAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
@@ -428,6 +431,33 @@ public class CommonUtils {
             }
         }
         return true;
+    }
+
+    public static void ScaleUpDowm(View view) {
+        ScaleAnimation animation = new ScaleAnimation(1.0f, 1.0f, 0.0f, 1.0f);
+        animation.setRepeatCount(-1);
+        animation.setRepeatMode(Animation.RESTART);
+        animation.setInterpolator(new LinearInterpolator());
+        animation.setDuration(1200);
+        view.startAnimation(animation);
+    }
+
+    /**
+     * 字符串转换成整数 ,转换失败将会 return 0;
+     *
+     * @param str 字符串
+     * @return
+     */
+    public static int stringToInt(String str) {
+        if (TextUtils.isEmpty(str)) {
+            return 0;
+        } else {
+            try {
+                return Integer.parseInt(str);
+            } catch (NumberFormatException e) {
+                return 0;
+            }
+        }
     }
 
 }
