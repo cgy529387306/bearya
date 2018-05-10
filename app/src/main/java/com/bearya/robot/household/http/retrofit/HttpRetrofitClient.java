@@ -2,12 +2,10 @@ package com.bearya.robot.household.http.retrofit;
 
 import android.support.annotation.NonNull;
 
-import com.bearya.robot.household.R;
 import com.bearya.robot.household.MyApplication;
 import com.bearya.robot.household.http.retrofit.interceptor.CacheControlInterceptor;
 import com.bearya.robot.household.http.retrofit.interceptor.HttpCommonInterceptor;
 import com.bearya.robot.household.utils.LogUtils;
-import com.bearya.robot.household.utils.SharedPrefUtil;
 import com.bearya.robot.household.utils.UserInfoManager;
 
 import java.io.File;
@@ -51,7 +49,6 @@ public class HttpRetrofitClient<V> implements HttpLoggingInterceptor.Logger {
 
     public final static String BASE_URL_DEFAULT = "https://api.bearya.com/";
     public final static String BASE_URL_DEBUG  = "https://dev.api.bearya.com/";
-
     private OkHttpClient okHttpClient;
     private Retrofit retrofit;
     private V apiService;

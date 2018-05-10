@@ -1,7 +1,5 @@
 package com.bearya.robot.household.entity;
 
-import android.view.View;
-
 /**
  * dialog按钮回调
  * 
@@ -11,7 +9,7 @@ import android.view.View;
  */
 public interface ItemClickCallBack {
 
-	void onLongClick(View view) throws Exception;
+	void onDeleteClick(MachineInfo machineInfo);
 
-	void onClick(View view) throws Exception;
+	void onClick(MachineInfo machineInfo);
 }

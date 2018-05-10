@@ -1,60 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/rl_device_item"
+<com.bearya.robot.household.views.SwipeItemLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="69dp">
-
-    <TextView
-        android:id="@+id/tv_device_unbind"
-        android:layout_width="80dp"
-        android:layout_height="match_parent"
-        android:layout_alignParentRight="true"
-        android:background="@color/colorOrange"
-        android:gravity="center"
-        android:text="@string/device_unbind"
-        android:textColor="@color/colorWhite"
-        android:textSize="16sp" />
+    android:layout_height="60dp">
 
     <RelativeLayout
-        android:id="@+id/rl_device_item_front"
+        android:id="@+id/rl_device_item"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorWhite"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp">
-
-        <ImageView
-            android:id="@+id/im_device_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:scaleType="center"
-            android:src="@drawable/device_icon_bg" />
+        android:layout_height="60dp">
 
         <TextView
-            android:id="@+id/tv_device_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="15dp"
-            android:layout_toRightOf="@id/im_device_icon"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:textColor="@color/colorBlack"
-            android:textSize="@dimen/activity_text_size" />
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:scaleType="center"
-            android:layout_centerVertical="true"
+            android:id="@+id/tv_device_unbind"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
             android:layout_alignParentRight="true"
-            android:src="@mipmap/icon_list_arrow" />
+            android:background="@color/colorOrange"
+            android:gravity="center"
+            android:text="@string/device_unbind"
+            android:textColor="@color/colorWhite"
+            android:textSize="16sp" />
 
-        <View
+        <RelativeLayout
+            android:id="@+id/rl_device_item_front"
             android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:layout_alignParentBottom="true"
-            android:background="@color/colorGray" />
-    </RelativeLayout>
+            android:layout_height="match_parent"
+            android:background="@color/colorWhite"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp">
 
-</RelativeLayout>
+            <ImageView
+                android:id="@+id/im_device_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:scaleType="center"
+                android:src="@drawable/device_icon_bg" />
+
+            <TextView
+                android:id="@+id/tv_device_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:layout_toRightOf="@id/im_device_icon"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/activity_text_size" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="center"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:src="@mipmap/icon_list_arrow" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_alignParentBottom="true"
+                android:background="@color/colorGray" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+        <Button
+            android:id="@+id/delete"
+            android:text="解绑"
+            android:textColor="#ffffff"
+            android:textSize="16sp"
+            android:background="@color/color_red"
+            android:layout_width="100dp"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+</com.bearya.robot.household.views.SwipeItemLayout>
+
+
+

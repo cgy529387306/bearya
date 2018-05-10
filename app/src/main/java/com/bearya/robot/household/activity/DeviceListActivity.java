@@ -3,28 +3,21 @@ package com.bearya.robot.household.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.OrientationHelper;
-import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 
 import com.bearya.robot.household.R;
 import com.bearya.robot.household.adapter.DeviceListAdapter;
 import com.bearya.robot.household.api.FamilyApiWrapper;
-import com.bearya.robot.household.entity.DeviceInfo;
 import com.bearya.robot.household.entity.DeviceListData;
 import com.bearya.robot.household.entity.ItemClickCallBack;
 import com.bearya.robot.household.entity.MachineInfo;
-import com.bearya.robot.household.utils.CommonUtils;
-import com.bearya.robot.household.utils.JsonHelper;
 import com.bearya.robot.household.utils.LogUtils;
 import com.bearya.robot.household.utils.NavigationHelper;
 import com.bearya.robot.household.views.BYCheckDialog;
 import com.bearya.robot.household.views.BaseActivity;
 import com.bearya.robot.household.views.DialogCallback;
+import com.bearya.robot.household.views.SwipeItemLayout;
 import com.wuxiaolong.pullloadmorerecyclerview.PullLoadMoreRecyclerView;
 
 import java.util.ArrayList;
@@ -61,6 +54,7 @@ public class DeviceListActivity extends BaseActivity implements View.OnClickList
         deviceList.setLinearLayout();
         deviceList.setPullRefreshEnable(true);
         deviceList.setPushRefreshEnable(true);
+        deviceList.getRecyclerView().addOnItemTouchListener(new SwipeItemLayout.OnSwipeItemTouchListener(this));
         deviceList.setOnPullLoadMoreListener(new PullLoadMoreRecyclerView.PullLoadMoreListener() {
             @Override
             public void onRefresh() {
@@ -95,8 +89,7 @@ public class DeviceListActivity extends BaseActivity implements View.OnClickList
         deviceListAdapter = new DeviceListAdapter(R.layout.device_list_item, machineInfoList);
         deviceListAdapter.setItemClickCallBack(new ItemClickCallBack() {
             @Override
-            public void onLongClick(View view) throws Exception {
-                final MachineInfo machineInfo = machineInfoList.get((Integer) view.getTag());
+            public void onDeleteClick(final MachineInfo machineInfo) {
                 String msg = String.format(getString(R.string.device_unbind_hint), machineInfo.name);
                 if (checkDialog == null) {
                     checkDialog = new BYCheckDialog();
@@ -117,8 +110,7 @@ public class DeviceListActivity extends BaseActivity implements View.OnClickList
             }
 
             @Override
-            public void onClick(View view) throws Exception {
-                final MachineInfo machineInfo =machineInfoList.get((Integer) view.getTag());
+            public void onClick(MachineInfo machineInfo){
                 Bundle bundle = new Bundle();
                 bundle.putString("sn",machineInfo.sn);
                 NavigationHelper.startActivityForResult(DeviceListActivity.this,DeviceSettingActivity.class,bundle, EDIT_DEVICE);
@@ -139,8 +131,8 @@ public class DeviceListActivity extends BaseActivity implements View.OnClickList
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == BIND_DEVICE && resultCode == Activity.RESULT_OK) {
+            refresh();
             setResult(RESULT_OK);
-            getDeviceList();
             Bundle bundle = new Bundle();
             bundle.putBoolean("isFirst",true);
             if (data!=null){
@@ -149,7 +141,7 @@ public class DeviceListActivity extends BaseActivity implements View.OnClickList
             }
             NavigationHelper.startActivity(DeviceListActivity.this,DeviceSettingActivity.class,bundle,false);
         }else if (requestCode == EDIT_DEVICE && resultCode == Activity.RESULT_OK) {
-            getDeviceList();
+            refresh();
         }
     }
 
@@ -215,7 +207,7 @@ public class DeviceListActivity extends BaseActivity implements View.OnClickList
                     public void onNext(Object result) {
                         closeLoadingView();
                         setResult(RESULT_OK);
-                        getDeviceList();
+                        refresh();
                     }
                 });
         subscription.add(subscribe);

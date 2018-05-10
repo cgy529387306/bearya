@@ -1,12 +1,13 @@
 package com.bearya.robot.household.adapter;
 
 import android.view.View;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 
 import com.bearya.robot.household.R;
+import com.bearya.robot.household.entity.DeviceStateManage;
 import com.bearya.robot.household.entity.ItemClickCallBack;
 import com.bearya.robot.household.entity.MachineInfo;
-import com.bearya.robot.household.entity.DeviceStateManage;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 
@@ -31,21 +32,21 @@ public class DeviceListAdapter extends BaseQuickAdapter<MachineInfo, BaseViewHol
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, MachineInfo item) {
+    protected void convert(BaseViewHolder helper, final MachineInfo item) {
         helper.setText(R.id.tv_device_name, item.name);
         RelativeLayout itemView = helper.getView(R.id.rl_device_item);
         itemView.setTag(helper.getAdapterPosition());
-        itemView.setOnLongClickListener(new View.OnLongClickListener() {
+        Button deleteBtn = helper.getView(R.id.delete);
+        deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onLongClick(View view) {
+            public void onClick(View v) {
                 if (itemClickCallBack != null) {
                     try {
-                        itemClickCallBack.onLongClick(view);
+                        itemClickCallBack.onDeleteClick(item);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
-                return false;
             }
         });
         itemView.setOnClickListener(new View.OnClickListener() {
@@ -53,7 +54,7 @@ public class DeviceListAdapter extends BaseQuickAdapter<MachineInfo, BaseViewHol
             public void onClick(View view) {
                 if (itemClickCallBack != null) {
                     try {
-                        itemClickCallBack.onClick(view);
+                        itemClickCallBack.onClick(item);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

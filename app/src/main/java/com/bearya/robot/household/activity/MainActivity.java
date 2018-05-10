@@ -37,14 +37,10 @@ import com.bearya.robot.household.utils.LogUtils;
 import com.bearya.robot.household.utils.NavigationHelper;
 import com.bearya.robot.household.utils.UserInfoManager;
 import com.bearya.robot.household.videoCall.AgoraService;
-import com.bearya.robot.household.videoCall.RxConstants;
 import com.bearya.robot.household.views.BaseActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.hwangjr.rxbus.RxBus;
-import com.hwangjr.rxbus.annotation.Subscribe;
-import com.hwangjr.rxbus.thread.EventThread;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -88,6 +84,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         initView();
         initData();
         initUserInfo();
+        showLoadingView();
         getDeviceList();
     }
 
@@ -281,7 +278,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
     public void getDeviceList() {
-        showLoadingView();
         Subscription subscribe = FamilyApiWrapper.getInstance().getDeviceList("1",String.valueOf(Integer.MAX_VALUE))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<DeviceListData>() {
