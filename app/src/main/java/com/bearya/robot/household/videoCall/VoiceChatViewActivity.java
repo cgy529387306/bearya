@@ -12,7 +12,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Chronometer;
 import android.widget.ImageView;
@@ -37,7 +36,8 @@ import com.victor.loading.rotate.RotateLoading;
 
 import io.agora.rtc.IRtcEngineEventHandler;
 import io.agora.rtc.RtcEngine;
-import io.agora.rtc.video.VideoCanvas;
+
+import static io.agora.rtc.Constants.ERR_LEAVE_CHANNEL_REJECTED;
 
 public class VoiceChatViewActivity extends AppCompatActivity {
 
@@ -61,16 +61,59 @@ public class VoiceChatViewActivity extends AppCompatActivity {
     private RotateLoading headerProgressLoading;
     private final IRtcEngineEventHandler mRtcEventHandler = new IRtcEngineEventHandler() { // Tutorial Step 1
 
+        @Override
+        public void onRejoinChannelSuccess(String channel, int uid, int elapsed) {
+            super.onRejoinChannelSuccess(channel, uid, elapsed);
+        }
 
         @Override
-        public void onUserOffline(final int uid, final int reason) { // Tutorial Step 4
+        public void onUserOffline(final int uid, final int reason) { // Tutorial Step 7
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    onRemoteUserLeft(uid, reason);
+                    onRemoteUserLeft(uid,reason);
                 }
             });
         }
+
+
+        @Override
+        public void onJoinChannelSuccess(String channel, int uid, int elapsed) {
+            super.onJoinChannelSuccess(channel, uid, elapsed);
+        }
+
+        @Override
+        public void onWarning(int warn) {
+            super.onWarning(warn);
+        }
+
+        @Override
+        public void onError(int err) {
+            super.onError(err);
+            if (err == ERR_LEAVE_CHANNEL_REJECTED) {
+                // 离开频道失败。一般是因为用户已离开某频道，再次调用退出频道的API，例如leaveChannel，会返回此错误。
+            }
+            //showLongToast("errorCode[" + err + "]");
+        }
+
+        @Override
+        public void onUserJoined(int uid, int elapsed) {
+            super.onUserJoined(uid, elapsed);
+        }
+
+        @Override
+        public void onConnectionLost() {
+            super.onConnectionLost();
+            showLongToast("连接断开！");
+        }
+
+        @Override
+        public void onLeaveChannel(RtcStats stats) {
+            super.onLeaveChannel(stats);
+            avTimeChronometer.stop();
+            finish();
+        }
+
 
         @Override
         public void onUserMuteAudio(final int uid, final boolean muted) { // Tutorial Step 6
@@ -82,30 +125,6 @@ public class VoiceChatViewActivity extends AppCompatActivity {
             });
         }
 
-
-        @Override
-        public void onConnectionLost() {
-            super.onConnectionLost();
-            showLongToast("连接断开！");
-            finish();
-        }
-
-        @Override
-        public void onLeaveChannel(RtcStats stats) {
-            super.onLeaveChannel(stats);
-            avTimeChronometer.stop();
-            finish();
-        }
-
-        @Override
-        public void onError(int err) {
-            super.onError(err);
-        }
-
-        @Override
-        public void onWarning(int warn) {
-            super.onWarning(warn);
-        }
     };
 
     @Override
@@ -215,11 +234,7 @@ public class VoiceChatViewActivity extends AppCompatActivity {
                 AgoraRunTime.Status status = AgoraRunTime.getInstance().getStatus();
                 if (status == AgoraRunTime.Status.answer) {
                     showLongToast("对方已经接通");
-                    avTimeChronometer.setBase(SystemClock.elapsedRealtime());
-                    avTimeChronometer.start();
-                    mRtcEngine.enableAudio();
-                    headerProgressLoading.stop();
-                    avTitleTextView.setText("和" + remoteName + "语音通话中");
+                    setViewToAnsweringState();
                     return;
                 }
                 if (status == AgoraRunTime.Status.callFailed) {
@@ -238,6 +253,15 @@ public class VoiceChatViewActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void setViewToAnsweringState() {
+        avTimeChronometer.setBase(SystemClock.elapsedRealtime());
+        avTimeChronometer.start();
+        mRtcEngine.enableAudio();
+        mRtcEngine.muteLocalAudioStream(false);
+        headerProgressLoading.stop();
+        avTitleTextView.setText("和" + remoteName + "语音通话中");
     }
 
     @Subscribe(
@@ -389,6 +413,19 @@ public class VoiceChatViewActivity extends AppCompatActivity {
         } else {
             iv.setSelected(true);
             iv.setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.MULTIPLY);
+        }
+
+        mRtcEngine.muteLocalAudioStream(iv.isSelected());
+    }
+
+    public void onLocalMicMuteClicked(View view) {
+        ImageView iv = (ImageView) view;
+        if (iv.isSelected()) {
+            iv.setSelected(false);
+            iv.clearColorFilter();
+        } else {
+            iv.setSelected(true);
+            iv.setColorFilter(getResources().getColor(R.color.colorItBlue), PorterDuff.Mode.MULTIPLY);
         }
 
         mRtcEngine.muteLocalAudioStream(iv.isSelected());

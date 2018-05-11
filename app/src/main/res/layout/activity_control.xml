@@ -43,10 +43,11 @@
                 android:textColor="@color/colorWhite"
                 android:textSize="15sp" />
         </RelativeLayout>
-        <FrameLayout
+        <RelativeLayout
             android:id="@+id/rl_remote_video_view_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:gravity="center"
             android:visibility="gone" />
     </FrameLayout>
     <RelativeLayout

@@ -17,12 +17,10 @@ import com.bearya.robot.household.entity.UserInfo;
 import com.bearya.robot.household.threadpool.ThreadPoolManager;
 import com.bearya.robot.household.utils.CommonUtils;
 import com.bearya.robot.household.utils.LogUtils;
-import com.bearya.robot.household.utils.SharedPrefUtil;
 import com.bearya.robot.household.utils.UserInfoManager;
 import com.bearya.robot.household.videoCall.beans.AgoraEventDispatch;
 import com.bearya.robot.household.videoCall.beans.AgoraRunTime;
 import com.bearya.robot.household.videoCall.beans.ITransfer;
-import com.google.gson.Gson;
 import com.hwangjr.rxbus.RxBus;
 import com.hwangjr.rxbus.annotation.Subscribe;
 import com.hwangjr.rxbus.annotation.Tag;
@@ -182,7 +180,12 @@ public class AgoraService extends Service {
                     String remoteName = obj.getString("remoteName");
                     LogUtils.d(TAG,"新来电："+remoteName);
                     // 电话呼入，加入channel
-                    Intent intent = new Intent(AgoraService.this, VideoChatViewActivity.class);
+                    Intent intent = null;
+                    if (isVideo){
+                        intent = new Intent(AgoraService.this, VideoChatViewActivity.class);
+                    }else {
+                        intent = new Intent(AgoraService.this, VoiceChatViewActivity.class);
+                    }
                     intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
                     intent.putExtra("beInvited", true);
                     intent.putExtra("isVideo", isVideo);

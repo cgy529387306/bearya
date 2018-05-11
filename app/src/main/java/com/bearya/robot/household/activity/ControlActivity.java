@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -63,7 +62,7 @@ public class ControlActivity extends BaseActivity implements View.OnClickListene
     private final static int MODE_VIDEO = 3;
     private final String TAG = "ControlActivity";
     private RelativeLayout rlControlView;
-    private FrameLayout sfvContainer;
+    private RelativeLayout sfvContainer;
     private ImageView closeMonitor;
     private ProgressBar loading;
     private TextView deviceState;
@@ -137,7 +136,7 @@ public class ControlActivity extends BaseActivity implements View.OnClickListene
         rlControlView =(RelativeLayout)  findViewById(R.id.rl_control_view);
         rlControlView.setOnClickListener(this);
         //监护视频窗口
-        sfvContainer =(FrameLayout) findViewById(R.id.rl_remote_video_view_container);
+        sfvContainer =(RelativeLayout) findViewById(R.id.rl_remote_video_view_container);
         loading = (ProgressBar) findViewById(R.id.pb_loading);
         closeMonitor = (ImageView) findViewById(R.id.im_close_monitor);
         closeMonitor.setOnClickListener(this);
@@ -305,7 +304,7 @@ public class ControlActivity extends BaseActivity implements View.OnClickListene
                     }
                     showOrHideBottomInfo(MODE_NORMAL);
                     LogUtils.d("VideoCall", "localId = "+userInfo.getUid() + " remoteId = "+ deviceInfo.uid);
-                    Intent intent = new Intent(ControlActivity.this, VideoChatViewActivity.class);
+                    Intent intent = new Intent(ControlActivity.this, VoiceChatViewActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.putExtra("beInvited", false);
                     intent.putExtra("isVideo", false);

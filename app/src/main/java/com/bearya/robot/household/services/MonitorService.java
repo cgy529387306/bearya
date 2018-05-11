@@ -2,8 +2,8 @@ package com.bearya.robot.household.services;
 
 import android.util.Log;
 import android.view.SurfaceView;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.bearya.robot.household.MyApplication;
 import com.bearya.robot.household.utils.LogUtils;
@@ -21,14 +21,14 @@ import static io.agora.rtc.Constants.CHANNEL_PROFILE_LIVE_BROADCASTING;
 
 public class MonitorService {
     private RtcEngine mRtcEngine;// Tutorial Step 1
-    private FrameLayout sfvContainer;
+    private RelativeLayout sfvContainer;
     private ImageView closeMonitor;
 
     public MonitorService() {
 
     }
 
-    public MonitorService(FrameLayout sfvContainer, ImageView closeMonitor) {
+    public MonitorService(RelativeLayout sfvContainer, ImageView closeMonitor) {
         this.sfvContainer = sfvContainer;
         this.closeMonitor = closeMonitor;
     }
@@ -82,6 +82,7 @@ public class MonitorService {
         SurfaceView surfaceView = RtcEngine.CreateRendererView(MyApplication.getContext());
         surfaceView.setZOrderOnTop(true);
         sfvContainer.addView(surfaceView);
+
         int i = mRtcEngine.setupRemoteVideo(new VideoCanvas(surfaceView, VideoCanvas.RENDER_MODE_HIDDEN, uid));
         mRtcEngine.startPreview();
         System.out.println("setupLocalVideo" + i);
@@ -110,4 +111,6 @@ public class MonitorService {
             mRtcEngine = null;
         }
     }
+
+
 }
