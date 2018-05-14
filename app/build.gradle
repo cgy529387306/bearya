@@ -54,6 +54,10 @@ android {
             signingConfig signingConfigs.cgy_keystore
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+
+        dexOptions {
+            jumboMode true
+        }
     }
 
     packagingOptions {
@@ -121,7 +125,7 @@ android.applicationVariants.all { variant ->
             String contentValue = f.getText('UTF-8')
             contentValue = contentValue.replaceAll('>贝芽机器人<', '>贝芽机器人dev<')
             contentValue = contentValue.replaceAll('wx15c26c87b5c49c87', 'wx19275a2c915b1992')
-            contentValue = contentValue.replaceAll('>release<', '>dev<')
+            contentValue = contentValue.replaceAll('>release<', '>release<')
             f.write(contentValue, 'UTF-8')
         }
     }

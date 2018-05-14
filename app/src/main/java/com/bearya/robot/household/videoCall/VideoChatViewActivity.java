@@ -398,6 +398,7 @@ public class VideoChatViewActivity extends Activity {
                     @Tag(RxConstants.RxEventTag.RESULT_JOIN_CHANNEL)
             }
     )
+
     //@DebugLog
     public void joinChannelResult(String ss) {
         runOnUiThread(new Runnable() {

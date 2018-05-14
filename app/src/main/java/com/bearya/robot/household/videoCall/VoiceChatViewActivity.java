@@ -143,11 +143,6 @@ public class VoiceChatViewActivity extends AppCompatActivity {
         localPic = getIntent().getExtras().getString("localPic");
         remotePic = getIntent().getExtras().getString("remotePic");
         remoteName = getIntent().getExtras().getString("remoteName");
-        remoteId = getIntent().getExtras().getInt("remoteId");
-        localId = getIntent().getExtras().getInt("localId");
-        localPic = getIntent().getExtras().getString("localPic");
-        remotePic = getIntent().getExtras().getString("remotePic");
-        remoteName = getIntent().getExtras().getString("remoteName");
         isVideo = getIntent().getExtras().getBoolean("isVideo", false);
         Glide.with(this).load(remotePic).error(R.mipmap.header_dad).into(new SimpleTarget<GlideDrawable>() {
             @Override
@@ -164,7 +159,7 @@ public class VoiceChatViewActivity extends AppCompatActivity {
             headerProgressLoading.start();
         } else {
             channelId = localId + "";
-            avTitleTextView.setText("电话呼入" + remoteName);
+            avTitleTextView.setText(remoteName+"电话呼入");
             headerProgressLoading.setVisibility(View.GONE);
         }
 
@@ -320,7 +315,7 @@ public class VoiceChatViewActivity extends AppCompatActivity {
             @Override
             public void run() {
                 initRtcEngine();
-                bean.setVideoCall(false);
+                bean.setVideoCall(isVideo);
                 AgoraRunTime.Status status = AgoraRunTime.getInstance().getStatus();
                 if (status == AgoraRunTime.Status.joinFailed) {
                     showLongToast("连接失败，稍后再试");
@@ -338,6 +333,10 @@ public class VoiceChatViewActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 bean.setRtcEngineJoinChannel(mRtcEngine.joinChannel(key, channelId, "", remoteId) == 0);
+                if (!isVideo) {
+                    mRtcEngine.disableVideo();
+                    mRtcEngine.setEnableSpeakerphone(true);
+                }
                 if (!bean.isBeInvitedTojoin()) {
                     // 主动发起邀请
                     bean.setRemoteId(remoteId + "");
@@ -396,12 +395,23 @@ public class VoiceChatViewActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mRtcEngine.muteAllRemoteAudioStreams(true);
+        RxBus.get().post(RxConstants.RxEventTag.TAG_AGORA_SERVICE, new AgoraEventDispatch(isInvitedFromRemote ? RxConstants.EVENT_CHANNEL_INVITE_REFUSE : RxConstants.EVENT_CHANNEL_INVITE_END, bean));
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
-
-        leaveChannel();
-        RtcEngine.destroy();
-        mRtcEngine = null;
+        mRtcEngine.destroy();
+        RxConstants.isCalling = false;
+        RxBus.get().unregister(this);
     }
 
     // Tutorial Step 7
@@ -473,6 +483,7 @@ public class VoiceChatViewActivity extends AppCompatActivity {
      */
     public void onAnswerVideoClicked(View view) {
         setRemote(false);
+        avTitleTextView.setText("语音通话中");
         RxBus.get().post(RxConstants.RxEventTag.TAG_AGORA_SERVICE, new AgoraEventDispatch(RxConstants.EVENT_CHANNEL_INVITE_ACCEPT, bean));
     }
 

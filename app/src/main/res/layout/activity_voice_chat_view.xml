@@ -4,27 +4,6 @@
     android:id="@+id/activity_voice_chat_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <LinearLayout
-        android:id="@+id/av_title_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="12.5dp"
-        android:gravity="center"
-        android:orientation="horizontal">
-        <TextView
-            android:id="@+id/av_title_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/colorWhite"
-            android:textSize="16sp" />
-        <Chronometer
-            android:id="@+id/av_time_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:textColor="@color/colorWhite"
-            android:textSize="12sp"/>
-    </LinearLayout>
     <RelativeLayout
         android:id="@+id/audio_header_relative"
         android:layout_width="160dp"
@@ -46,6 +25,29 @@
             android:layout_centerInParent="true"
             android:src="@mipmap/header_mom" />
     </RelativeLayout>
+    <LinearLayout
+        android:id="@+id/av_title_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_below="@id/audio_header_relative"
+        android:gravity="center"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/av_title_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorWhite"
+            android:text="xxx"
+            android:textSize="16sp" />
+        <Chronometer
+            android:id="@+id/av_time_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:textColor="@color/colorWhite"
+            android:textSize="12sp"/>
+    </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
