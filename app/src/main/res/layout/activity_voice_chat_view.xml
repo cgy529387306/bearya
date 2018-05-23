@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activity_voice_chat_view"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@mipmap/bg_video">
     <RelativeLayout
         android:id="@+id/audio_header_relative"
         android:layout_width="160dp"
@@ -23,32 +24,40 @@
             android:layout_width="125dp"
             android:layout_height="125dp"
             android:layout_centerInParent="true"
-            android:src="@mipmap/header_mom" />
+            android:src="@mipmap/ic_robot_avatar" />
     </RelativeLayout>
-    <LinearLayout
-        android:id="@+id/av_title_layout"
+    <TextView
+        android:id="@+id/av_title_textview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
         android:layout_below="@id/audio_header_relative"
         android:gravity="center"
-        android:orientation="vertical">
-        <TextView
-            android:id="@+id/av_title_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/colorWhite"
-            android:text="xxx"
-            android:textSize="16sp" />
-        <Chronometer
-            android:id="@+id/av_time_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:textColor="@color/colorWhite"
-            android:textSize="12sp"/>
-    </LinearLayout>
+        android:textColor="@color/colorWhite"
+        android:text="小贝"
+        android:textSize="22sp" />
+    <TextView
+        android:id="@+id/av_subtitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_below="@id/av_title_textview"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:textColor="@color/colorWhite"
+        android:text="邀请你进行语音聊天"
+        android:textSize="14sp" />
+    <Chronometer
+        android:id="@+id/av_time_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/lin_bottom"
+        android:layout_marginBottom="120dp"
+        android:layout_margin="10dp"
+        android:textColor="@color/colorWhite"
+        android:textSize="16sp"/>
     <LinearLayout
+        android:id="@+id/lin_bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -56,59 +65,73 @@
         android:orientation="vertical">
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp">
+            android:layout_height="100dp">
             <LinearLayout
                 android:id="@+id/call_invite_layout"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:visibility="visible"
+                android:layout_height="100dp"
                 android:orientation="horizontal">
-                <ImageView
+                <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="20"
+                    android:gravity="center"
                     android:onClick="onLocalAudioMuteClicked"
-                    android:scaleType="centerInside"
-                    android:src="@mipmap/btn_mute" />
-
-                <ImageView
+                    android:text="静音"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="16sp"
+                    android:drawableTop="@drawable/selector_btn_novoice"
+                    android:drawablePadding="10dp"/>
+                <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="20"
-                    android:onClick="onSwitchSpeakerphoneClicked"
-                    android:scaleType="centerInside"
-                    android:src="@mipmap/btn_speaker" />
-
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="20"
+                    android:gravity="center"
                     android:onClick="onEncCallClicked"
-                    android:scaleType="centerInside"
-                    android:src="@mipmap/btn_end_call" />
+                    android:text="挂断"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="16sp"
+                    android:drawableTop="@drawable/selector_btn_hangup"
+                    android:drawablePadding="10dp"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="20"
+                    android:gravity="center"
+                    android:onClick="onSwitchSpeakerphoneClicked"
+                    android:text="免提"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="16sp"
+                    android:drawableTop="@drawable/selector_btn_hands"
+                    android:drawablePadding="10dp"/>
             </LinearLayout>
             <RelativeLayout
                 android:id="@+id/callin_layout"
                 android:layout_width="match_parent"
                 android:visibility="gone"
                 android:layout_height="wrap_content">
-                <ImageView
-                    android:id="@+id/video_controll_hangup_iv"
+                <TextView
                     android:layout_width="100dp"
-                    android:layout_height="40dp"
+                    android:layout_height="100dp"
                     android:layout_marginLeft="20dp"
                     android:onClick="onHangupVideoClicked"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/selector_btn_hangup" />
-
-                <ImageView
-                    android:id="@+id/video_controll_answer_iv"
+                    android:gravity="center"
+                    android:drawableTop="@drawable/selector_btn_hangup"
+                    android:text="拒绝"
+                    android:textSize="16sp"
+                    android:textColor="@color/colorWhite"/>
+                <TextView
                     android:layout_width="100dp"
-                    android:layout_height="40dp"
-                    android:layout_alignParentRight="true"
+                    android:layout_height="100dp"
                     android:layout_marginRight="20dp"
+                    android:layout_alignParentRight="true"
                     android:onClick="onAnswerVideoClicked"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/selector_btn_answer" />
+                    android:gravity="center"
+                    android:drawableTop="@drawable/selector_btn_answer"
+                    android:text="接听"
+                    android:textSize="16sp"
+                    android:textColor="@color/colorWhite"/>
             </RelativeLayout>
         </FrameLayout>
     </LinearLayout>

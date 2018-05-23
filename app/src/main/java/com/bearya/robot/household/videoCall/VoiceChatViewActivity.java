@@ -47,6 +47,7 @@ public class VoiceChatViewActivity extends AppCompatActivity {
     private ImageView remoteUserIv;
     private Chronometer avTimeChronometer;
     private TextView avTitleTextView;
+    private TextView avSubtitle;
     private RtcEngine mRtcEngine;// Tutorial Step 1
     private int localId;// 本地的用户id
     private int remoteId;
@@ -133,6 +134,7 @@ public class VoiceChatViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_voice_chat_view);
         remoteUserIv = (ImageView) findViewById(R.id.iv_avatar);
         avTitleTextView = (TextView) findViewById(R.id.av_title_textview);
+        avSubtitle = (TextView) findViewById(R.id.av_subtitle);
         avTimeChronometer = (Chronometer) findViewById(R.id.av_time_textview);
         callInLayout = findViewById(R.id.callin_layout);
         callInviteLayout = findViewById(R.id.call_invite_layout);
@@ -155,11 +157,13 @@ public class VoiceChatViewActivity extends AppCompatActivity {
         if (!isInvitedFromRemote) {
             // 拨号对方作为channel
             channelId = remoteId + "";
-            avTitleTextView.setText("呼叫" + remoteName + "中, 等待回应...");
+            avTitleTextView.setText("正在呼叫"+remoteName);
+            avSubtitle.setVisibility(View.GONE);
             headerProgressLoading.start();
         } else {
             channelId = localId + "";
-            avTitleTextView.setText(remoteName+"电话呼入");
+            avTitleTextView.setText(TextUtils.isEmpty(remoteName)?"小贝":remoteName);
+            avSubtitle.setVisibility(View.VISIBLE);
             headerProgressLoading.setVisibility(View.GONE);
         }
 
@@ -256,7 +260,7 @@ public class VoiceChatViewActivity extends AppCompatActivity {
         mRtcEngine.enableAudio();
         mRtcEngine.muteLocalAudioStream(false);
         headerProgressLoading.stop();
-        avTitleTextView.setText("和" + remoteName + "语音通话中");
+        avTitleTextView.setText(remoteName);
     }
 
     @Subscribe(
@@ -416,42 +420,25 @@ public class VoiceChatViewActivity extends AppCompatActivity {
 
     // Tutorial Step 7
     public void onLocalAudioMuteClicked(View view) {
-        ImageView iv = (ImageView) view;
+        //静音
+        TextView iv = (TextView) view;
         if (iv.isSelected()) {
             iv.setSelected(false);
-            iv.clearColorFilter();
         } else {
             iv.setSelected(true);
-            iv.setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.MULTIPLY);
         }
-
-        mRtcEngine.muteLocalAudioStream(iv.isSelected());
-    }
-
-    public void onLocalMicMuteClicked(View view) {
-        ImageView iv = (ImageView) view;
-        if (iv.isSelected()) {
-            iv.setSelected(false);
-            iv.clearColorFilter();
-        } else {
-            iv.setSelected(true);
-            iv.setColorFilter(getResources().getColor(R.color.colorItBlue), PorterDuff.Mode.MULTIPLY);
-        }
-
         mRtcEngine.muteLocalAudioStream(iv.isSelected());
     }
 
     // Tutorial Step 5
     public void onSwitchSpeakerphoneClicked(View view) {
-        ImageView iv = (ImageView) view;
+        //外放
+        TextView iv = (TextView) view;
         if (iv.isSelected()) {
             iv.setSelected(false);
-            iv.clearColorFilter();
         } else {
             iv.setSelected(true);
-            iv.setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.MULTIPLY);
         }
-
         mRtcEngine.setEnableSpeakerphone(view.isSelected());
     }
 
@@ -483,7 +470,7 @@ public class VoiceChatViewActivity extends AppCompatActivity {
      */
     public void onAnswerVideoClicked(View view) {
         setRemote(false);
-        avTitleTextView.setText("语音通话中");
+        avSubtitle.setVisibility(View.GONE);
         RxBus.get().post(RxConstants.RxEventTag.TAG_AGORA_SERVICE, new AgoraEventDispatch(RxConstants.EVENT_CHANNEL_INVITE_ACCEPT, bean));
     }
 
