@@ -4,8 +4,8 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -16,7 +16,6 @@ import android.view.View;
 import android.widget.Chronometer;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,7 +33,6 @@ import com.hwangjr.rxbus.RxBus;
 import com.hwangjr.rxbus.annotation.Subscribe;
 import com.hwangjr.rxbus.annotation.Tag;
 import com.hwangjr.rxbus.thread.EventThread;
-import com.skyfishjy.library.RippleBackground;
 import com.victor.loading.rotate.RotateLoading;
 
 import io.agora.rtc.IRtcEngineEventHandler;
@@ -44,20 +42,14 @@ import io.agora.rtc.video.VideoCanvas;
 import static io.agora.rtc.Constants.ERR_LEAVE_CHANNEL_REJECTED;
 
 public class VideoChatViewActivity extends Activity {
-    private TextView avTitleTextView, callAudioTextView;
-    private Chronometer avTimeChronometer;
-    private TextView chatMemberTextView;
-    private FrameLayout localContainer;
-    private ImageView switchCameraIv;
-    private ImageView switchMicIv;
-    private ImageView hangupIv;
-    private ImageView answerIv;
-    private ImageView muteIv;
-    private ImageView remoteUserIv;
-    private Chronometer avCenterTimeChronometer;
-    private View callInLayout, callInCenterLayout, avTitleLinearLayout;
     private RotateLoading headerProgressLoading;
-    private RippleBackground rippleBackground;
+    private TextView avTitleTextView;
+    private TextView avSubtitle;
+    private ImageView remoteUserIv;
+    private Chronometer avTimeChronometer;
+    private FrameLayout localContainer;
+    private View callInLayout, callInviteLayout;
+    private TextView tvMute,tvSwitch;
     private int localId;// 本地的用户id
     private int remoteId;
     private String remoteName;
@@ -77,25 +69,18 @@ public class VideoChatViewActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_chat_view);
-
-        avTitleLinearLayout = (LinearLayout) findViewById(R.id.av_title_layout);
-        avTitleTextView = (TextView) findViewById(R.id.av_title_textview);
-        avTimeChronometer = (Chronometer) findViewById(R.id.av_time_textview);
-        // 语音呼叫的时候使用
-        avCenterTimeChronometer = (Chronometer) findViewById(R.id.audio_time_textview);
         localContainer = (FrameLayout) findViewById(R.id.local_video_view_container);
-        callInLayout = (View) findViewById(R.id.callin_layout);
-        callInCenterLayout = (View) findViewById(R.id.callin__center_layout);
-        switchCameraIv = (ImageView) findViewById(R.id.video_controll_switch_camera_iv);
-        switchMicIv = (ImageView) findViewById(R.id.video_controll_switch_mic_iv);
-        hangupIv = (ImageView) findViewById(R.id.video_controll_hangup_iv);
-        answerIv = (ImageView) findViewById(R.id.video_controll_answer_iv);
-        muteIv = (ImageView) findViewById(R.id.video_controll_mute_iv);
-        chatMemberTextView = (TextView) findViewById(R.id.audio_chat_textview);
-        callAudioTextView = (TextView) findViewById(R.id.callin_textview);
-        remoteUserIv = (ImageView) findViewById(R.id.audio_header_imageview);
         headerProgressLoading = (RotateLoading) findViewById(R.id.audio_header_progress);
-        rippleBackground = (RippleBackground) findViewById(R.id.ripple_background);
+        callInLayout = findViewById(R.id.callin_layout);
+        callInviteLayout = findViewById(R.id.call_invite_layout);
+        tvMute = (TextView) findViewById(R.id.tv_mute);
+        tvSwitch = (TextView) findViewById(R.id.tv_switch);
+        remoteUserIv = (ImageView) findViewById(R.id.iv_avatar);
+        avTitleTextView = (TextView) findViewById(R.id.av_title_textview);
+        avSubtitle = (TextView) findViewById(R.id.av_subtitle);
+        avTimeChronometer = (Chronometer) findViewById(R.id.av_time_textview);
+
+        tvMute = (TextView) findViewById(R.id.tv_mute);
 
         remoteId = getIntent().getExtras().getInt("remoteId");
         localId = getIntent().getExtras().getInt("localId");
@@ -103,7 +88,7 @@ public class VideoChatViewActivity extends Activity {
         remotePic = getIntent().getExtras().getString("remotePic");
         remoteName = getIntent().getExtras().getString("remoteName");
         isVideo = getIntent().getExtras().getBoolean("isVideo", true);
-        Glide.with(this).load(remotePic).error(R.mipmap.header_dad).into(new SimpleTarget<GlideDrawable>() {
+        Glide.with(this).load(remotePic).error(R.mipmap.ic_robot_avatar).into(new SimpleTarget<GlideDrawable>() {
             @Override
             public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
                 remoteUserIv.setImageDrawable(resource);
@@ -115,17 +100,20 @@ public class VideoChatViewActivity extends Activity {
         if (!isInvitedFromRemote) {
             // 拨号对方作为channel
             channelId = remoteId + "";
-            avTitleTextView.setText("呼叫" + remoteName + "中, 等待回应...");
-            chatMemberTextView.setText(remoteName);
+            avTitleTextView.setText("正在呼叫" + remoteName);
+            avSubtitle.setVisibility(View.GONE);
             callInLayout.setVisibility(View.GONE);
-            avCenterTimeChronometer.setVisibility(View.GONE);
+            callInviteLayout.setVisibility(View.VISIBLE);
+            headerProgressLoading.start();
         } else {
-            channelId = localId + "";
             // 外部呼叫
+            channelId = localId + "";
+            avTitleTextView.setText(TextUtils.isEmpty(remoteName)?"小贝":remoteName);
+            avSubtitle.setVisibility(View.VISIBLE);
             callInLayout.setVisibility(View.VISIBLE);
-            avTitleLinearLayout.setVisibility(View.GONE);
             localContainer.setVisibility(View.GONE);
-            chatMemberTextView.setText(remoteName);
+            callInviteLayout.setVisibility(View.GONE);
+            headerProgressLoading.setVisibility(View.GONE);
         }
 
         bean = new AgoraTransferBean(channelId, remoteId + "", localId, "", false, "", 0, localPic);
@@ -138,15 +126,10 @@ public class VideoChatViewActivity extends Activity {
             localContainer.setVisibility(View.GONE);
         }
 
-        if (/*TextUtils.isEmpty(remoteName) ||*/ TextUtils.isEmpty(channelId)) {
+        if (TextUtils.isEmpty(channelId)) {
             Toast.makeText(this, "视频通话无法接通！", Toast.LENGTH_SHORT).show();
             finish();
         }
-        //switchCameraIv.setVisibility(isInvitedFromRemote ? View.GONE : View.VISIBLE);
-        answerIv.setVisibility(isInvitedFromRemote ? View.VISIBLE : View.GONE);
-        switchMicIv.setVisibility(View.GONE);
-        muteIv.setVisibility(View.GONE);
-
         RxBus.get().register(this);
         if (!CommonUtils.isServiceRunning(this, AgoraService.class)) {
             bean.setJoinChannelAfterLogined(true);
@@ -170,9 +153,7 @@ public class VideoChatViewActivity extends Activity {
             }
         }
 
-        //mRtcEngine.enableAudio();
         mRtcEngine.enableVideo();
-        //mRtcEngine.setAudioProfile(3/*AUDIO_PROFILE_MUSIC_STANDARD_STEREO*/, 2/*AUDIO_SCENARIO_EDUCATION*/);
         SurfaceView surfaceView = RtcEngine.CreateRendererView(this);
         surfaceView.setZOrderMediaOverlay(true);
         localContainer.addView(surfaceView);
@@ -184,53 +165,32 @@ public class VideoChatViewActivity extends Activity {
             RxBus.get().post(RxConstants.RxEventTag.TAG_AGORA_SERVICE,
                     new AgoraEventDispatch(RxConstants.EVENT_CHECKLOGIN_AND_JOIN_CHANNEL, bean
                     ));
-            rippleBackground.setVisibility(View.GONE);
-            headerProgressLoading.start();
         } else {
             // 外部呼入
             bean.setBeInvitedTojoin(true);
             localContainer.setVisibility(View.GONE);
-            rippleBackground.startRippleAnimation();
-            headerProgressLoading.setVisibility(View.GONE);
-//                mRtcEngine.disableVideo();
         }
     }
 
-    public void onLocalVideoMuteClicked(boolean muteLocalVideo) {
-        mRtcEngine.muteLocalVideoStream(muteLocalVideo);
-
-        SurfaceView surfaceView = (SurfaceView) localContainer.getChildAt(0);
-        surfaceView.setZOrderMediaOverlay(!muteLocalVideo);
-        surfaceView.setVisibility(muteLocalVideo ? View.GONE : View.VISIBLE);
-    }
 
     public void onLocalAudioMuteClicked(View view) {
-        ImageView iv = (ImageView) view;
+        //静音
+        TextView iv = (TextView) view;
         if (iv.isSelected()) {
             iv.setSelected(false);
-            iv.clearColorFilter();
         } else {
             iv.setSelected(true);
-            iv.setColorFilter(getResources().getColor(R.color.colorItBlue), PorterDuff.Mode.MULTIPLY);
         }
-
-        mRtcEngine.muteAllRemoteAudioStreams(iv.isSelected());
-    }
-
-    public void onLocalMicMuteClicked(View view) {
-        ImageView iv = (ImageView) view;
-        if (iv.isSelected()) {
-            iv.setSelected(false);
-            iv.clearColorFilter();
-        } else {
-            iv.setSelected(true);
-            iv.setColorFilter(getResources().getColor(R.color.colorItBlue), PorterDuff.Mode.MULTIPLY);
-        }
-
         mRtcEngine.muteLocalAudioStream(iv.isSelected());
     }
 
     public void onSwitchCameraClicked(View view) {
+        TextView iv = (TextView) view;
+        if (iv.isSelected()) {
+            iv.setSelected(false);
+        } else {
+            iv.setSelected(true);
+        }
         if (bean.isRtcEngineJoinChannel()) {
             mRtcEngine.switchCamera();
         }
@@ -240,6 +200,11 @@ public class VideoChatViewActivity extends Activity {
      * 接听电话  channleID, account, uid
      */
     public void onAnswerVideoClicked(View view) {
+        avSubtitle.setVisibility(View.GONE);
+        callInLayout.setVisibility(View.GONE);
+        callInviteLayout.setVisibility(View.VISIBLE);
+        tvMute.setVisibility(View.VISIBLE);
+        tvSwitch.setVisibility(View.VISIBLE);
         RxBus.get().post(RxConstants.RxEventTag.TAG_AGORA_SERVICE, new AgoraEventDispatch(RxConstants.EVENT_CHANNEL_INVITE_ACCEPT, bean));
     }
 
@@ -259,34 +224,26 @@ public class VideoChatViewActivity extends Activity {
      */
     private void setupRemoteVideo(int uid) {
         FrameLayout container = (FrameLayout) findViewById(R.id.remote_video_view_container);
-
         if (container.getChildCount() >= 1) {
             return;
         }
-
         SurfaceView surfaceView = RtcEngine.CreateRendererView(getBaseContext());
         container.addView(surfaceView);
         mRtcEngine.setupRemoteVideo(new VideoCanvas(surfaceView, VideoCanvas.RENDER_MODE_ADAPTIVE, uid));
-
         surfaceView.setTag(uid); // for mark purpose
-
-        callInCenterLayout.setVisibility(View.GONE);
-        avTitleTextView.setText("和" + remoteName + "视频通话中");
-        answerIv.setVisibility(View.GONE);
-        hangupIv.setVisibility(View.VISIBLE);
-        //switchCameraIv.setVisibility(View.VISIBLE);
-        switchMicIv.setVisibility( View.VISIBLE);
-        muteIv.setVisibility(View.VISIBLE);
-
-        headerProgressLoading.stop();
-        avTitleLinearLayout.setVisibility(View.VISIBLE);
-        avCenterTimeChronometer.start();
+        avTitleTextView.setVisibility(View.GONE);
+        remoteUserIv.setVisibility(View.GONE);
+        tvMute.setVisibility(View.VISIBLE);
+        tvSwitch.setVisibility(View.VISIBLE);
+        avTimeChronometer.setVisibility(View.VISIBLE);
+        avTimeChronometer.setBase(SystemClock.elapsedRealtime());
         avTimeChronometer.start();
     }
 
     private void onRemoteUserLeft() {
         FrameLayout container = (FrameLayout) findViewById(R.id.remote_video_view_container);
         container.removeAllViews();
+        showLongToast("对方已挂断");
         finish();
     }
 
@@ -425,11 +382,9 @@ public class VideoChatViewActivity extends Activity {
                 bean.setRtcEngineJoinChannel(mRtcEngine.joinChannel(key, channelId, "", remoteId) == 0);
                 if (isVideo) {
                     localContainer.setVisibility(View.VISIBLE);
-                    avCenterTimeChronometer.setVisibility(View.GONE);
                 } else {
                     mRtcEngine.disableVideo();
                     localContainer.setVisibility(View.GONE);
-                    avCenterTimeChronometer.setVisibility(View.VISIBLE);
                     mRtcEngine.setEnableSpeakerphone(true);
                 }
 
@@ -517,8 +472,6 @@ public class VideoChatViewActivity extends Activity {
         @Override
         public void onLeaveChannel(RtcStats stats) {
             super.onLeaveChannel(stats);
-
-            avCenterTimeChronometer.stop();
             avTimeChronometer.stop();
             mRtcEngine.stopPreview();
 //            showLongToast("退出视频！" + channelId);
@@ -591,19 +544,12 @@ public class VideoChatViewActivity extends Activity {
     }
 
     private void setViewToAnsweringState() {
-        rippleBackground.stopRippleAnimation();
-        rippleBackground.setVisibility(View.GONE);
-
-        headerProgressLoading.setVisibility(View.GONE);
-        //switchCameraIv.setVisibility(View.GONE);
-        switchMicIv.setVisibility( View.GONE);
-        callAudioTextView.setText("正在通话");
-        answerIv.setVisibility(View.GONE);
-
-        mRtcEngine.muteLocalAudioStream(false);
-        avCenterTimeChronometer.start();
+        avTimeChronometer.setVisibility(View.VISIBLE);
+        avTimeChronometer.setBase(SystemClock.elapsedRealtime());
         avTimeChronometer.start();
         mRtcEngine.enableAudio();
+        mRtcEngine.muteLocalAudioStream(false);
+        headerProgressLoading.stop();
     }
 
 

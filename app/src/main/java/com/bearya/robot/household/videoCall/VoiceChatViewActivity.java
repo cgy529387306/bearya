@@ -3,7 +3,6 @@ package com.bearya.robot.household.videoCall;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
@@ -146,7 +145,7 @@ public class VoiceChatViewActivity extends AppCompatActivity {
         remotePic = getIntent().getExtras().getString("remotePic");
         remoteName = getIntent().getExtras().getString("remoteName");
         isVideo = getIntent().getExtras().getBoolean("isVideo", false);
-        Glide.with(this).load(remotePic).error(R.mipmap.header_dad).into(new SimpleTarget<GlideDrawable>() {
+        Glide.with(this).load(remotePic).error(R.mipmap.ic_robot_avatar).into(new SimpleTarget<GlideDrawable>() {
             @Override
             public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
                 remoteUserIv.setImageDrawable(resource);
@@ -255,6 +254,7 @@ public class VoiceChatViewActivity extends AppCompatActivity {
     }
 
     private void setViewToAnsweringState() {
+        avTimeChronometer.setVisibility(View.VISIBLE);
         avTimeChronometer.setBase(SystemClock.elapsedRealtime());
         avTimeChronometer.start();
         mRtcEngine.enableAudio();
@@ -471,6 +471,9 @@ public class VoiceChatViewActivity extends AppCompatActivity {
     public void onAnswerVideoClicked(View view) {
         setRemote(false);
         avSubtitle.setVisibility(View.GONE);
+        avTimeChronometer.setVisibility(View.VISIBLE);
+        avTimeChronometer.setBase(SystemClock.elapsedRealtime());
+        avTimeChronometer.start();
         RxBus.get().post(RxConstants.RxEventTag.TAG_AGORA_SERVICE, new AgoraEventDispatch(RxConstants.EVENT_CHANNEL_INVITE_ACCEPT, bean));
     }
 

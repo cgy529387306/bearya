@@ -50,6 +50,7 @@
         android:id="@+id/av_time_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:layout_centerHorizontal="true"
         android:layout_above="@+id/lin_bottom"
         android:layout_marginBottom="120dp"
