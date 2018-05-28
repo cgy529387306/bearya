@@ -46,7 +46,7 @@ public class DeviceSettingActivity extends BaseActivity implements View.OnClickL
         if (isFirst){
             setContentView(R.string.device_setting,R.layout.activity_device_setting,"跳过");
         }else {
-            setContentView(R.string.device_setting,R.layout.activity_device_setting);
+            setContentView(R.string.device_setting,R.layout.activity_device_setting,"保存");
         }
         initView();
         initListener();

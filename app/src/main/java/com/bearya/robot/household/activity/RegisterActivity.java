@@ -155,7 +155,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                         showToast(getString(R.string.register_success));
                         if (result.getUser() != null && !TextUtils.isEmpty(result.getToken())) {
                             UserInfoManager.getInstance().login(result);
-                            NavigationHelper.startActivity(RegisterActivity.this, UserInfoActivity.class,null,false);
+                            NavigationHelper.startActivity(RegisterActivity.this, UserInfoActivity.class,null,true);
                         }
                     }
                 });

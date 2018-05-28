@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.bearya.robot.household.R;
 import com.bearya.robot.household.adapter.DeviceListAdapter;
@@ -14,6 +15,7 @@ import com.bearya.robot.household.entity.ItemClickCallBack;
 import com.bearya.robot.household.entity.MachineInfo;
 import com.bearya.robot.household.utils.LogUtils;
 import com.bearya.robot.household.utils.NavigationHelper;
+import com.bearya.robot.household.utils.ProjectHelper;
 import com.bearya.robot.household.views.BYCheckDialog;
 import com.bearya.robot.household.views.BaseActivity;
 import com.bearya.robot.household.views.DialogCallback;
@@ -193,6 +195,7 @@ public class DeviceListActivity extends BaseActivity implements View.OnClickList
                     @Override
                     public void onCompleted() {
                         closeLoadingView();
+                        showToast(getString(R.string.device_unbind_success));
                         LogUtils.d(BaseActivity.Tag, "unBindDevice onCompleted");
                     }
 

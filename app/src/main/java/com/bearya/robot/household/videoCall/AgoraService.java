@@ -169,7 +169,7 @@ public class AgoraService extends Service {
 
                 AgoraRunTime.getInstance().setStatus(AgoraRunTime.Status.beCalled);
                 if (RxConstants.isCalling) {
-                    Toast.makeText(AgoraService.this, "您有新来电!", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(AgoraService.this, "您有新来电!", Toast.LENGTH_SHORT).show();
                     return;
                 }
 

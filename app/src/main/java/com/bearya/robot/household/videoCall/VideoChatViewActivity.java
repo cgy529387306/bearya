@@ -4,6 +4,9 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.AssetFileDescriptor;
+import android.content.res.AssetManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
@@ -35,6 +38,8 @@ import com.hwangjr.rxbus.annotation.Tag;
 import com.hwangjr.rxbus.thread.EventThread;
 import com.victor.loading.rotate.RotateLoading;
 
+import java.io.IOException;
+
 import io.agora.rtc.IRtcEngineEventHandler;
 import io.agora.rtc.RtcEngine;
 import io.agora.rtc.video.VideoCanvas;
@@ -60,7 +65,7 @@ public class VideoChatViewActivity extends Activity {
     private boolean isInvitedFromRemote;
     private RtcEngine mRtcEngine;
     private AgoraTransferBean bean;
-
+    private MediaPlayer mediaPlayer;
     private static final String LOG_TAG = VideoChatViewActivity.class.getSimpleName();
     private static final int PERMISSION_REQ_ID_RECORD_AUDIO = 22;
     private static final int PERMISSION_REQ_ID_CAMERA = PERMISSION_REQ_ID_RECORD_AUDIO + 1;
@@ -69,6 +74,7 @@ public class VideoChatViewActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_chat_view);
+        initMediaPlayer();
         localContainer = (FrameLayout) findViewById(R.id.local_video_view_container);
         headerProgressLoading = (RotateLoading) findViewById(R.id.audio_header_progress);
         callInLayout = findViewById(R.id.callin_layout);
@@ -115,7 +121,6 @@ public class VideoChatViewActivity extends Activity {
             callInviteLayout.setVisibility(View.GONE);
             headerProgressLoading.setVisibility(View.GONE);
         }
-
         bean = new AgoraTransferBean(channelId, remoteId + "", localId, "", false, "", 0, localPic);
         bean.setVideoCall(isVideo);
 
@@ -159,7 +164,7 @@ public class VideoChatViewActivity extends Activity {
         localContainer.addView(surfaceView);
         mRtcEngine.setupLocalVideo(new VideoCanvas(surfaceView, VideoCanvas.RENDER_MODE_ADAPTIVE, 0));
         mRtcEngine.startPreview();
-
+        startPlayer();
         if (!isInvitedFromRemote) {
             // 主动拨打
             RxBus.get().post(RxConstants.RxEventTag.TAG_AGORA_SERVICE,
@@ -206,6 +211,7 @@ public class VideoChatViewActivity extends Activity {
         tvMute.setVisibility(View.VISIBLE);
         tvSwitch.setVisibility(View.VISIBLE);
         RxBus.get().post(RxConstants.RxEventTag.TAG_AGORA_SERVICE, new AgoraEventDispatch(RxConstants.EVENT_CHANNEL_INVITE_ACCEPT, bean));
+        stopPlayer();
     }
 
     /**
@@ -215,6 +221,7 @@ public class VideoChatViewActivity extends Activity {
         showLongToast("正在挂断...");
         mRtcEngine.muteAllRemoteAudioStreams(true);
         RxBus.get().post(RxConstants.RxEventTag.TAG_AGORA_SERVICE, new AgoraEventDispatch(isInvitedFromRemote ? RxConstants.EVENT_CHANNEL_INVITE_REFUSE : RxConstants.EVENT_CHANNEL_INVITE_END, bean));
+        stopPlayer();
     }
 
     /**
@@ -271,6 +278,7 @@ public class VideoChatViewActivity extends Activity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                stopPlayer();
                 AgoraRunTime.Status status = AgoraRunTime.getInstance().getStatus();
                 if (status == AgoraRunTime.Status.answer) {
                     showLongToast("对方已经接通");
@@ -467,6 +475,7 @@ public class VideoChatViewActivity extends Activity {
         public void onConnectionLost() {
             super.onConnectionLost();
             showLongToast("连接断开！");
+            stopPlayer();
         }
 
         @Override
@@ -476,6 +485,7 @@ public class VideoChatViewActivity extends Activity {
             mRtcEngine.stopPreview();
 //            showLongToast("退出视频！" + channelId);
             finish();
+            stopPlayer();
         }
     };
 
@@ -489,12 +499,14 @@ public class VideoChatViewActivity extends Activity {
         super.onStop();
         mRtcEngine.muteAllRemoteAudioStreams(true);
         RxBus.get().post(RxConstants.RxEventTag.TAG_AGORA_SERVICE, new AgoraEventDispatch(isInvitedFromRemote ? RxConstants.EVENT_CHANNEL_INVITE_REFUSE : RxConstants.EVENT_CHANNEL_INVITE_END, bean));
+
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         mRtcEngine.destroy();
+        stopPlayer();
         RxConstants.isCalling = false;
         RxBus.get().unregister(this);
     }
@@ -563,4 +575,25 @@ public class VideoChatViewActivity extends Activity {
             }
         });
     }
+
+    private void initMediaPlayer() {
+        //获取mp3文件的路径
+        mediaPlayer = MediaPlayer.create(this, R.raw.tip_voice);
+        mediaPlayer.setLooping(true);//循环播放
+    }
+
+    private void startPlayer(){
+        if (mediaPlayer != null) {
+            mediaPlayer.start();
+        }
+    }
+
+    private void stopPlayer(){
+        if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+            mediaPlayer.stop();
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+    }
+
 }

@@ -126,4 +126,5 @@
     <string name="skip">跳过</string>
     <string name="select_birthday">请选择宝宝生日</string>
     <string name="login_error_more">登入失败，请重新登录！</string>
+    <string name="device_unbind_success">设备解绑成功</string>
 </resources>

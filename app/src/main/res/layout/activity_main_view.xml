@@ -46,7 +46,7 @@
         android:id="@+id/rv_bind_machine"
         android:layout_width="match_parent"
         android:layout_height="240dp"
-        android:layout_centerInParent="true"
+        android:layout_marginTop="150dp"
         android:overScrollMode="never"/>
 
     <TextView
@@ -55,7 +55,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/rv_bind_machine"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="90dp"
         android:padding="10dp"
         android:textColor="@color/gray"
         android:gravity="center"
@@ -68,6 +68,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_add_machine_hint"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
         android:textColor="@color/gray"
         android:gravity="center"
         android:textSize="13sp"

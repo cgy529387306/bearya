@@ -3,6 +3,7 @@ package com.bearya.robot.household.videoCall;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
@@ -59,6 +60,7 @@ public class VoiceChatViewActivity extends AppCompatActivity {
     private boolean isVideo;
     private View callInLayout, callInviteLayout;
     private RotateLoading headerProgressLoading;
+    private MediaPlayer mediaPlayer;
     private final IRtcEngineEventHandler mRtcEventHandler = new IRtcEngineEventHandler() { // Tutorial Step 1
 
         @Override
@@ -105,12 +107,14 @@ public class VoiceChatViewActivity extends AppCompatActivity {
         public void onConnectionLost() {
             super.onConnectionLost();
             showLongToast("连接断开！");
+            stopPlayer();
         }
 
         @Override
         public void onLeaveChannel(RtcStats stats) {
             super.onLeaveChannel(stats);
             avTimeChronometer.stop();
+            stopPlayer();
             finish();
         }
 
@@ -131,6 +135,7 @@ public class VoiceChatViewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_voice_chat_view);
+        initMediaPlayer();
         remoteUserIv = (ImageView) findViewById(R.id.iv_avatar);
         avTitleTextView = (TextView) findViewById(R.id.av_title_textview);
         avSubtitle = (TextView) findViewById(R.id.av_subtitle);
@@ -193,6 +198,7 @@ public class VoiceChatViewActivity extends AppCompatActivity {
     // Tutorial Step 1
     private void initSignal() {
         initRtcEngine();
+        startPlayer();
         if (!isInvitedFromRemote) {
             // 主动拨打
             RxBus.get().post(RxConstants.RxEventTag.TAG_AGORA_SERVICE,
@@ -229,6 +235,7 @@ public class VoiceChatViewActivity extends AppCompatActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                stopPlayer();
                 AgoraRunTime.Status status = AgoraRunTime.getInstance().getStatus();
                 if (status == AgoraRunTime.Status.answer) {
                     showLongToast("对方已经接通");
@@ -406,6 +413,7 @@ public class VoiceChatViewActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+        stopPlayer();
         mRtcEngine.muteAllRemoteAudioStreams(true);
         RxBus.get().post(RxConstants.RxEventTag.TAG_AGORA_SERVICE, new AgoraEventDispatch(isInvitedFromRemote ? RxConstants.EVENT_CHANNEL_INVITE_REFUSE : RxConstants.EVENT_CHANNEL_INVITE_END, bean));
     }
@@ -414,6 +422,7 @@ public class VoiceChatViewActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         mRtcEngine.destroy();
+        stopPlayer();
         RxConstants.isCalling = false;
         RxBus.get().unregister(this);
     }
@@ -469,6 +478,7 @@ public class VoiceChatViewActivity extends AppCompatActivity {
      * 接听电话  channleID, account, uid
      */
     public void onAnswerVideoClicked(View view) {
+        stopPlayer();
         setRemote(false);
         avSubtitle.setVisibility(View.GONE);
         avTimeChronometer.setVisibility(View.VISIBLE);
@@ -481,8 +491,30 @@ public class VoiceChatViewActivity extends AppCompatActivity {
      * 挂断电话
      */
     public void onHangupVideoClicked(View view) {
+        stopPlayer();
         showLongToast("正在挂断...");
         mRtcEngine.muteAllRemoteAudioStreams(true);
         RxBus.get().post(RxConstants.RxEventTag.TAG_AGORA_SERVICE, new AgoraEventDispatch(isInvitedFromRemote ? RxConstants.EVENT_CHANNEL_INVITE_REFUSE : RxConstants.EVENT_CHANNEL_INVITE_END, bean));
     }
+
+    private void initMediaPlayer() {
+        //获取mp3文件的路径
+        mediaPlayer = MediaPlayer.create(this, R.raw.tip_voice);
+        mediaPlayer.setLooping(true);//循环播放
+    }
+
+    private void startPlayer(){
+        if (mediaPlayer != null) {
+            mediaPlayer.start();
+        }
+    }
+
+    private void stopPlayer(){
+        if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+            mediaPlayer.stop();
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+    }
+
 }

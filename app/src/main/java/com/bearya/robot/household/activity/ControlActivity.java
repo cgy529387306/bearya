@@ -273,14 +273,14 @@ public class ControlActivity extends BaseActivity implements View.OnClickListene
         videoListAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                if (!isDeviceOnLine()) {
-                    CommonUtils.showToast(ControlActivity.this, getString(R.string.device_outline_toast));
-                    return;
-                }
-                if (!CommonUtils.isServiceRunning(ControlActivity.this, AgoraService.class)) {
-                    CommonUtils.showToast(ControlActivity.this, getString(R.string.service_start_failed));
-                    return;
-                }
+//                if (!isDeviceOnLine()) {
+//                    CommonUtils.showToast(ControlActivity.this, getString(R.string.device_outline_toast));
+//                    return;
+//                }
+//                if (!CommonUtils.isServiceRunning(ControlActivity.this, AgoraService.class)) {
+//                    CommonUtils.showToast(ControlActivity.this, getString(R.string.service_start_failed));
+//                    return;
+//                }
                 deviceAction.setText("");
                 if (Integer.valueOf(videoListInfo.get(position).id) == 0) {
                     if (isMonitor >= 0) {
@@ -295,7 +295,7 @@ public class ControlActivity extends BaseActivity implements View.OnClickListene
                     intent.putExtra("isVideo", true);
                     intent.putExtra("remoteName", deviceInfo.name);
                     intent.putExtra("localId", userInfo.getUid());
-                    intent.putExtra("remoteId", deviceInfo.uid);// 强转为fromAccount
+                    intent.putExtra("remoteId", 8536);// 强转为fromAccount//8536
                     startActivity(intent);
                 }else if (Integer.valueOf(videoListInfo.get(position).id) == 1){
                     if (isMonitor >= 0) {
@@ -309,8 +309,8 @@ public class ControlActivity extends BaseActivity implements View.OnClickListene
                     intent.putExtra("beInvited", false);
                     intent.putExtra("isVideo", false);
                     intent.putExtra("remoteName", deviceInfo.name);
-                    intent.putExtra("localId", userInfo.getUid());//8536
-                    intent.putExtra("remoteId", deviceInfo.uid);// 强转为fromAccount
+                    intent.putExtra("localId", userInfo.getUid());
+                    intent.putExtra("remoteId", 8536d);// 强转为fromAccount//8536
                     startActivity(intent);
                 }else if (Integer.valueOf(videoListInfo.get(position).id) == 2) {
                     if (isMonitor == -1) {
