@@ -103,7 +103,7 @@ android.applicationVariants.all { variant ->
         variant.mergeResources.doLast {
             def f = file("${buildDir}/intermediates/res/merged/${variant.dirName}/values/values.xml")
             String contentValue = f.getText('UTF-8')
-            contentValue = contentValue.replaceAll('>贝芽机器人dev<', '>贝芽机器人<')
+//            contentValue = contentValue.replaceAll('>贝芽机器人dev<', '>贝芽机器人<')
             contentValue = contentValue.replaceAll('wx19275a2c915b1992', 'wx15c26c87b5c49c87')
             contentValue = contentValue.replaceAll('>dev<', '>release<')
             f.write(contentValue, 'UTF-8')
@@ -123,7 +123,7 @@ android.applicationVariants.all { variant ->
         variant.mergeResources.doLast {
             def f = file("${buildDir}/intermediates/res/merged/${variant.dirName}/values/values.xml")
             String contentValue = f.getText('UTF-8')
-            contentValue = contentValue.replaceAll('>贝芽机器人<', '>贝芽机器人dev<')
+//            contentValue = contentValue.replaceAll('>贝芽机器人<', '>贝芽机器人dev<')
             contentValue = contentValue.replaceAll('wx15c26c87b5c49c87', 'wx19275a2c915b1992')
             contentValue = contentValue.replaceAll('>release<', '>release<')
             f.write(contentValue, 'UTF-8')

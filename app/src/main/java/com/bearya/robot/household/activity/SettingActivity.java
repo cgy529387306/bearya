@@ -42,11 +42,12 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         tvTel = (TextView) findViewById(R.id.tv_tel);
         tvTel.setOnClickListener(this);
         findViewById(R.id.tv_logout).setOnClickListener(this);
+        findViewById(R.id.lin_version).setOnClickListener(this);
     }
 
     private void initData() {
         subscription = new CompositeSubscription();
-        tvVersion.setText(String.format("V%s", CommonUtils.getVersionName(this)));
+        tvVersion.setText(CommonUtils.getVersionName(this));
     }
 
     @Override
@@ -71,6 +72,9 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             checkDialog.showDialog();
         }else if (id == R.id.tv_tel){
             callPhone(tvTel.getText().toString());
+        }else if (id == R.id.lin_version){
+            isManualUpdater = true;
+            checkAppVersion(SettingActivity.this);
         }
     }
 

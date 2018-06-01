@@ -10,7 +10,7 @@
         android:layout_height="48dp"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:background="@color/colorWhite">
 
         <TextView
@@ -142,13 +142,13 @@
     <TextView
         android:id="@+id/tv_confirm"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="40dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:background="@mipmap/bind_parent"
+        android:background="@drawable/selector_btn_comfirm"
         android:textSize="@dimen/activity_text_size"
-        android:text="保存"
+        android:text="@string/confirm"
         android:textColor="@color/colorWhite"
         android:gravity="center"/>
 </LinearLayout>

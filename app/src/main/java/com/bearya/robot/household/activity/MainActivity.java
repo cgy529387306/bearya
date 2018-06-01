@@ -268,7 +268,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         if (mRandom == null) {
             mRandom = new Random();
         }
-        SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy/MM/dd ");
+        SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy.MM.dd ");
         String date = sDateFormat.format(new java.util.Date());
         String hintString = getString(hints[mRandom.nextInt(hints.length)]);
         bindHit.setText(hintString);

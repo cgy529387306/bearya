@@ -6,21 +6,37 @@
     android:background="@color/colorWhite"
     android:orientation="vertical">
 
-    <com.bearya.robot.household.views.ClearableEditText
-        android:id="@+id/et_tel"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:textColorHint="@color/colorHint"
-        android:textColor="@color/colorBlack"
-        android:background="@null"
-        android:hint="@string/input_phone"
-        android:textSize="@dimen/activity_text_size"
-        android:inputType="number"
-        tools:ignore="TextFields" />
+        android:layout_marginTop="60dp"
+        android:background="@color/colorWhite">
 
+        <com.bearya.robot.household.views.ClearableEditText
+            android:id="@+id/et_tel"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:textColorHint="@color/colorHint"
+            android:textColor="@color/colorBlack"
+            android:background="@null"
+            android:hint="@string/input_phone"
+            android:textSize="@dimen/activity_text_size"
+            android:inputType="number"/>
+
+        <TextView
+            android:id="@+id/tv_send"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="end|bottom"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/activity_text_size_small"
+            android:layout_marginLeft="15dp"
+            android:text="@string/send_code"/>
+
+    </LinearLayout>
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
@@ -29,37 +45,20 @@
         android:layout_marginRight="20dp"
         android:background="@color/colorGray"  />
 
-    <LinearLayout
+    <com.bearya.robot.household.views.ClearableEditText
+        android:id="@+id/et_code"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_marginTop="30dp"
-        android:background="@color/colorWhite">
-
-        <com.bearya.robot.household.views.ClearableEditText
-            android:id="@+id/et_code"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:textColorHint="@color/colorHint"
-            android:textColor="@color/colorBlack"
-            android:background="@null"
-            android:hint="@string/input_code"
-            android:textSize="@dimen/activity_text_size"
-            android:inputType="number"/>
-
-        <TextView
-            android:id="@+id/tv_send"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="15dp"
-            android:gravity="end|bottom"
-            android:textColor="@color/colorBlack"
-            android:textSize="@dimen/activity_text_size_small"
-            android:text="@string/send_code"/>
-
-    </LinearLayout>
+        android:textColorHint="@color/colorHint"
+        android:textColor="@color/colorBlack"
+        android:background="@null"
+        android:hint="@string/input_code"
+        android:textSize="@dimen/activity_text_size"
+        android:inputType="number"
+        tools:ignore="TextFields" />
 
     <View
         android:layout_width="match_parent"
@@ -94,11 +93,11 @@
     <TextView
         android:id="@+id/tv_register"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="40dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:background="@mipmap/bind_parent"
+        android:background="@drawable/selector_btn_comfirm"
         android:textSize="@dimen/activity_text_size"
         android:text="@string/next"
         android:textColor="@color/colorWhite"

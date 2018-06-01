@@ -12,7 +12,7 @@
         <RelativeLayout
             android:id="@+id/rl_control_top"
             android:layout_width="match_parent"
-            android:layout_height="66dp">
+            android:layout_height="80dp">
             <ImageView
                 android:id="@+id/iv_back"
                 android:layout_width="44dp"
@@ -129,18 +129,20 @@
 
                 <ImageView
                     android:id="@+id/iv_expressions"
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginTop="4dp"
+                    android:textSize="@dimen/activity_text_size_mini"
                     android:layout_gravity="center"
                     android:src="@drawable/control_expressions_selector" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:textSize="@dimen/activity_text_size_mini"
                     android:gravity="center"
                     android:textColor="@color/gray"
                     android:text="@string/control_expressions"/>
-
             </LinearLayout>
 
                 <LinearLayout
@@ -152,8 +154,10 @@
 
                     <ImageView
                         android:id="@+id/iv_dance"
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginTop="4dp"
+                        android:textSize="@dimen/activity_text_size_small"
                         android:layout_gravity="center"
                         android:src="@drawable/control_dance_selector" />
 
@@ -161,6 +165,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
+                        android:textSize="@dimen/activity_text_size_mini"
                         android:textColor="@color/gray"
                         android:text="@string/control_dance"/>
 
@@ -175,14 +180,16 @@
 
                     <ImageView
                         android:id="@+id/iv_monitor"
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginTop="4dp"
                         android:layout_gravity="center"
                         android:src="@drawable/control_monitor_selector" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:textSize="@dimen/activity_text_size_mini"
                         android:gravity="center"
                         android:textColor="@color/gray"
                         android:text="@string/control_monitor"/>
@@ -198,8 +205,9 @@
 
                     <ImageView
                         android:id="@+id/iv_walls"
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginTop="4dp"
                         android:layout_gravity="center"
                         android:src="@mipmap/walls_uncheck" />
 
@@ -207,6 +215,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
+                        android:textSize="@dimen/activity_text_size_mini"
                         android:textColor="@color/gray"
                         android:text="@string/control_walls"/>
 

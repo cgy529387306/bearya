@@ -2,6 +2,7 @@ package com.bearya.robot.household.networkInteraction;
 
 import android.text.TextUtils;
 
+import com.bearya.robot.household.entity.MoveAction;
 import com.bearya.robot.household.entity.MsgAction;
 import com.bearya.robot.household.entity.MsgDance;
 import com.bearya.robot.household.entity.MsgExpression;
@@ -87,6 +88,12 @@ public class WilddogInteraction  extends BaseInteraction {
     @Override
     public void sendAction(String id) {
         MsgAction action = new MsgAction(id);
+        mDeviceRef.child(WILDDOG_CLIENT).push().setValue(action);
+    }
+
+    @Override
+    public void sendMove(String id) {
+        MoveAction action = new MoveAction(id);
         mDeviceRef.child(WILDDOG_CLIENT).push().setValue(action);
     }
 

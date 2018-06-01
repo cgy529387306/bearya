@@ -33,6 +33,7 @@ public class WakeUpActivity extends BaseActivity implements View.OnClickListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView("机器人名字",R.layout.activity_wakeup,"生成");
+        setRightTextColor(R.color.colorBlack);
         getIntentData();
         initView();
         initListener();
@@ -41,9 +42,11 @@ public class WakeUpActivity extends BaseActivity implements View.OnClickListener
 
     private void initData() {
         String name = edtName.getText().toString().trim();
-        if (!TextUtils.isEmpty(name) && CommonUtils.isChinese(name)){
-            getRank();
-        }
+        edtName.setText(TextUtils.isEmpty(name)?"":name);
+        edtName.setSelection(TextUtils.isEmpty(name)?0:name.length());
+//        if (!TextUtils.isEmpty(name) && CommonUtils.isChinese(name)){
+//            getRank();
+//        }
     }
 
     @Override
@@ -51,13 +54,13 @@ public class WakeUpActivity extends BaseActivity implements View.OnClickListener
         super.onRightTip();
         String name = edtName.getText().toString().trim();
         if (TextUtils.isEmpty(name)){
-            showToast("请输入唤醒词");
+            showToast("请输入机器人名字");
             return;
         }
-        if (!CommonUtils.isChinese(name)){
-            showToast("必须为中文");
-            return;
-        }
+//        if (!CommonUtils.isChinese(name)){
+//            showToast("必须为中文");
+//            return;
+//        }
         Intent intent = new Intent();
         intent.putExtra("content",name);
         setResult(RESULT_OK,intent);

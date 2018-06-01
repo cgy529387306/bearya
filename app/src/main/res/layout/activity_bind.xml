@@ -10,6 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/colorBlack"
+        android:visibility="gone"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="70dp"
         android:textSize="24dp"
@@ -19,21 +20,23 @@
         android:id="@+id/et_machine_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
-        android:textColorHint="@color/colorGray"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="70dp"
+        android:textColorHint="@color/color_grey"
         android:textColor="@color/colorBlack"
         android:background="@null"
         android:hint="@string/input_machine_toast"
-        android:gravity="center"
+        android:gravity="left"
         android:textSize="@dimen/activity_text_size"
         android:maxLines="1"/>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="4dp"
         android:background="@color/colorGray"  />
 
     <RelativeLayout
@@ -46,8 +49,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:textColor="@color/colorBlack"
-            android:layout_marginRight="45dp"
-            android:textSize="13sp"
+            android:layout_marginRight="10dp"
+            android:textSize="14sp"
             android:padding="5dp"
             android:text="@string/scan_qc"/>
     </RelativeLayout>
@@ -55,13 +58,13 @@
     <TextView
         android:id="@+id/tv_bind_machine"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="100dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:background="@mipmap/bind_parent"
+        android:background="@drawable/selector_btn_comfirm"
         android:textSize="@dimen/activity_text_size"
         android:textColor="@color/colorWhite"
-        android:text="@string/bind_machine"
+        android:text="@string/confirm"
         android:gravity="center"/>
 </LinearLayout>

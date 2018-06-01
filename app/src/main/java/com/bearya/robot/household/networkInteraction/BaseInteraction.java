@@ -10,6 +10,7 @@ public abstract class BaseInteraction {
     public abstract boolean init(String type, String serial);
     public abstract void sendTTS(String tts);
     public abstract void sendAction(String id);
+    public abstract void sendMove(String id);
     public abstract void sendExpression(String id);
     public abstract void sendDance(String id);
     public abstract void sendMonitor(MsgMonitor msgMonitor);

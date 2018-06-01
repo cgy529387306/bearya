@@ -33,6 +33,7 @@ public class MachineAdapter extends BaseQuickAdapter<MachineInfo, BaseViewHolder
     protected void convert(BaseViewHolder helper, MachineInfo item) {
         helper.setText(R.id.tv_machine_name, item.name);
         helper.setVisible(R.id.im_add_icon, item.uid <=0);
+        helper.setBackgroundRes(R.id.rl_machine_item,item.uid <=0?R.drawable.shape_grey_circle:R.color.colorTransparent);
         Log.d("MachineInfo", "position="+helper.getLayoutPosition()+" item.serial_num="+item.sn+" item.dtype="+item.dtype);
         familyDeviceManage.addDeviceStateListener(helper.getView(R.id.rl_machine_item), (TextView) helper.getView(R.id.tv_machine_state), item);
         //helper.getView(R.id.rl_machine_item).setSelected(helper.getAdapterPosition() == centerPosition);

@@ -1,5 +1,6 @@
 package com.bearya.robot.household.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,6 +12,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -47,6 +49,8 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import es.dmoral.toasty.Toasty;
 import rx.Subscriber;
@@ -54,7 +58,7 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.subscriptions.CompositeSubscription;
 
-public class ControlActivity extends BaseActivity implements View.OnClickListener, BYValueEventListener {
+public class ControlActivity extends BaseActivity implements View.OnClickListener, View.OnTouchListener, BYValueEventListener {
     private final static int MSG_HIDE_ACTION_TEXT = 10000;
     private final static int MODE_NORMAL = 0;
     private final static int MODE_EXPRESSION = 1;
@@ -110,15 +114,23 @@ public class ControlActivity extends BaseActivity implements View.OnClickListene
     private int isMonitor = -1;
     private int isOnLine = -1;
     private int mMode = 0;
-
+    private Timer timer;
+    @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            switch (msg.what) {
-                case MSG_HIDE_ACTION_TEXT:
-                    deviceAction.setText("");
-                    break;
+            int type = msg.what;
+            if (type == 0){
+                sendAction(CommonUtils.actionUp);
+            }else if (type == 1){
+                sendAction(CommonUtils.actionDown);
+            }else if (type == 2){
+                sendAction(CommonUtils.actionRight);
+            }else if (type == 3){
+                sendAction(CommonUtils.actionLeft);
+            }else if (type == MSG_HIDE_ACTION_TEXT){
+                deviceAction.setText("");
             }
         }
     };
@@ -144,10 +156,10 @@ public class ControlActivity extends BaseActivity implements View.OnClickListene
         deviceAction = (TextView) findViewById(R.id.tv_device_action);
         ivBack = (ImageView) findViewById(R.id.iv_back);
         //上、下、左、右控制
-        findViewById(R.id.im_turn_up).setOnClickListener(this);
-        findViewById(R.id.im_turn_down).setOnClickListener(this);
-        findViewById(R.id.im_turn_left).setOnClickListener(this);
-        findViewById(R.id.im_turn_right).setOnClickListener(this);
+        findViewById(R.id.im_turn_up).setOnTouchListener(this);
+        findViewById(R.id.im_turn_down).setOnTouchListener(this);
+        findViewById(R.id.im_turn_left).setOnTouchListener(this);
+        findViewById(R.id.im_turn_right).setOnTouchListener(this);
         findViewById(R.id.iv_back).setOnClickListener(this);
         actions = getResources().getStringArray(R.array.action_names);
 
@@ -273,14 +285,14 @@ public class ControlActivity extends BaseActivity implements View.OnClickListene
         videoListAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-//                if (!isDeviceOnLine()) {
-//                    CommonUtils.showToast(ControlActivity.this, getString(R.string.device_outline_toast));
-//                    return;
-//                }
-//                if (!CommonUtils.isServiceRunning(ControlActivity.this, AgoraService.class)) {
-//                    CommonUtils.showToast(ControlActivity.this, getString(R.string.service_start_failed));
-//                    return;
-//                }
+                if (!isDeviceOnLine()) {
+                    CommonUtils.showToast(ControlActivity.this, getString(R.string.device_outline_toast));
+                    return;
+                }
+                if (!CommonUtils.isServiceRunning(ControlActivity.this, AgoraService.class)) {
+                    CommonUtils.showToast(ControlActivity.this, getString(R.string.service_start_failed));
+                    return;
+                }
                 deviceAction.setText("");
                 if (Integer.valueOf(videoListInfo.get(position).id) == 0) {
                     if (isMonitor >= 0) {
@@ -295,7 +307,7 @@ public class ControlActivity extends BaseActivity implements View.OnClickListene
                     intent.putExtra("isVideo", true);
                     intent.putExtra("remoteName", deviceInfo.name);
                     intent.putExtra("localId", userInfo.getUid());
-                    intent.putExtra("remoteId", 8536);// 强转为fromAccount//8536
+                    intent.putExtra("remoteId", deviceInfo.uid);// 强转为fromAccount//8536
                     startActivity(intent);
                 }else if (Integer.valueOf(videoListInfo.get(position).id) == 1){
                     if (isMonitor >= 0) {
@@ -310,7 +322,7 @@ public class ControlActivity extends BaseActivity implements View.OnClickListene
                     intent.putExtra("isVideo", false);
                     intent.putExtra("remoteName", deviceInfo.name);
                     intent.putExtra("localId", userInfo.getUid());
-                    intent.putExtra("remoteId", 8536d);// 强转为fromAccount//8536
+                    intent.putExtra("remoteId", deviceInfo.uid);// 强转为fromAccount//8536
                     startActivity(intent);
                 }else if (Integer.valueOf(videoListInfo.get(position).id) == 2) {
                     if (isMonitor == -1) {
@@ -324,6 +336,7 @@ public class ControlActivity extends BaseActivity implements View.OnClickListene
         rvVideos.setAdapter(videoListAdapter);
 
     }
+
 
     private void setDeviceAction(String action) {
         mHandler.removeMessages(MSG_HIDE_ACTION_TEXT);
@@ -367,22 +380,22 @@ public class ControlActivity extends BaseActivity implements View.OnClickListene
             case R.id.rl_control_view:
                 showOrHideBottomInfo(MODE_NORMAL);
                 break;
-            case R.id.im_turn_up:
-                sendAction(CommonUtils.actionUp);
-                setDeviceAction(actions[0]);
-                break;
-            case R.id.im_turn_down:
-                sendAction(CommonUtils.actionDown);
-                setDeviceAction(actions[1]);
-                break;
-            case R.id.im_turn_right:
-                sendAction(CommonUtils.actionRight);
-                setDeviceAction(actions[2]);
-                break;
-            case R.id.im_turn_left:
-                sendAction(CommonUtils.actionLeft);
-                setDeviceAction(actions[3]);
-                break;
+//            case R.id.im_turn_up:
+//                sendAction(CommonUtils.actionUp);
+//                setDeviceAction(actions[0]);
+//                break;
+//            case R.id.im_turn_down:
+//                sendAction(CommonUtils.actionDown);
+//                setDeviceAction(actions[1]);
+//                break;
+//            case R.id.im_turn_right:
+//                sendAction(CommonUtils.actionRight);
+//                setDeviceAction(actions[2]);
+//                break;
+//            case R.id.im_turn_left:
+//                sendAction(CommonUtils.actionLeft);
+//                setDeviceAction(actions[3]);
+//                break;
             case R.id.action_expressions:
                 showOrHideBottomInfo(MODE_EXPRESSION);
                 break;
@@ -407,17 +420,72 @@ public class ControlActivity extends BaseActivity implements View.OnClickListene
         }
     }
 
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        int id = v.getId();
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN://按住事件发生后执行代码的区域
+                timer = new Timer();
+                if (id == R.id.im_turn_up){
+                    timer.schedule(new MyTimerTask(0), 0, 50);
+                    setDeviceAction(actions[0]);
+                }else if (id == R.id.im_turn_down){
+                    timer.schedule(new MyTimerTask(1), 0, 50);
+                    setDeviceAction(actions[1]);
+                }else if (id == R.id.im_turn_right){
+                    timer.schedule(new MyTimerTask(2), 0, 50);
+                    setDeviceAction(actions[2]);
+                }else if (id == R.id.im_turn_left){
+                    timer.schedule(new MyTimerTask(3), 0, 50);
+                    setDeviceAction(actions[3]);
+                }
+                break;
+            case MotionEvent.ACTION_UP://松开事件发生后执行代码的区域
+                if (id == R.id.im_turn_up){
+                    timer.cancel();
+                    sendAction(CommonUtils.actionStop);
+                }else if (id == R.id.im_turn_down){
+                    timer.cancel();
+                    sendAction(CommonUtils.actionStop);
+                }else if (id == R.id.im_turn_right){
+                    timer.cancel();
+                    sendAction(CommonUtils.actionStop);
+                }else if (id == R.id.im_turn_left){
+                    timer.cancel();
+                    sendAction(CommonUtils.actionStop);
+                }
+                break;
+            default:
+                break;
+        }
+        return true;
+    }
+
+    class MyTimerTask extends TimerTask{
+        private int type;
+
+        public MyTimerTask(int type) {
+            this.type = type;
+        }
+
+        @Override
+        public void run() {
+            Message message = new Message();
+            message.what = type;
+            mHandler.sendMessage(message);
+        }
+    }
+
+
     public void sendAction(String speechId) {
+        LogUtils.d(Tag, "turn action = "+speechId);
         if (!isDeviceOnLine()) {
             CommonUtils.showToast(this, getString(R.string.device_outline_toast));
             return;
         }
-        LogUtils.d(Tag, "turn action = "+speechId);
         if (familyInteraction != null) {
-            familyInteraction.sendAction(speechId);
+            familyInteraction.sendMove(speechId);
         }
-        /*MsgAction action = new MsgAction(action);
-        mDeviceRef.child(CommonUtils.WILDDOG_CLIENT).push().setValue(action);*/
     }
 
     public void getMonitorKey() {
@@ -648,4 +716,6 @@ public class ControlActivity extends BaseActivity implements View.OnClickListene
     public void onDataChange(String data) {
 
     }
+
+
 }

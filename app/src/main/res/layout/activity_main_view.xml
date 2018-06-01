@@ -16,9 +16,8 @@
             android:layout_width="42dp"
             android:layout_height="42dp"
             android:layout_centerVertical="true"
-            android:layout_marginStart="16dp"
             android:layout_toEndOf="@+id/tv_main_title"
-            android:padding="10dp"
+            android:padding="12dp"
             android:src="@mipmap/icon_home" />
 
         <TextView
@@ -45,8 +44,8 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_bind_machine"
         android:layout_width="match_parent"
-        android:layout_height="240dp"
-        android:layout_marginTop="150dp"
+        android:layout_height="320dp"
+        android:layout_marginTop="100dp"
         android:overScrollMode="never"/>
 
     <TextView
@@ -55,23 +54,24 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/rv_bind_machine"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="90dp"
+        android:layout_marginTop="30dp"
         android:padding="10dp"
-        android:textColor="@color/gray"
+        android:textColor="@color/colorBlack"
+        android:singleLine="true"
         android:gravity="center"
-        android:textSize="16sp"
-        android:visibility="gone"/>
+        android:textSize="24sp"
+        android:visibility="visible"/>
 
     <TextView
         android:id="@+id/tv_add_machine_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tv_add_machine_hint"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="15dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
-        android:textColor="@color/gray"
+        android:textColor="@color/colorHint"
         android:gravity="center"
         android:textSize="13sp"
-        android:visibility="gone"/>
+        android:visibility="visible"/>
 
 </RelativeLayout>

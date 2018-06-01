@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.bearya.robot.household.R;
 import com.bearya.robot.household.qcloud.QServiceCfg;
+import com.bearya.robot.household.utils.ActivityManager;
 import com.bearya.robot.household.utils.CommonUtils;
 import com.bearya.robot.household.utils.DateHelper;
 import com.bearya.robot.household.utils.NavigationHelper;
@@ -74,7 +75,8 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
     @Override
     protected void onRightTip() {
         super.onRightTip();
-        finish();
+        NavigationHelper.startActivity(this, MainActivity.class,null,true);
+        ActivityManager.getInstance().closeAllActivityExceptOne(MainActivity.class.getName());
     }
 
     private void initView() {

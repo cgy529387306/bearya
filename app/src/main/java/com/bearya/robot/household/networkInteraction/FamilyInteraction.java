@@ -3,7 +3,6 @@ package com.bearya.robot.household.networkInteraction;
 import android.content.Context;
 
 import com.bearya.robot.household.entity.MsgMonitor;
-import com.bearya.robot.household.utils.CommonUtils;
 import com.wilddog.wilddogcore.WilddogApp;
 import com.wilddog.wilddogcore.WilddogOptions;
 
@@ -30,6 +29,10 @@ public class FamilyInteraction {
 
     public void sendAction(String id) {
         interaction.sendAction(id);
+    }
+
+    public void sendMove(String id) {
+        interaction.sendMove(id);
     }
 
     public void sendExpression(String id) {

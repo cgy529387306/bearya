@@ -6,6 +6,7 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/lin_version"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:paddingLeft="20dp"
@@ -21,7 +22,13 @@
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/activity_text_size"
             android:text="@string/versionCode"/>
-
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="end|center"
+            android:text="v"
+            android:textColor="@color/colorTextGray"
+            android:textSize="@dimen/activity_text_size_small" />
         <TextView
             android:id="@+id/tv_version"
             android:layout_width="wrap_content"
@@ -29,7 +36,6 @@
             android:gravity="end|center"
             android:textColor="@color/colorTextGray"
             android:textSize="@dimen/activity_text_size" />
-
     </LinearLayout>
 
     <View

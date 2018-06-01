@@ -177,10 +177,11 @@
     <TextView
         android:id="@+id/tv_next"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="42dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/selector_btn_comfirm"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:background="@mipmap/bind_parent"
         android:textSize="@dimen/activity_text_size"
         android:text="@string/next"
         android:textColor="@color/colorWhite"

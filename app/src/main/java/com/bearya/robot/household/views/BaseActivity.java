@@ -35,7 +35,6 @@ import com.bearya.robot.household.utils.NavigationHelper;
 import com.bearya.robot.household.utils.UserInfoManager;
 import com.bearya.robot.household.utils.Utils;
 import com.google.gson.Gson;
-import com.hwangjr.rxbus.RxBus;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -45,7 +44,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Currency;
 import java.util.List;
 
 import okhttp3.Call;
@@ -70,10 +68,10 @@ public abstract class BaseActivity extends AppCompatActivity implements CommonDi
     private long lastBackTime = 0;
     private boolean isSupportExit = false;
     private List<VersionInfo> mVersionInfos = new ArrayList<>();
-    private boolean isInitRobotUpdater = false;
+    public boolean isManualUpdater = false;
     private TextView mRightTip;
 
-    public static void checkAppVersion(final Context context) {
+    public void checkAppVersion(final Context context) {
         String url = "https://api.bearya.com/v1/source/apk/update?device=3";
         OkHttpUtils.get()
                 .url(url)
@@ -109,6 +107,11 @@ public abstract class BaseActivity extends AppCompatActivity implements CommonDi
                             LogUtils.d(Tag, "checkAppVersion --> versionInfo.download_url = "+versionInfo.download_url);
                             if (code < versionInfo.version) {
                                 showUpdateDialog(context, versionInfo);
+                            }else{
+                                if (isManualUpdater){
+                                    showToast("当前已经是最新版本");
+                                    isManualUpdater = false;
+                                }
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -330,6 +333,10 @@ public abstract class BaseActivity extends AppCompatActivity implements CommonDi
         } else if (vv != null) {
             mFlContent.addView(vv);
         }
+    }
+
+    protected void setRightTextColor(int color){
+        mRightTip.setTextColor(getResources().getColor(color));
     }
 
     public void showWifiDisconnectView() {

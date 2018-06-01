@@ -47,11 +47,15 @@ public class CommonUtils {
     public static final String WILDDOG_SERVER = "server";
     public static final String WILDDOG_CLIENT = "client";*/
 
-    public static final String actionUp = "{\"totalTime\":2100,\"actions\":[{\"startTime\":0,\"endTime\":2000,\"actionSet\":[{\"faceid\":1012,\"type\":\"emotion\"},{\"type\":\"wheel\",\"direction\":257,\"leftspeed\":80,\"rightspeed\":80}]},{\"startTime\":2001,\"endTime\":2100,\"actionSet\":[{\"type\":\"reset\",\"basicaction\":300}]}]}";
-    public static final String actionDown = "{\"totalTime\":2100,\"actions\":[{\"startTime\":0,\"endTime\":2000,\"actionSet\":[{\"faceid\":1033,\"type\":\"emotion\"},{\"type\":\"wheel\",\"direction\":258,\"leftspeed\":80,\"rightspeed\":80}]},{\"startTime\":2001,\"endTime\":2100,\"actionSet\":[{\"type\":\"reset\",\"basicaction\":300}]}]}";
-    public static final String actionLeft = "{\"totalTime\":4100,\"actions\":[{\"startTime\":0,\"endTime\":4000,\"actionSet\":[{\"faceid\":1022,\"type\":\"emotion\"},{\"type\":\"wheel\",\"direction\":259,\"leftspeed\":80,\"rightspeed\":80}]},{\"startTime\":4001,\"endTime\":4100,\"actionSet\":[{\"type\":\"reset\",\"basicaction\":300}]}]}";
-    public static final String actionRight = "{\"totalTime\":4100,\"actions\":[{\"startTime\":0,\"endTime\":4000,\"actionSet\":[{\"faceid\":1022,\"type\":\"emotion\"},{\"type\":\"wheel\",\"direction\":260,\"leftspeed\":80,\"rightspeed\":80}]},{\"startTime\":4001,\"endTime\":4100,\"actionSet\":[{\"type\":\"reset\",\"basicaction\":300}]}]}";
-
+//    public static final String actionUp = "{\"totalTime\":2100,\"actions\":[{\"startTime\":0,\"endTime\":2000,\"actionSet\":[{\"faceid\":1012,\"type\":\"emotion\"},{\"type\":\"wheel\",\"direction\":257,\"leftspeed\":80,\"rightspeed\":80}]},{\"startTime\":2001,\"endTime\":2100,\"actionSet\":[{\"type\":\"reset\",\"basicaction\":300}]}]}";
+//    public static final String actionDown = "{\"totalTime\":2100,\"actions\":[{\"startTime\":0,\"endTime\":2000,\"actionSet\":[{\"faceid\":1033,\"type\":\"emotion\"},{\"type\":\"wheel\",\"direction\":258,\"leftspeed\":80,\"rightspeed\":80}]},{\"startTime\":2001,\"endTime\":2100,\"actionSet\":[{\"type\":\"reset\",\"basicaction\":300}]}]}";
+//    public static final String actionLeft = "{\"totalTime\":4100,\"actions\":[{\"startTime\":0,\"endTime\":4000,\"actionSet\":[{\"faceid\":1022,\"type\":\"emotion\"},{\"type\":\"wheel\",\"direction\":259,\"leftspeed\":80,\"rightspeed\":80}]},{\"startTime\":4001,\"endTime\":4100,\"actionSet\":[{\"type\":\"reset\",\"basicaction\":300}]}]}";
+//    public static final String actionRight = "{\"totalTime\":4100,\"actions\":[{\"startTime\":0,\"endTime\":4000,\"actionSet\":[{\"faceid\":1022,\"type\":\"emotion\"},{\"type\":\"wheel\",\"direction\":260,\"leftspeed\":80,\"rightspeed\":80}]},{\"startTime\":4001,\"endTime\":4100,\"actionSet\":[{\"type\":\"reset\",\"basicaction\":300}]}]}";
+    public static final String actionUp = "go_forward";
+    public static final String actionDown = "go_backward";
+    public static final String actionLeft = "go_left";
+    public static final String actionRight = "go_right";
+    public static final String actionStop = "stop";
     public static enum UpdateType{
         UPDATE_TYPE_APK,
         UPDATE_TYPE_ZIP,

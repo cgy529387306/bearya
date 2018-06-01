@@ -1,36 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/rl_machine_item"
-    android:layout_width="180dp"
-    android:layout_height="180dp"
-    android:background="@drawable/machine_item_bg">
+    android:layout_width="300dp"
+    android:layout_height="300dp"
+    android:layout_gravity="center"
+    android:background="@drawable/shape_grey_circle">
 
-    <TextView
-        android:id="@+id/tv_machine_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:textColor="@color/colorWhite"
-        android:layout_margin="10dp"
-        android:textSize="28sp"
-        android:ellipsize="end"
-        android:maxLines="1"/>
+   <RelativeLayout
+       android:layout_width="160dp"
+       android:layout_height="160dp"
+       android:layout_margin="20dp"
+       android:layout_centerInParent="true"
+       android:background="@drawable/machine_item_bg">
+       <TextView
+           android:id="@+id/tv_machine_name"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_centerInParent="true"
+           android:textColor="@color/colorWhite"
+           android:layout_margin="10dp"
+           android:textSize="28sp"
+           android:ellipsize="end"
+           android:maxLines="1"/>
 
-    <TextView
-        android:id="@+id/tv_machine_state"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/tv_machine_name"
-        android:text="@string/machine_state_outline"
-        android:layout_marginTop="20dp"
-        android:textSize="16sp"/>
+       <TextView
+           android:id="@+id/tv_machine_state"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_centerHorizontal="true"
+           android:layout_below="@id/tv_machine_name"
+           android:text="@string/machine_state_outline"
+           android:layout_marginTop="20dp"
+           android:textSize="16sp"/>
 
-    <ImageView
-        android:id="@+id/im_add_icon"
-        android:layout_width="180dp"
-        android:layout_height="180dp"
-        android:layout_centerInParent="true"
-        android:src="@mipmap/add_icon"/>
+       <ImageView
+           android:id="@+id/im_add_icon"
+           android:layout_width="180dp"
+           android:layout_height="180dp"
+           android:layout_centerInParent="true"
+           android:src="@mipmap/add_icon"/>
+   </RelativeLayout>
 
 </RelativeLayout>

@@ -5,15 +5,15 @@
     <string name="wx_app_id">wx19275a2c915b1992</string>
     <string name="app_wifi_disconnect">无网络</string>
     <string name="login_guide">父母永远是孩子最好的陪伴</string>
-    <string name="main_bind_machine">添加设备</string>
+    <string name="main_bind_machine">新增设备</string>
     <string name="main_title">设备控制</string>
     <string name="add_machine">添加设备</string>
     <string name="wx_login">微信登录</string>
     <string name="scan_qc">扫一扫</string>
     <string name="bind_machine">绑定</string>
     <string name="input_machine_id_hint">输入设备ID，完成设备绑定</string>
-    <string name="input_machine_toast">请输入设备ID</string>
-    <string name="input_msg_hint">请输入想让小贝说的话</string>
+    <string name="input_machine_toast">输入设备序列号</string>
+    <string name="input_msg_hint">请输入要小贝说的话</string>
     <string name="machine_action">动作</string>
     <string name="machine_monitor">监护</string>
     <string name="machine_video">视频</string>
@@ -53,7 +53,7 @@
     <string name="register">注册</string>
     <string name="forget_pwd">忘记密码</string>
     <string name="next">下一步</string>
-    <string name="input_pwd">输入6&#8211;20位密码</string>
+    <string name="input_pwd">请输入6&#8211;20位密码</string>
     <string name="input_phone">输入手机号</string>
     <string name="input_code">输入验证码</string>
     <string name="send_code">发送验证码</string>

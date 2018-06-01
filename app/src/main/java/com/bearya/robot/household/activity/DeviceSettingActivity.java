@@ -11,12 +11,10 @@ import com.bearya.robot.household.api.FamilyApiWrapper;
 import com.bearya.robot.household.entity.DeviceInfo;
 import com.bearya.robot.household.utils.DateHelper;
 import com.bearya.robot.household.utils.NavigationHelper;
-import com.bearya.robot.household.videoCall.RxConstants;
 import com.bearya.robot.household.views.BaseActivity;
 import com.codbking.widget.DatePickDialog;
 import com.codbking.widget.OnSureLisener;
 import com.codbking.widget.bean.DateType;
-import com.hwangjr.rxbus.RxBus;
 
 import java.util.Date;
 
@@ -32,6 +30,7 @@ public class DeviceSettingActivity extends BaseActivity implements View.OnClickL
     private TextView tvBirth; //生日
     private TextView tvWhoseDad;// 他爸爸是谁
     private TextView tvWhoseMom;// 他妈妈是谁
+    private TextView tvConfirm;
     private final int EDIT_RABITNAME = 1;
     private final int EDIT_WHOSEDAD = 3;
     private final int EDIT_WHOSEMOM = 4;
@@ -39,14 +38,17 @@ public class DeviceSettingActivity extends BaseActivity implements View.OnClickL
     private DeviceInfo deviceInfo;
     private Date startDate;
     private static final String DATE_FORMAT = "yyyy-MM-dd";
+    private boolean isFirst;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Boolean isFirst = getIntent().getBooleanExtra("isFirst",false);
+        isFirst = getIntent().getBooleanExtra("isFirst",false);
         if (isFirst){
             setContentView(R.string.device_setting,R.layout.activity_device_setting,"跳过");
+            setRightTextColor(R.color.colorBlue);
         }else {
             setContentView(R.string.device_setting,R.layout.activity_device_setting,"保存");
+            setRightTextColor(R.color.colorBlack);
         }
         initView();
         initListener();
@@ -58,12 +60,19 @@ public class DeviceSettingActivity extends BaseActivity implements View.OnClickL
         tvBirth = (TextView) findViewById(R.id.tv_birth);
         tvWhoseDad = (TextView) findViewById(R.id.tv_whoseDad);
         tvWhoseMom = (TextView) findViewById(R.id.tv_whoseMom);
+        tvConfirm = (TextView) findViewById(R.id.tv_confirm);
+        tvConfirm.setVisibility(isFirst?View.VISIBLE:View.GONE);
     }
 
     @Override
     protected void onRightTip() { //右上角点击事件
         super.onRightTip();
-        finish();
+        if (isFirst){
+            finish();
+        }else{
+            save();
+        }
+
     }
 
     private void initData(DeviceInfo info) {
@@ -79,7 +88,7 @@ public class DeviceSettingActivity extends BaseActivity implements View.OnClickL
     }
 
     private void initListener(){
-        findViewById(R.id.tv_confirm).setOnClickListener(this);
+        tvConfirm.setOnClickListener(this);
         tvRabitName.setOnClickListener(this);
         tvBirth.setOnClickListener(this);
         tvWhoseDad.setOnClickListener(this);
@@ -121,16 +130,17 @@ public class DeviceSettingActivity extends BaseActivity implements View.OnClickL
         int id = v.getId();
         Bundle bundle = new Bundle();
         if (id == R.id.tv_rabitName){
-            bundle.putString("edit",deviceInfo==null?"":deviceInfo.getWakeup());
-            NavigationHelper.startActivityForResult(DeviceSettingActivity.this,WakeUpActivity.class,bundle,EDIT_RABITNAME);
+            bundle.putString("edit",deviceInfo==null?"":deviceInfo.getName());
+            bundle.putString("title","机器人名字");
+            NavigationHelper.startActivityForResult(DeviceSettingActivity.this,EditActivity.class,bundle,EDIT_RABITNAME);
         }else if (id == R.id.tv_birth){
             showTimePicker();
         }else if (id == R.id.tv_whoseDad){
-            bundle.putInt("type",0);
+            bundle.putString("title","爸爸是谁");
             bundle.putString("edit", deviceInfo==null?"":deviceInfo.getFather_name());
             NavigationHelper.startActivityForResult(DeviceSettingActivity.this,EditActivity.class,bundle,EDIT_WHOSEDAD);
         }else if (id == R.id.tv_whoseMom){
-            bundle.putInt("type",1);
+            bundle.putString("title","妈妈是谁");
             bundle.putString("edit", deviceInfo==null?"":deviceInfo.getMother_name());
             NavigationHelper.startActivityForResult(DeviceSettingActivity.this,EditActivity.class,bundle,EDIT_WHOSEMOM);
         }else if (id == R.id.tv_confirm){
@@ -144,7 +154,7 @@ public class DeviceSettingActivity extends BaseActivity implements View.OnClickL
         if (resultCode == RESULT_OK){
             String content = data.getStringExtra("content");
             if (requestCode == EDIT_RABITNAME){
-                deviceInfo.setWakeup(content);
+                deviceInfo.setName(content);
                 tvRabitName.setText(deviceInfo.getName());
             }else if (requestCode == EDIT_WHOSEDAD){
                 deviceInfo.setFather_name(content);
